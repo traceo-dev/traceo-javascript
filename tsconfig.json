@@ -1,0 +1,9 @@
+{
+  "extends": "./packages/config/tsconfig.json",
+
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"],
+    "noErrorTruncation": true
+  }
+}
