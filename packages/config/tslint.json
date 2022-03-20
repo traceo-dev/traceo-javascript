@@ -1,0 +1,17 @@
+{
+    "extends": ["tslint:all", "tslint-config-prettier"],
+    "rules": {
+      "no-unused-variable": false,
+      "no-submodule-imports": false,
+        "newline-before-return": false,
+      "no-any": false,
+      "no-magic-numbers": false,
+      "no-parameter-properties": false,
+      "no-require-imports": false,
+      "prefer-function-over-method": [false],
+      "strict-boolean-expressions": false,
+      "no-inferrable-types": false,
+      "no-console": [true, "log"]
+    }
+  }
+  
