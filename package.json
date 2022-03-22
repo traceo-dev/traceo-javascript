@@ -1,8 +1,5 @@
 {
-  "name": "klepper",
-  "version": "0.0.1-alpha",
-  "author": "Piotr Szewczyk",
-  "description": "NodeJS library to catching exceptions.",
+  "version": "0.0.0",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -11,8 +8,10 @@
     "packages/commons"
   ],
   "scripts": {
-    "build": "lerna run build",
+    "build": "lerna run clean && lerna run --stream --concurrency 1 --sort build",
     "lint": "lerna run lint",
+    "clean": "lerna run clean",
+    "package": "lerna run pack",
     "test": "lerna run test"
   },
   "dependencies": {},
@@ -22,6 +21,7 @@
     "lerna": "^4.0.0",
     "jest": "^27.5.1",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.1.3",
     "tslint": "^6.1.3",
     "typescript": "^4.6.2"

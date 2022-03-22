@@ -12,6 +12,8 @@
     "build": "tsc -p tsconfig.json",
     "lint": "run-s lint:prettier",
     "lint:prettier": "prettier */**/*.{js,ts,tsx} --write",
+    "pack": "npm pack",
+    "clean": "rimraf dist",
     "test": "jest",
     "test:watch": "jest --watch --notify"
   },
