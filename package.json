@@ -1,5 +1,8 @@
 {
-  "name": "root",
+  "name": "klepper",
+  "author": "Piotr Szewczyk",
+  "description": "NodeJS library to catching exceptions.",
+  "license": "MIT",
   "private": true,
   "workspaces": [
     "packages/node",
