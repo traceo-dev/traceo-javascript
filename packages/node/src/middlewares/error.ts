@@ -71,7 +71,7 @@ const isToCatch = (req: KlepperIncomingMessage, options?: ErrorMiddlewareOptions
  * 
  * @param error 
  */
-const catchException = (error: KlepperError, req: KlepperIncomingMessage) => {
+export const catchException = (error: KlepperError, req: KlepperIncomingMessage) => {
     const { message, name } = error;
 
     try {
@@ -92,6 +92,6 @@ const catchException = (error: KlepperError, req: KlepperIncomingMessage) => {
 
         http.sendEvent(payload);
     } catch (error) {
-        console.warn(`Cannot catch exception: ${error}`); //to better handling
+        console.warn(`[Klepper] Cannot catch exception: ${error}`);
     }
 }

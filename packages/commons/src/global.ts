@@ -1,5 +1,10 @@
 import { KlepperGlobal } from "@klepper/transport";
 
+/**
+ * Using internal NodeJS global object to persist information 
+ * 
+ * @returns {KlepperGlobal}
+ */
 export const getGlobalClientData = (): KlepperGlobal => global.__KLEPPER__ || {};
 
 export const setGlobalClientData = (data: KlepperGlobal): void => {

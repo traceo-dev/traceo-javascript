@@ -1,5 +1,6 @@
 {
   "name": "klepper",
+  "version": "0.0.1-alpha",
   "author": "Piotr Szewczyk",
   "description": "NodeJS library to catching exceptions.",
   "license": "MIT",

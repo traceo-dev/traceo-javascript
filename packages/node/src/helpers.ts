@@ -4,7 +4,7 @@ import { StackFrame } from "stack-trace";
 const prepareStackTraces = (stackFrames: StackFrame[]): Trace[] => {
     const parseTraces = (frame: StackFrame): Trace => {
         return {
-            functionName: frame.getFunctionName(), //return absolut path, need to extract also function name
+            functionName: frame.getFunctionName(),
             rowNo: frame.getLineNumber(),
             colNo: frame.getColumnNumber(),
             fileName: frame.getFileName(),
