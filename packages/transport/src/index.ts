@@ -1,27 +1,29 @@
 import * as http from "http";
 
 export interface KlepperOptions {
-  apiKey: string;
-  secretKey: string;
+  environment?: ENVIRONMENT;
+  privateKey: string;
 }
 
-export interface KlepperError extends Error {}
+export interface KlepperError extends Error {
+  date: number;
+}
 
-type RequestMethodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+export type RequestMethodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface KlepperRequest {
-  payload: Object,
-  headers: Object,
-  query: Object,
-  url: Object,
-  method: RequestMethodType,
-  ip: string | string[] | undefined,
+  payload?: Object,
+  headers?: Object,
+  query?: Object,
+  url?: Object,
+  method?: RequestMethodType,
+  ip?: string | string[] | undefined,
 }
 
 export interface KlepperResponse {
-  body: string;
   statusCode: number;
   statusMessage?: string;
+  body?: string;
 }
 
 export interface BaseObject { [key: string]: any };
@@ -56,16 +58,51 @@ export interface ErrorEvent {
   date: number;
 }
 
-export interface KlepperOptions { }
-
-// export interface ErrorMiddlewareOptions {
-//   notAllowLocalhost?: boolean;
-//   allowHttp?: boolean;
-//   environment?: string;
-// }
-
 export class ErrorMiddlewareOptions {
   allowLocalhost?: boolean = true;
   allowHttp?: boolean = true;
   environment?: string;
+}
+
+export interface KlepperEvent {
+  projectId?: string;
+  type: string;
+  message: string;
+  date: number;
+  traces: Trace[];
+  requestData?: KlepperRequest;
+}
+
+export interface Trace {
+  fileName: string;
+  functionName: string;
+  absolutePath: string;
+  rowNo: number;
+  colNo: number;
+  isInternal: boolean;
+}
+
+export interface RequestOptions extends http.RequestOptions {
+  hostname: string;
+  port: number;
+  method: RequestMethodType;
+  path?: string;
+  headers?: { [key: string]: string };
+}
+
+export interface RequestPayload {
+  data: KlepperEvent;
+  // url: string;
+}
+
+export enum RequestStatus {
+  SUCCESS = "success",
+  ERROR = "error"
+}
+
+type ENVIRONMENT = undefined | "prod" | "dev" | "test";
+
+export interface KlepperGlobal {
+  environment?: ENVIRONMENT;
+  privateKey?: string;
 }

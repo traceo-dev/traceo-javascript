@@ -1,40 +1,23 @@
-import { BaseObject, KlepperIncomingMessage, KlepperRequest, KlepperResponse, KlepperStackFrame } from "@klepper/transport";
+import { BaseObject, KlepperIncomingMessage, KlepperRequest, Trace } from "@klepper/transport";
 import { StackFrame } from "stack-trace";
 
-const mapStackFrames = (stackFrames: StackFrame[], onlyInternal: boolean = true) => {
-    const frames: KlepperStackFrame[] = [];
-
-    const parse = (stackFrame: StackFrame): KlepperStackFrame => {
+const prepareStackTraces = (stackFrames: StackFrame[]): Trace[] => {
+    const parseTraces = (frame: StackFrame): Trace => {
         return {
-            functionName: stackFrame.getFunctionName(),
-            lineNumber: stackFrame.getLineNumber(),
-            columnNumber: stackFrame.getColumnNumber(),
-            fileName: stackFrame.getFileName(),
-            methodName: stackFrame.getMethodName(),
+            functionName: frame.getFunctionName(), //return absolut path, need to extract also function name
+            rowNo: frame.getLineNumber(),
+            colNo: frame.getColumnNumber(),
+            fileName: frame.getFileName(),
+            absolutePath: frame.getFunctionName(),
+            isInternal: isInternal(frame.getFileName()),
         }
     }
 
-    stackFrames.map((f) => {
-        if (onlyInternal) {
-            const fileName = f.getFileName();
-            const isInternal = fileName && !fileName.includes('node_modules') && !fileName.startsWith('/') && !fileName.startsWith('node:') && fileName.includes(":\\");
-
-            isInternal ? frames.push(parse(f)) : null;
-        } else {
-            frames.push(parse(f));
-        }
-    });
-
-    return frames;
+    const traces = stackFrames.map((frame) => parseTraces(frame)) || [];
+    return traces;
 }
 
-const createPayloadFromRequest = (req: KlepperRequest, res: KlepperResponse) => {
-    return {
-        request: req,
-        response: res,
-        date: new Date().getDate()
-    }
-}
+const isInternal = (fileName: string): boolean => !!fileName && !fileName.includes('node_modules') && !fileName.startsWith('/') && !fileName.startsWith('node:') && fileName.includes(":\\");
 
 const mapRequestData = (req: BaseObject): KlepperRequest => {
     const headersData = req.headers || req.header || {};
@@ -93,9 +76,8 @@ const getProtocol = (req: KlepperIncomingMessage): string => {
 
 export const helpers = {
     getIp,
-    createPayloadFromRequest,
     mapRequestData,
-    mapStackFrames,
+    prepareStackTraces,
     getProtocol,
     isLocalhost
 }

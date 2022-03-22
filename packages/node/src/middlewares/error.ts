@@ -1,6 +1,7 @@
-import { ErrorMiddlewareOptions, KlepperError, KlepperIncomingMessage } from "@klepper/transport";
-import * as http from "http";
+import { ErrorMiddlewareOptions, KlepperError, KlepperEvent, KlepperIncomingMessage, KlepperServerResponse, RequestPayload } from "@klepper/transport";
 import { helpers } from "src/helpers";
+import { parse } from "stack-trace";
+import { http } from "@klepper/commons";
 
 /**
  * Base middleware to catch and intercept error across the app.
@@ -19,12 +20,12 @@ import { helpers } from "src/helpers";
 export const errorMiddleware = (options?: ErrorMiddlewareOptions) => {
     return function errorMiddleware(
         error: KlepperError,
-        req: http.IncomingMessage,
-        _res: http.ServerResponse,
+        req: KlepperIncomingMessage,
+        _res: KlepperServerResponse,
         next: (error: Error) => void
     ): void {
         if (isToCatch(req, options)) {
-            catchException(error);
+            catchException(error, req);
         }
 
         next(error);
@@ -51,7 +52,7 @@ const isToCatch = (req: KlepperIncomingMessage, options?: ErrorMiddlewareOptions
 
     if (!options?.allowLocalhost) {
         const isLocalhost = helpers.isLocalhost(req);
-        
+
         if (isLocalhost) {
             return false;
         }
@@ -70,6 +71,27 @@ const isToCatch = (req: KlepperIncomingMessage, options?: ErrorMiddlewareOptions
  * 
  * @param error 
  */
-const catchException = (_error: KlepperError) => {
-    //TO IMPLEMENT!
+const catchException = (error: KlepperError, req: KlepperIncomingMessage) => {
+    const { message, name } = error;
+
+    try {
+        const traces = helpers.prepareStackTraces(parse(error));
+        const request = helpers.mapRequestData(req);
+
+        const event: KlepperEvent = {
+            date: new Date().getDate(),
+            requestData: request,
+            type: name,
+            message,
+            traces
+        };
+
+        const payload: RequestPayload = {
+            data: event,
+        }
+
+        http.sendEvent(payload);
+    } catch (error) {
+        console.warn(`Cannot catch exception: ${error}`); //to better handling
+    }
 }

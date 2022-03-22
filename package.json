@@ -3,10 +3,13 @@
   "private": true,
   "workspaces": [
     "packages/node",
-    "packages/transport"
+    "packages/transport",
+    "packages/commons"
   ],
   "scripts": {
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "test": "lerna run test"
   },
   "dependencies": {},
   "devDependencies": {
