@@ -1,6 +1,5 @@
 import { ErrorMiddlewareOptions, KlepperError, KlepperEvent, KlepperIncomingMessage, KlepperServerResponse, RequestPayload } from "@klepper/transport";
 import { helpers } from "src/helpers";
-import { parse } from "stack-trace";
 import { http } from "@klepper/commons";
 
 /**
@@ -75,7 +74,7 @@ export const catchException = (error: KlepperError, req: KlepperIncomingMessage)
     const { message, name } = error;
 
     try {
-        const traces = helpers.prepareStackTraces(parse(error));
+        // const traces = helpers.prepareStackTraces(parse(error));
         const request = helpers.mapRequestData(req);
 
         const event: KlepperEvent = {
@@ -83,7 +82,7 @@ export const catchException = (error: KlepperError, req: KlepperIncomingMessage)
             requestData: request,
             type: name,
             message,
-            traces
+            stack: error.stack as string
         };
 
         const payload: RequestPayload = {

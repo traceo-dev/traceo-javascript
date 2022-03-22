@@ -8,9 +8,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@klepper/commons": "0.0.1",
-    "@klepper/transport": "0.0.1",
-    "@types/stack-trace": "^0.0.29",
-    "stack-trace": "0.0.10"
+    "@klepper/transport": "0.0.1"
   },
   "devDependencies": {
     "jest": "^26.5.5",

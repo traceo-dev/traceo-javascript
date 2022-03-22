@@ -1,21 +1,21 @@
-import { BaseObject, KlepperIncomingMessage, KlepperRequest, Trace } from "@klepper/transport";
-import { StackFrame } from "stack-trace";
+import { BaseObject, KlepperIncomingMessage, KlepperRequest } from "@klepper/transport";
+// import { StackFrame } from "stack-trace";
 
-const prepareStackTraces = (stackFrames: StackFrame[]): Trace[] => {
-    const parseTraces = (frame: StackFrame): Trace => {
-        return {
-            functionName: frame.getFunctionName(),
-            rowNo: frame.getLineNumber(),
-            colNo: frame.getColumnNumber(),
-            fileName: frame.getFileName(),
-            absolutePath: frame.getFunctionName(),
-            isInternal: isInternal(frame.getFileName()),
-        }
-    }
+// const prepareStackTraces = (stackFrames: StackFrame[]): Trace[] => {
+//     const parseTraces = (frame: StackFrame): Trace => {
+//         return {
+//             functionName: frame.getFunctionName(),
+//             rowNo: frame.getLineNumber(),
+//             colNo: frame.getColumnNumber(),
+//             fileName: frame.getFileName(),
+//             absolutePath: frame.getFunctionName(),
+//             isInternal: isInternal(frame.getFileName()),
+//         }
+//     }
 
-    const traces = stackFrames.map((frame) => parseTraces(frame)) || [];
-    return traces;
-}
+//     const traces = stackFrames.map((frame) => parseTraces(frame)) || [];
+//     return traces;
+// }
 
 const isInternal = (fileName: string): boolean => !!fileName && !fileName.includes('node_modules') && !fileName.startsWith('/') && !fileName.startsWith('node:') && fileName.includes(":\\");
 
@@ -77,7 +77,7 @@ const getProtocol = (req: KlepperIncomingMessage): string => {
 export const helpers = {
     getIp,
     mapRequestData,
-    prepareStackTraces,
+    // prepareStackTraces,
     getProtocol,
     isLocalhost
 }

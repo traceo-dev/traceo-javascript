@@ -69,7 +69,8 @@ export interface KlepperEvent {
   type: string;
   message: string;
   date: number;
-  traces: Trace[];
+  // traces: Trace[];
+  stack: string;
   requestData?: KlepperRequest;
 }
 
