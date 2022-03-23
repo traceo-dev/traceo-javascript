@@ -1,4 +1,4 @@
-import { BaseObject, KlepperIncomingMessage, KlepperRequest } from "@klepper/transport";
+import { BaseObject, KlepperIncomingMessage, KlepperRequest } from "../transport";
 // import { StackFrame } from "stack-trace";
 
 // const prepareStackTraces = (stackFrames: StackFrame[]): Trace[] => {

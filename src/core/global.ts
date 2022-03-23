@@ -1,4 +1,4 @@
-import { KlepperGlobal } from "@klepper/transport";
+import { KlepperGlobal } from "../transport";
 
 /**
  * Using internal NodeJS global object to persist information 

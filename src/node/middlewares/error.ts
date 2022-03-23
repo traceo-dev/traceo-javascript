@@ -1,6 +1,6 @@
-import { ErrorMiddlewareOptions, KlepperError, KlepperEvent, KlepperIncomingMessage, KlepperServerResponse, RequestPayload } from "@klepper/transport";
+import { ErrorMiddlewareOptions, KlepperError, KlepperEvent, KlepperIncomingMessage, KlepperServerResponse, RequestPayload } from "../../transport";
 import { helpers } from "../helpers";
-import { http } from "@klepper/commons";
+import { sendEvent } from "../../core/http";
 
 /**
  * Base middleware to catch and intercept error across the app.
@@ -89,7 +89,7 @@ export const catchException = (error: KlepperError, req: KlepperIncomingMessage)
             data: event,
         }
 
-        http.sendEvent(payload);
+        sendEvent(payload);
     } catch (error) {
         console.warn(`[Klepper] Cannot catch exception: ${error}`);
     }

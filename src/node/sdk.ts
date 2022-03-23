@@ -1,5 +1,5 @@
-import { global } from "@klepper/commons";
-import { KlepperOptions } from "@klepper/transport";
+import { global } from "../core";
+import { KlepperOptions } from "../transport";
 
 const defaultConnectCallback = () => true;
 

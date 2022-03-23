@@ -1,4 +1,4 @@
-import { KlepperGlobal } from "@klepper/transport";
+import { KlepperGlobal } from "../../transport";
 
 declare global {
     var __KLEPPER__: KlepperGlobal;

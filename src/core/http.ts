@@ -1,4 +1,4 @@
-import { RequestPayload, RequestOptions, KlepperResponse, KlepperIncomingMessage, RequestStatus } from "@klepper/transport";
+import { RequestPayload, RequestOptions, KlepperResponse, KlepperIncomingMessage, RequestStatus } from "../transport";
 import * as http from "http";
 import { getGlobalClientData } from "./global";
 
