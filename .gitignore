@@ -1,6 +1,3 @@
-
-build/
-
 # dependencies
 node_modules/
 packages/*/dist/
@@ -37,3 +34,6 @@ ui-debug.log
 
 .vscode
 .idea
+
+#tarballs
+*.tgz

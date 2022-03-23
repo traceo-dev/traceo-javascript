@@ -1,6 +1,6 @@
 {
   "name": "klepper",
-  "version": "0.0.1",
+  "version": "0.0.25-alpha",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,13 +8,14 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
-    "prebuild:types": "rimraf ./build",
-    "build:types": "tsc -p ./tsconfig.json --outDir build --declaration true && api-extractor run",
-    "predocs": "rimraf ./docs",
-    "clean": "rimraf ./build ./dist ./docs",
-    "test": "jest"
+    "build": "yarn prebuild && tsc -p ./tsconfig.json --outDir dist",
+    "prebuild": "rimraf ./dist",
+    "lint": "run-s lint:prettier",
+    "lint:prettier": "prettier */**/*.{js,ts} --write",
+    "prepack": "yarn lint",
+    "package": "yarn build && npm pack",
+    "test": "jest",
+    "test:watch": "jest --watch --notify"
   },
   "dependencies": {},
   "devDependencies": {

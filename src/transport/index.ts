@@ -12,12 +12,12 @@ export interface KlepperError extends Error {
 export type RequestMethodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface KlepperRequest {
-  payload?: Object,
-  headers?: Object,
-  query?: Object,
-  url?: Object,
-  method?: RequestMethodType,
-  ip?: string | string[] | undefined,
+  payload?: Object;
+  headers?: Object;
+  query?: Object;
+  url?: Object;
+  method?: RequestMethodType;
+  ip?: string | string[] | undefined;
 }
 
 export interface KlepperResponse {
@@ -26,7 +26,9 @@ export interface KlepperResponse {
   body?: string;
 }
 
-export interface BaseObject { [key: string]: any };
+export interface BaseObject {
+  [key: string]: any;
+}
 
 export interface KlepperServerResponse extends http.ServerResponse {
   send?: Function;
@@ -58,9 +60,9 @@ export interface ErrorEvent {
   date: number;
 }
 
-export class ErrorMiddlewareOptions {
-  allowLocalhost?: boolean = true;
-  allowHttp?: boolean = true;
+export interface ErrorMiddlewareOptions {
+  allowLocalhost?: boolean;
+  allowHttp?: boolean;
   environment?: string;
 }
 
@@ -98,7 +100,7 @@ export interface RequestPayload {
 
 export enum RequestStatus {
   SUCCESS = "success",
-  ERROR = "error"
+  ERROR = "error",
 }
 
 type ENVIRONMENT = undefined | "prod" | "dev" | "test";

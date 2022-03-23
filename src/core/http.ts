@@ -1,24 +1,31 @@
-import { RequestPayload, RequestOptions, KlepperResponse, KlepperIncomingMessage, RequestStatus } from "../transport";
+import {
+  RequestPayload,
+  RequestOptions,
+  KlepperResponse,
+  KlepperIncomingMessage,
+  RequestStatus,
+} from "../transport";
 import * as http from "http";
 import { getGlobalClientData } from "./global";
 
 const KLEPPER_HOST = process.env.KLEPPER_HOST || "localhost";
 const KLEPPER_API = process.env.KLEPPER_API || "/test";
-const KLEPPER_PORT = process.env.KLEPPER_PORT  || 3000;
+const KLEPPER_PORT = process.env.KLEPPER_PORT || 3000;
 
 const createHttpOptions = (payload: RequestPayload): http.RequestOptions => {
   const client = getGlobalClientData();
+
   const { privateKey } = client;
   const { data } = payload;
   const baseOptions: RequestOptions = {
     hostname: KLEPPER_HOST,
     port: +KLEPPER_PORT,
-    method: 'POST',
+    method: "POST",
     headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': `${Buffer.byteLength(JSON.stringify(data))}`,
-        'Klepper-Project-Key': privateKey as string
-    }
+      "Content-Type": "application/json",
+      "Content-Length": `${Buffer.byteLength(JSON.stringify(data))}`,
+      "Klepper-Project-Key": privateKey as string,
+    },
   };
 
   return {
@@ -27,22 +34,18 @@ const createHttpOptions = (payload: RequestPayload): http.RequestOptions => {
   };
 };
 
-const statusFromCode = (code: number) => code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR; 
+const statusFromCode = (code: number) =>
+  code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
 /**
  * Send data to Klepper server
- * 
- * @param payload 
+ *
+ * @param payload
  */
-export const sendEvent = async (payload: RequestPayload): Promise<KlepperResponse> => {
+export const sendEvent = async (
+  payload: RequestPayload
+): Promise<KlepperResponse> => {
   const { data } = payload;
-
-  // global.Object = Object({ test: "test" })
-  // console.log("GLOBAL: ", global.Object);
-
-  /**
-   * IMPORTANT TO HANDLE GLOBAL DATA
-   */
 
   try {
     return new Promise<KlepperResponse>((resolve, reject) => {
@@ -50,40 +53,43 @@ export const sendEvent = async (payload: RequestPayload): Promise<KlepperRespons
       const client = getGlobalClientData();
 
       if (!httpOptions) {
-        reject(new Error("NO HTTP OPTIONS"))
+        reject(new Error("NO HTTP OPTIONS"));
       }
 
       if (!client) {
-        reject(new Error("NO CLIENT DATA IN GLOBAL OBJECT"))
+        reject(new Error("NO CLIENT DATA IN GLOBAL OBJECT"));
       }
 
-      const request = http.request(httpOptions, (res: KlepperIncomingMessage) => {
-        res.setEncoding("utf8");
+      const request = http.request(
+        httpOptions,
+        (res: KlepperIncomingMessage) => {
+          res.setEncoding("utf8");
 
-        const status = statusFromCode(res?.statusCode as number);
-        const isSuccess = status === RequestStatus.SUCCESS;
+          const status = statusFromCode(res?.statusCode as number);
+          const isSuccess = status === RequestStatus.SUCCESS;
 
-        if (!isSuccess) {
-          reject(new Error("HTTP ERROR: ${res.statusCode}"))
-        } else {
-          resolve({
-            statusCode: res?.statusCode as number,
-            statusMessage: "Event successfully sended to Klepper"
-          })
+          if (!isSuccess) {
+            reject(new Error("HTTP ERROR: ${res.statusCode}"));
+          } else {
+            resolve({
+              statusCode: res?.statusCode as number,
+              statusMessage: "Event successfully sended to Klepper",
+            });
+          }
+
+          res.on("error", reject);
         }
-    
-        res.on("error", reject);
-      });
+      );
       request.on("error", reject);
 
-      request.on('timeout', () => {
-        request.destroy()
+      request.on("timeout", () => {
+        request.destroy();
         reject(new Error("TIMEOUT"));
-      })
+      });
 
       request.write(JSON.stringify(data));
       request.end();
-    })
+    });
   } catch (error) {
     throw new Error(""); //to properly handling
   }
