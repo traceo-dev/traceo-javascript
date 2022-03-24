@@ -1,34 +1,7 @@
-import {
-  BaseObject,
-  KlepperIncomingMessage,
-  KlepperRequest,
-} from "../transport";
-// import { StackFrame } from "stack-trace";
+import { BaseObject } from "../transport/base";
+import { KlepperIncomingMessage, KlepperRequest } from "../transport/http";
 
-// const prepareStackTraces = (stackFrames: StackFrame[]): Trace[] => {
-//     const parseTraces = (frame: StackFrame): Trace => {
-//         return {
-//             functionName: frame.getFunctionName(),
-//             rowNo: frame.getLineNumber(),
-//             colNo: frame.getColumnNumber(),
-//             fileName: frame.getFileName(),
-//             absolutePath: frame.getFunctionName(),
-//             isInternal: isInternal(frame.getFileName()),
-//         }
-//     }
-
-//     const traces = stackFrames.map((frame) => parseTraces(frame)) || [];
-//     return traces;
-// }
-
-const isInternal = (fileName: string): boolean =>
-  !!fileName &&
-  !fileName.includes("node_modules") &&
-  !fileName.startsWith("/") &&
-  !fileName.startsWith("node:") &&
-  fileName.includes(":\\");
-
-const mapRequestData = (req: BaseObject): KlepperRequest => {
+export const mapRequestData = (req: BaseObject): KlepperRequest => {
   const headersData = req.headers || req.header || {};
 
   const method = req.method;
@@ -67,26 +40,12 @@ const mapRequestData = (req: BaseObject): KlepperRequest => {
   return request;
 };
 
-const getIp = (req: KlepperIncomingMessage): string | string[] | undefined => {
+export const getIp = (
+  req: KlepperIncomingMessage
+): string | string[] | undefined => {
   return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 };
 
-const isLocalhost = (req: KlepperIncomingMessage): boolean => {
-  const ip = getIp(req);
-  return ip === "::1" || ip === "127.0.0.1" ? true : false;
-};
-
-const getProtocol = (req: KlepperIncomingMessage): string => {
+export const getProtocol = (req: KlepperIncomingMessage): string => {
   return req.protocol === "https" || req.secure ? "https" : "http";
-};
-
-const isEmpty = (obj: any) => Object.keys(obj).length === 0;
-
-export const helpers = {
-  getIp,
-  mapRequestData,
-  isEmpty,
-  // prepareStackTraces,
-  getProtocol,
-  isLocalhost,
 };

@@ -1,6 +1,6 @@
 {
   "name": "klepper",
-  "version": "0.0.25-alpha",
+  "version": "0.0.41-alpha",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn prebuild && tsc -p ./tsconfig.json --outDir dist",
+    "build": "tsc -p ./tsconfig.json --outDir dist",
     "prebuild": "rimraf ./dist",
     "lint": "run-s lint:prettier",
     "lint:prettier": "prettier */**/*.{js,ts} --write",

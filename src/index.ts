@@ -1,5 +1,12 @@
-import * as Middleware from "./node/middlewares";
+import { Middleware, catchException } from "./node/middlewares";
 import * as Klepper from "./node/sdk";
-import { catchException } from "./node/middlewares/error";
+import { ExceptionPriority } from "./transport/enums";
+import { CatchExceptionsOptions } from "./transport/options";
 
-export { Middleware, Klepper, catchException };
+export {
+  Middleware,
+  Klepper,
+  catchException,
+  CatchExceptionsOptions,
+  ExceptionPriority,
+};
