@@ -1,3 +1,4 @@
+import { getGlobalClientData } from "../core/global";
 import { sendEvent } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { KlepperError } from "../transport/base";
@@ -14,7 +15,10 @@ import {
 import { getIp, getProtocol, mapRequestData } from "./helpers";
 
 /**
- * Base middleware to catch and intercept error across the app.
+ * Base middleware to catch and intercept error across the express app.
+ * This middleware catch errors only from the no-async methods.
+ *
+ * To catch errors from async functions, we suggest to use `catchException` instead.
  *
  * The simplest way to use it in Express.js and JavaScript:
  *

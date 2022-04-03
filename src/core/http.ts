@@ -6,13 +6,13 @@ import { getGlobalClientData } from "./global";
 import { isClientConnected } from "./is";
 
 const KLEPPER_HOST = process.env.KLEPPER_HOST || "localhost";
-const KLEPPER_API = process.env.KLEPPER_API || "/test";
-const KLEPPER_PORT = process.env.KLEPPER_PORT || 3000;
+const KLEPPER_API = process.env.KLEPPER_API || "/sdk/incident";
+const KLEPPER_PORT = process.env.KLEPPER_PORT || 8080;
 
 const createHttpOptions = (event: KlepperEvent): http.RequestOptions => {
   const client = getGlobalClientData();
 
-  const { privateKey } = client;
+  const { privateKey, appId } = client;
   const baseOptions: RequestOptions = {
     hostname: KLEPPER_HOST,
     port: +KLEPPER_PORT,
@@ -20,7 +20,8 @@ const createHttpOptions = (event: KlepperEvent): http.RequestOptions => {
     headers: {
       "Content-Type": "application/json",
       "Content-Length": `${Buffer.byteLength(JSON.stringify(event))}`,
-      "Klepper-Project-Key": privateKey as string,
+      "klepper-project-key": String(privateKey),
+      "klepper-app-id": String(appId),
     },
   };
 
@@ -74,7 +75,7 @@ export const sendEvent = async (
 
       res.on("error", reject);
     });
-    
+
     request.on("error", reject);
 
     request.on("timeout", () => {

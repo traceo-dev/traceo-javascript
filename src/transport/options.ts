@@ -4,6 +4,7 @@ import { Environment } from "./types";
 export interface KlepperOptions {
   environment?: Environment;
   privateKey: string;
+  appId: string;
 }
 
 export interface ErrorMiddlewareOptions {

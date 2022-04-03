@@ -7,6 +7,7 @@ export interface BaseObject {
 export interface KlepperGlobal {
   environment?: Environment;
   privateKey?: string;
+  appId?: string;
 }
 
 export interface KlepperError extends Error {}

@@ -2,7 +2,7 @@ import { setGlobalClientData } from "../core/global";
 import { isClientConnected } from "../core/is";
 import { KlepperOptions } from "../transport/options";
 
-export const defaultBooleanCallback = () => true;
+const defaultBooleanCallback = () => true;
 
 /**
  *
