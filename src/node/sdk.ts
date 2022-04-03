@@ -39,6 +39,6 @@ export const connect = (
   }
 
   if (!isClientConnected()) {
-    setGlobalClientData({ privateKey: options.privateKey });
+    setGlobalClientData({ privateKey: options?.privateKey, appId: options?.appId });
   }
 };
