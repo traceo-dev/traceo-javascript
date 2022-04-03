@@ -32,4 +32,5 @@ export interface KlepperEvent {
     priority?: ExceptionPriority;
     tag?: string;
   };
+  sdk: string;
 }
