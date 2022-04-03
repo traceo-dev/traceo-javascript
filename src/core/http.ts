@@ -20,7 +20,7 @@ const createHttpOptions = (event: KlepperEvent): http.RequestOptions => {
     headers: {
       "Content-Type": "application/json",
       "Content-Length": `${Buffer.byteLength(JSON.stringify(event))}`,
-      "klepper-project-key": String(privateKey),
+      "klepper-private-key": String(privateKey),
       "klepper-app-id": String(appId),
     },
   };
