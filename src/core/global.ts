@@ -6,9 +6,3 @@ export const getGlobalClientData = (): KlepperGlobal =>
 export const setGlobalClientData = (data: KlepperGlobal): void => {
   global.__KLEPPER__ = { ...data };
 };
-
-export const clearGlobalClientData = (): void => {
-  setGlobalClientData({
-    privateKey: undefined,
-  });
-};

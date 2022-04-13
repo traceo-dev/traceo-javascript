@@ -1,6 +1,10 @@
 import * as http from "http";
 import { RequestStatus } from "../transport/enums";
-import { EventResponse, KlepperEvent } from "../transport/events";
+import {
+  EventResponse,
+  KlepperConnectionEvent,
+  KlepperEvent,
+} from "../transport/events";
 import { KlepperIncomingMessage, RequestOptions } from "../transport/http";
 import { getGlobalClientData } from "./global";
 import { isClientConnected } from "./is";
@@ -9,7 +13,13 @@ const KLEPPER_HOST = process.env.KLEPPER_HOST || "localhost";
 const KLEPPER_API = process.env.KLEPPER_API || "/sdk/incident";
 const KLEPPER_PORT = process.env.KLEPPER_PORT || 8080;
 
-const createHttpOptions = (event: KlepperEvent): http.RequestOptions => {
+const createHttpOptions = ({
+  event,
+  api = KLEPPER_API,
+}: {
+  event?: KlepperEvent | KlepperConnectionEvent | KlepperConnectionEvent;
+  api?: string;
+}): http.RequestOptions => {
   const client = getGlobalClientData();
 
   const { privateKey, appId } = client;
@@ -26,7 +36,7 @@ const createHttpOptions = (event: KlepperEvent): http.RequestOptions => {
   };
 
   return {
-    path: KLEPPER_API,
+    path: api,
     ...baseOptions,
   };
 };
@@ -34,11 +44,35 @@ const createHttpOptions = (event: KlepperEvent): http.RequestOptions => {
 const statusFromCode = (code: number) =>
   code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
+export const sendConnection = (
+  connectionData: KlepperConnectionEvent
+): void => {
+  const httpOptions = createHttpOptions({
+    event: connectionData,
+    api: "/sdk/release",
+  });
+
+  const request = http.request(httpOptions, (res: KlepperIncomingMessage) => {
+    res.setEncoding("utf8");
+  });
+  request.write(JSON.stringify(connectionData));
+  request.end();
+};
+
 export const sendEvent = async (
   event: KlepperEvent
 ): Promise<EventResponse> => {
+  const client = getGlobalClientData();
+
+  const baseData = {
+    env: client?.environment,
+    version: client?.version,
+  };
+
+  const payload = Object.assign(event, baseData);
+
   return new Promise<EventResponse>((resolve, reject) => {
-    const httpOptions = createHttpOptions(event);
+    const httpOptions = createHttpOptions({ event });
     if (!httpOptions) {
       reject({
         statusCode: 400,
@@ -87,7 +121,9 @@ export const sendEvent = async (
       });
     });
 
-    request.write(JSON.stringify(event));
+    request.write(JSON.stringify(payload));
     request.end();
   });
 };
+
+const send = () => {};

@@ -2,7 +2,8 @@ import { ExceptionPriority } from "./enums";
 import { Environment } from "./types";
 
 export interface KlepperOptions {
-  environment?: Environment;
+  version?: string;
+  environment: Environment;
   privateKey: string;
   appId: string;
 }

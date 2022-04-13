@@ -134,7 +134,6 @@ const handleException = async (
     stack: error.stack as string,
     catchType: req ? CatchType.MIDDLEWARE : CatchType.INTERNAL,
     options,
-    sdk: "NodeJS"
   };
 
   if (req !== undefined) {

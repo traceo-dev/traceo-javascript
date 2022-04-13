@@ -1,5 +1,6 @@
 import { CatchType, ExceptionPriority } from "./enums";
 import { KlepperRequest } from "./http";
+import { Environment } from "./types";
 
 export interface EventResponse {
   statusCode: number;
@@ -32,5 +33,12 @@ export interface KlepperEvent {
     priority?: ExceptionPriority;
     tag?: string;
   };
-  sdk: string;
+  sdk?: string;
+  env?: Environment;
+  version?: string;
+}
+
+export interface KlepperConnectionEvent {
+  version?: string;
+  env: Environment;
 }

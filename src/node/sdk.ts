@@ -1,5 +1,7 @@
 import { setGlobalClientData } from "../core/global";
+import { sendConnection } from "../core/http";
 import { isClientConnected } from "../core/is";
+import { KlepperConnectionEvent } from "../transport/events";
 import { KlepperOptions } from "../transport/options";
 
 const defaultBooleanCallback = () => true;
@@ -14,7 +16,7 @@ const defaultBooleanCallback = () => true;
  * @example
  *
  * ```
- * Klepper.connect({ credentials: { privateKey: "" } }, () => {
+ * Klepper.connect({ /credentials/, () => {
  *   if (process.env.ENV === "prod") {
  *      return true;
  *  }
@@ -22,7 +24,7 @@ const defaultBooleanCallback = () => true;
  * })
  * ```
  */
-export const connect = (
+export const init = (
   options: KlepperOptions,
   callback = defaultBooleanCallback
 ): void => {
@@ -42,6 +44,15 @@ export const connect = (
     setGlobalClientData({
       privateKey: options?.privateKey,
       appId: options?.appId,
+      environment: options?.environment,
+      version: options?.version,
     });
   }
+
+  const conn: KlepperConnectionEvent = {
+    env: options?.environment,
+    version: options?.version,
+  };
+
+  sendConnection(conn);
 };
