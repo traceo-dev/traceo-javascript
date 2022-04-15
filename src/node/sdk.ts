@@ -1,8 +1,9 @@
 import { setGlobalClientData } from "../core/global";
 import { sendConnection } from "../core/http";
 import { isClientConnected } from "../core/is";
-import { KlepperConnectionEvent } from "../transport/events";
+import { KlepperReleaseEvent } from "../transport/events";
 import { KlepperOptions } from "../transport/options";
+import * as os from "os";
 
 const defaultBooleanCallback = () => true;
 
@@ -49,9 +50,15 @@ export const init = (
     });
   }
 
-  const conn: KlepperConnectionEvent = {
+  const conn: KlepperReleaseEvent = {
     env: options?.environment,
     version: options?.version,
+    os: {
+      arch: os.arch(),    
+      platform: os.platform(),
+      release: os.release(),
+      version: os.version(),
+    }
   };
 
   sendConnection(conn);

@@ -2,8 +2,8 @@ import * as http from "http";
 import { RequestStatus } from "../transport/enums";
 import {
   EventResponse,
-  KlepperConnectionEvent,
   KlepperEvent,
+  KlepperReleaseEvent,
 } from "../transport/events";
 import { KlepperIncomingMessage, RequestOptions } from "../transport/http";
 import { getGlobalClientData } from "./global";
@@ -17,7 +17,7 @@ const createHttpOptions = ({
   event,
   api = KLEPPER_API,
 }: {
-  event?: KlepperEvent | KlepperConnectionEvent | KlepperConnectionEvent;
+  event?: KlepperEvent | KlepperReleaseEvent;
   api?: string;
 }): http.RequestOptions => {
   const client = getGlobalClientData();
@@ -45,7 +45,7 @@ const statusFromCode = (code: number) =>
   code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
 export const sendConnection = (
-  connectionData: KlepperConnectionEvent
+  connectionData: KlepperReleaseEvent
 ): void => {
   const httpOptions = createHttpOptions({
     event: connectionData,
@@ -125,5 +125,3 @@ export const sendEvent = async (
     request.end();
   });
 };
-
-const send = () => {};
