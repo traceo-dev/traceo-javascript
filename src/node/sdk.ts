@@ -54,11 +54,11 @@ export const init = (
     env: options?.environment,
     version: options?.version,
     os: {
-      arch: os.arch(),    
+      arch: os.arch(),
       platform: os.platform(),
       release: os.release(),
       version: os.version(),
-    }
+    },
   };
 
   sendConnection(conn);

@@ -44,9 +44,7 @@ const createHttpOptions = ({
 const statusFromCode = (code: number) =>
   code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
-export const sendConnection = (
-  connectionData: KlepperReleaseEvent
-): void => {
+export const sendConnection = (connectionData: KlepperReleaseEvent): void => {
   const httpOptions = createHttpOptions({
     event: connectionData,
     api: "/sdk/release",

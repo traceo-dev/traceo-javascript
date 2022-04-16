@@ -1,8 +1,6 @@
-import { getGlobalClientData } from "../core/global";
 import { sendEvent } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { KlepperError } from "../transport/base";
-import { CatchType } from "../transport/enums";
 import { KlepperEvent } from "../transport/events";
 import {
   KlepperIncomingMessage,
@@ -12,7 +10,8 @@ import {
   CatchExceptionsOptions,
   ErrorMiddlewareOptions,
 } from "../transport/options";
-import { getIp, getProtocol, mapRequestData } from "./helpers";
+import { getIp, getProtocol } from "./helpers";
+import { prepareException } from "./parse";
 
 /**
  * Base middleware to catch and intercept error across the express app.
@@ -38,19 +37,19 @@ import { getIp, getProtocol, mapRequestData } from "./helpers";
  *
  */
 const errorMiddleware = (options: ErrorMiddlewareOptions = {}) => {
-  return function errorMiddleware(
+  return async function errorMiddleware(
     error: KlepperError,
     req: KlepperIncomingMessage,
     _res: KlepperServerResponse,
     next: (error: KlepperError) => void
-  ): void {
+  ): Promise<void> {
     if (!isClientConnected()) {
       next(error);
       return;
     }
 
     if (isToCatch(req, options)) {
-      handleException(error, req);
+      await handleException(error, req);
     }
 
     next(error);
@@ -125,22 +124,12 @@ const handleException = async (
   req?: KlepperIncomingMessage,
   options?: CatchExceptionsOptions
 ) => {
-  const { message, name } = error;
-
-  const event: KlepperEvent = {
-    date: Date.now(),
-    type: name,
-    message,
-    stack: error.stack as string,
-    catchType: req ? CatchType.MIDDLEWARE : CatchType.INTERNAL,
-    options,
-  };
-
-  if (req !== undefined) {
-    event.requestData = mapRequestData(req);
+  try {
+    const event: KlepperEvent = await prepareException(error, options, req);
+    await sendEvent(event);
+  } catch (err) {
+    //
   }
-
-  await sendEvent(event);
 };
 
 export const Middleware = {

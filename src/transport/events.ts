@@ -1,5 +1,6 @@
 import { CatchType, ExceptionPriority } from "./enums";
 import { KlepperRequest } from "./http";
+import { Trace } from "./trace";
 import { Environment } from "./types";
 
 export interface EventResponse {
@@ -25,8 +26,8 @@ export interface KlepperEvent {
   projectId?: string;
   type: string;
   message: string;
-  date: number;
   stack: string;
+  traces: Trace[];
   requestData?: KlepperRequest;
   catchType?: CatchType;
   options?: {
@@ -42,9 +43,9 @@ export interface KlepperReleaseEvent {
   version?: string;
   env: Environment;
   os: {
-    arch: string,    
-    platform: string,
-    release: string,
-    version: string,
-  }
+    arch: string;
+    platform: string;
+    release: string;
+    version: string;
+  };
 }
