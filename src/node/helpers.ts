@@ -1,5 +1,7 @@
 import { BaseObject } from "../transport/base";
+import { Platform } from "../transport/events";
 import { KlepperIncomingMessage, KlepperRequest } from "../transport/http";
+import * as os from "os";
 
 export const mapRequestData = (req: BaseObject): KlepperRequest => {
   const headersData = req.headers || req.header || {};
@@ -49,3 +51,12 @@ export const getIp = (
 export const getProtocol = (req: KlepperIncomingMessage): string => {
   return req.protocol === "https" || req.secure ? "https" : "http";
 };
+
+export const getOsPlatform = (): Platform => {
+  return {
+      arch: os.arch(),
+      platform: os.platform(),
+      release: os.release(),
+      version: os.version(),
+  }
+}

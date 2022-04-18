@@ -37,15 +37,18 @@ export interface KlepperEvent {
   sdk?: string;
   env?: Environment;
   version?: string;
+  platform: Platform;
 }
 
 export interface KlepperReleaseEvent {
   version?: string;
   env: Environment;
-  os: {
-    arch: string;
-    platform: string;
-    release: string;
-    version: string;
-  };
+  os: Platform;
+}
+
+export interface Platform {
+  arch: string;
+  platform: string;
+  release: string;
+  version: string;
 }

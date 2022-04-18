@@ -4,6 +4,7 @@ import { isClientConnected } from "../core/is";
 import { KlepperReleaseEvent } from "../transport/events";
 import { KlepperOptions } from "../transport/options";
 import * as os from "os";
+import { getOsPlatform } from "./helpers";
 
 const defaultBooleanCallback = () => true;
 
@@ -53,12 +54,7 @@ export const init = (
   const conn: KlepperReleaseEvent = {
     env: options?.environment,
     version: options?.version,
-    os: {
-      arch: os.arch(),
-      platform: os.platform(),
-      release: os.release(),
-      version: os.version(),
-    },
+    os: getOsPlatform()
   };
 
   sendConnection(conn);
