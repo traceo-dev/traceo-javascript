@@ -1,10 +1,10 @@
 import { sendEvent } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
-import { KlepperError } from "../transport/base";
-import { KlepperEvent } from "../transport/events";
+import { TraceoError } from "../transport/base";
+import { TraceoEvent } from "../transport/events";
 import {
-  KlepperIncomingMessage,
-  KlepperServerResponse,
+  TraceoIncomingMessage,
+  TraceoServerResponse,
 } from "../transport/http";
 import {
   CatchExceptionsOptions,
@@ -38,10 +38,10 @@ import { prepareException } from "./parse";
  */
 const errorMiddleware = (options: ErrorMiddlewareOptions = {}) => {
   return async function errorMiddleware(
-    error: KlepperError,
-    req: KlepperIncomingMessage,
-    _res: KlepperServerResponse,
-    next: (error: KlepperError) => void
+    error: TraceoError,
+    req: TraceoIncomingMessage,
+    _res: TraceoServerResponse,
+    next: (error: TraceoError) => void
   ): Promise<void> {
     if (!isClientConnected()) {
       next(error);
@@ -57,7 +57,7 @@ const errorMiddleware = (options: ErrorMiddlewareOptions = {}) => {
 };
 
 const isToCatch = (
-  req: KlepperIncomingMessage,
+  req: TraceoIncomingMessage,
   options: ErrorMiddlewareOptions = {}
 ): boolean => {
   if (options.allowHttp !== undefined && !options.allowHttp) {
@@ -77,7 +77,7 @@ const isToCatch = (
 };
 
 interface Catch {
-  options?: CatchExceptionsOptions;
+  // options?: CatchExceptionsOptions;
   shouldBeCatched?: (error: any) => boolean;
 }
 
@@ -113,19 +113,19 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
   }
 
   if (isClientConnected()) {
-    await handleException(error, undefined, catchOptions?.options);
+    await handleException(error, undefined);
   }
 
   return;
 };
 
 const handleException = async (
-  error: KlepperError,
-  req?: KlepperIncomingMessage,
+  error: TraceoError,
+  req?: TraceoIncomingMessage,
   options?: CatchExceptionsOptions
 ) => {
   try {
-    const event: KlepperEvent = await prepareException(error, options, req);
+    const event: TraceoEvent = await prepareException(error, options, req);
     await sendEvent(event);
   } catch (err) {
     //

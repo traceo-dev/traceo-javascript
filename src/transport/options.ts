@@ -1,11 +1,10 @@
 import { ExceptionPriority } from "./enums";
 import { Environment } from "./types";
 
-export interface KlepperOptions {
+export interface TraceoOptions {
   version?: string;
   environment: Environment;
-  privateKey: string;
-  appId: string;
+  dsn: string;
 }
 
 export interface ErrorMiddlewareOptions {

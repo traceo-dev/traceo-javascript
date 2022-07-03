@@ -1,9 +1,9 @@
 import { BaseObject } from "../transport/base";
 import { Platform } from "../transport/events";
-import { KlepperIncomingMessage, KlepperRequest } from "../transport/http";
+import { TraceoIncomingMessage, TraceoRequest } from "../transport/http";
 import * as os from "os";
 
-export const mapRequestData = (req: BaseObject): KlepperRequest => {
+export const mapRequestData = (req: BaseObject): TraceoRequest => {
   const headersData = req.headers || req.header || {};
 
   const method = req.method;
@@ -16,7 +16,7 @@ export const mapRequestData = (req: BaseObject): KlepperRequest => {
   const origin = headersData["origin"];
   const query = req.query;
   const payload = req.body || {};
-  const ip = getIp(req as KlepperIncomingMessage);
+  const ip = getIp(req as TraceoIncomingMessage);
 
   const connections = {
     absoluteUrl,
@@ -43,20 +43,29 @@ export const mapRequestData = (req: BaseObject): KlepperRequest => {
 };
 
 export const getIp = (
-  req: KlepperIncomingMessage
+  req: TraceoIncomingMessage
 ): string | string[] | undefined => {
   return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 };
 
-export const getProtocol = (req: KlepperIncomingMessage): string => {
+export const getProtocol = (req: TraceoIncomingMessage): string => {
   return req.protocol === "https" || req.secure ? "https" : "http";
 };
 
 export const getOsPlatform = (): Platform => {
   return {
-      arch: os.arch(),
-      platform: os.platform(),
-      release: os.release(),
-      version: os.version(),
+    arch: os.arch(),
+    platform: os.platform(),
+    release: os.release(),
+    version: os.version(),
+  };
+};
+
+export const sanitizeDsn = (dsn: string) => {
+  const [secretKey, rest] = dsn.replace("https://", "").split(":");
+  const [host, appId] = rest.split("/");
+
+  return {
+    secretKey, host, appId
   }
 }

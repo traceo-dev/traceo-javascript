@@ -1,2 +1,2 @@
-# klepper.io-node
-Library for klepper.io written in Typescript
+# traceo-sdk
+Library for Traceo written in Typescript

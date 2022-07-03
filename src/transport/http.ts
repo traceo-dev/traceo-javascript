@@ -1,7 +1,7 @@
 import { RequestMethodType } from "./types";
 import * as http from "http";
 
-export interface KlepperRequest {
+export interface TraceoRequest {
   payload?: Object;
   headers?: Object;
   query?: Object;
@@ -10,18 +10,17 @@ export interface KlepperRequest {
   ip?: string | string[] | undefined;
 }
 
-export interface KlepperServerResponse extends http.ServerResponse {
+export interface TraceoServerResponse extends http.ServerResponse {
   send?: Function;
 }
 
-export interface KlepperIncomingMessage extends http.IncomingMessage {
+export interface TraceoIncomingMessage extends http.IncomingMessage {
   protocol?: string;
   secure?: boolean;
 }
 
 export interface RequestOptions extends http.RequestOptions {
   hostname: string;
-  port: number;
   method: RequestMethodType;
   path?: string;
   headers?: { [key: string]: string };

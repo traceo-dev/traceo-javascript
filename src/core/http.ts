@@ -1,37 +1,36 @@
 import * as http from "http";
+import { sanitizeDsn } from "../node/helpers";
 import { RequestStatus } from "../transport/enums";
 import {
   EventResponse,
-  KlepperEvent,
-  KlepperReleaseEvent,
+  TraceoEvent,
+  TraceoReleaseEvent,
 } from "../transport/events";
-import { KlepperIncomingMessage, RequestOptions } from "../transport/http";
+import { TraceoIncomingMessage, RequestOptions } from "../transport/http";
 import { getGlobalClientData } from "./global";
 import { isClientConnected } from "./is";
 
-const KLEPPER_HOST = process.env.KLEPPER_HOST || "localhost";
-const KLEPPER_API = process.env.KLEPPER_API || "/sdk/incident";
-const KLEPPER_PORT = process.env.KLEPPER_PORT || 8080;
-
 const createHttpOptions = ({
   event,
-  api = KLEPPER_API,
+  api,
 }: {
-  event?: KlepperEvent | KlepperReleaseEvent;
+  event?: TraceoEvent | TraceoReleaseEvent;
   api?: string;
 }): http.RequestOptions => {
   const client = getGlobalClientData();
 
-  const { privateKey, appId } = client;
+  const { dsn } = client;
+  const { host, secretKey, appId } = sanitizeDsn(dsn);
+
+  api = api === "release" ? `/release/${appId}` : `/${appId}`;
+
   const baseOptions: RequestOptions = {
-    hostname: KLEPPER_HOST,
-    port: +KLEPPER_PORT,
+    hostname: host,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Content-Length": `${Buffer.byteLength(JSON.stringify(event))}`,
-      "klepper-private-key": String(privateKey),
-      "klepper-app-id": String(appId),
+      "traceo-secret-key": secretKey
     },
   };
 
@@ -44,13 +43,13 @@ const createHttpOptions = ({
 const statusFromCode = (code: number) =>
   code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
-export const sendConnection = (connectionData: KlepperReleaseEvent): void => {
+export const sendConnection = (connectionData: TraceoReleaseEvent): void => {
   const httpOptions = createHttpOptions({
     event: connectionData,
-    api: "/sdk/release",
+    api: "release",
   });
 
-  const request = http.request(httpOptions, (res: KlepperIncomingMessage) => {
+  const request = http.request(httpOptions, (res: TraceoIncomingMessage) => {
     res.setEncoding("utf8");
   });
   request.write(JSON.stringify(connectionData));
@@ -58,12 +57,11 @@ export const sendConnection = (connectionData: KlepperReleaseEvent): void => {
 };
 
 export const sendEvent = async (
-  event: KlepperEvent
+  event: TraceoEvent
 ): Promise<EventResponse> => {
   const client = getGlobalClientData();
 
   const baseData = {
-    env: client?.environment,
     version: client?.version,
   };
 
@@ -75,7 +73,7 @@ export const sendEvent = async (
       reject({
         statusCode: 400,
         statusMessage:
-          "[Klepper] Error during sending event to Klepper. No HTTP options.",
+          "[Traceo] Error during sending event to Traceo. No HTTP options.",
       });
     }
 
@@ -83,11 +81,11 @@ export const sendEvent = async (
       reject({
         statusCode: 400,
         statusMessage:
-          "[Klepper] Error during sending event to Klepper. No client global data in NodeJS scope.",
+          "[Traceo] Error during sending event to Traceo. No client global data in NodeJS scope.",
       });
     }
 
-    const request = http.request(httpOptions, (res: KlepperIncomingMessage) => {
+    const request = http.request(httpOptions, (res: TraceoIncomingMessage) => {
       res.setEncoding("utf8");
 
       const status = statusFromCode(res?.statusCode as number);
@@ -96,12 +94,12 @@ export const sendEvent = async (
       if (!isSuccess) {
         reject({
           statusCode: res?.statusCode as number,
-          statusMessage: "[KLEPPER] Error during sending event to Klepper.",
+          statusMessage: "[Traceo] Error during sending event to Traceo.",
         });
       } else {
         resolve({
           statusCode: res?.statusCode as number,
-          statusMessage: "[KLEPPER] Event successfully sended to Klepper.",
+          statusMessage: "[Traceo] Event successfully sended to Traceo.",
         });
       }
 
@@ -115,7 +113,7 @@ export const sendEvent = async (
       reject({
         statusCode: 400,
         statusMessage:
-          "[Klepper] Error during sending event to Klepper. Connection timeout.",
+          "[Traceo] Error during sending event to Traceo. Connection timeout.",
       });
     });
 

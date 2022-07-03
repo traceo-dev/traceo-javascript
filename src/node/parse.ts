@@ -1,11 +1,10 @@
 import { Trace } from "../transport/trace";
 import { promises, existsSync } from "fs";
-import { KlepperError } from "../transport/base";
+import { TraceoError } from "../transport/base";
 import { CatchExceptionsOptions } from "../transport/options";
-import { KlepperEvent } from "../transport/events";
-import { KlepperIncomingMessage } from "../transport/http";
+import { TraceoEvent } from "../transport/events";
+import { TraceoIncomingMessage } from "../transport/http";
 import { getOsPlatform, mapRequestData } from "./helpers";
-import * as os from "os";
 
 const FULL_MATCH =
   /at (?:async )?(?:(.+?)\s+\()?(?:(.+?):(\d+)(?::(\d+))?|([^)]+))\)?/;
@@ -125,22 +124,22 @@ const readFileAsync = async (path: string): Promise<string> => {
 };
 
 export const prepareException = async (
-  error: KlepperError,
+  error: TraceoError,
   options?: CatchExceptionsOptions,
-  req?: KlepperIncomingMessage
-): Promise<KlepperEvent> => {
+  req?: TraceoIncomingMessage
+): Promise<TraceoEvent> => {
   const { message, name } = error;
 
   const platform = getOsPlatform();
 
   const traces = await parseStackTraces(String(error?.stack));
-  const event: KlepperEvent = {
+  const event: TraceoEvent = {
     type: name,
     message,
     traces,
     stack: String(error.stack),
     options,
-    platform
+    platform,
   };
 
   if (req !== undefined) {

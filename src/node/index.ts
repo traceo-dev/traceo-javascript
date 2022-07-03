@@ -1,4 +1,4 @@
 import { Middleware } from "..";
-import * as Klepper from "./sdk";
+import * as Traceo from "./sdk";
 
-export { Middleware, Klepper };
+export { Middleware, Traceo };

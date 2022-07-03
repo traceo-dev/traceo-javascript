@@ -1,14 +1,11 @@
-import { Environment } from "./types";
-
 export interface BaseObject {
   [key: string]: any;
 }
 
-export interface KlepperGlobal {
-  environment?: Environment;
-  privateKey?: string;
+export interface TraceoGlobal {
+  dsn: string;
   appId?: string;
   version?: string;
 }
 
-export interface KlepperError extends Error {}
+export interface TraceoError extends Error {}

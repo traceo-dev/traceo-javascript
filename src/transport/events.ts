@@ -1,5 +1,5 @@
 import { CatchType, ExceptionPriority } from "./enums";
-import { KlepperRequest } from "./http";
+import { TraceoRequest } from "./http";
 import { Trace } from "./trace";
 import { Environment } from "./types";
 
@@ -10,7 +10,7 @@ export interface EventResponse {
 }
 
 export interface RequestEvent {
-  request: KlepperRequest;
+  request: TraceoRequest;
   response: EventResponse;
   date: number;
 }
@@ -22,25 +22,23 @@ export interface ErrorEvent {
   date: number;
 }
 
-export interface KlepperEvent {
-  projectId?: string;
+export interface TraceoEvent {
   type: string;
   message: string;
   stack: string;
   traces: Trace[];
-  requestData?: KlepperRequest;
+  requestData?: TraceoRequest;
   catchType?: CatchType;
   options?: {
     priority?: ExceptionPriority;
     tag?: string;
   };
-  sdk?: string;
   env?: Environment;
   version?: string;
   platform: Platform;
 }
 
-export interface KlepperReleaseEvent {
+export interface TraceoReleaseEvent {
   version?: string;
   env: Environment;
   os: Platform;

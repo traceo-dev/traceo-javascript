@@ -1,6 +1,6 @@
-import { KlepperGlobal } from "../../transport/base";
+import { TraceoGlobal } from "../../transport/base";
 
 declare global {
-  var __KLEPPER__: KlepperGlobal;
+  var __TRACEO__: TraceoGlobal;
 }
 export {};

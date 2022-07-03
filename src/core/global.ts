@@ -1,8 +1,8 @@
-import { KlepperGlobal } from "../transport/base";
+import { TraceoGlobal } from "../transport/base";
 
-export const getGlobalClientData = (): KlepperGlobal =>
-  global.__KLEPPER__ || {};
+export const getGlobalClientData = (): TraceoGlobal =>
+  global.__TRACEO__ || {};
 
-export const setGlobalClientData = (data: KlepperGlobal): void => {
-  global.__KLEPPER__ = { ...data };
+export const setGlobalClientData = (data: TraceoGlobal): void => {
+  global.__TRACEO__ = { ...data };
 };
