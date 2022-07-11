@@ -30,7 +30,7 @@ const createHttpOptions = ({
     headers: {
       "Content-Type": "application/json",
       "Content-Length": `${Buffer.byteLength(JSON.stringify(event))}`,
-      "traceo-secret-key": secretKey
+      "traceo-secret-key": secretKey,
     },
   };
 
@@ -43,7 +43,7 @@ const createHttpOptions = ({
 const statusFromCode = (code: number) =>
   code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
-export const sendConnection = (connectionData: TraceoReleaseEvent): void => {
+export const sendRelease = (connectionData: TraceoReleaseEvent): void => {
   const httpOptions = createHttpOptions({
     event: connectionData,
     api: "release",
@@ -56,9 +56,7 @@ export const sendConnection = (connectionData: TraceoReleaseEvent): void => {
   request.end();
 };
 
-export const sendEvent = async (
-  event: TraceoEvent
-): Promise<EventResponse> => {
+export const sendEvent = async (event: TraceoEvent): Promise<EventResponse> => {
   const client = getGlobalClientData();
 
   const baseData = {

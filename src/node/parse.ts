@@ -1,7 +1,6 @@
 import { Trace } from "../transport/trace";
 import { promises, existsSync } from "fs";
 import { TraceoError } from "../transport/base";
-import { CatchExceptionsOptions } from "../transport/options";
 import { TraceoEvent } from "../transport/events";
 import { TraceoIncomingMessage } from "../transport/http";
 import { getOsPlatform, mapRequestData } from "./helpers";
@@ -125,7 +124,6 @@ const readFileAsync = async (path: string): Promise<string> => {
 
 export const prepareException = async (
   error: TraceoError,
-  options?: CatchExceptionsOptions,
   req?: TraceoIncomingMessage
 ): Promise<TraceoEvent> => {
   const { message, name } = error;
@@ -138,7 +136,6 @@ export const prepareException = async (
     message,
     traces,
     stack: String(error.stack),
-    options,
     platform,
   };
 

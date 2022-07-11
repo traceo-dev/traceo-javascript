@@ -1,6 +1,6 @@
 {
   "name": "traceo-sdk",
-  "version": "0.0.72-alpha",
+  "version": "0.0.76-alpha",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

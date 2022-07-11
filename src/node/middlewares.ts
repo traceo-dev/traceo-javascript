@@ -2,12 +2,8 @@ import { sendEvent } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { TraceoError } from "../transport/base";
 import { TraceoEvent } from "../transport/events";
+import { TraceoIncomingMessage, TraceoServerResponse } from "../transport/http";
 import {
-  TraceoIncomingMessage,
-  TraceoServerResponse,
-} from "../transport/http";
-import {
-  CatchExceptionsOptions,
   ErrorMiddlewareOptions,
 } from "../transport/options";
 import { getIp, getProtocol } from "./helpers";
@@ -77,7 +73,6 @@ const isToCatch = (
 };
 
 interface Catch {
-  // options?: CatchExceptionsOptions;
   shouldBeCatched?: (error: any) => boolean;
 }
 
@@ -122,10 +117,9 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
 const handleException = async (
   error: TraceoError,
   req?: TraceoIncomingMessage,
-  options?: CatchExceptionsOptions
 ) => {
   try {
-    const event: TraceoEvent = await prepareException(error, options, req);
+    const event: TraceoEvent = await prepareException(error, req);
     await sendEvent(event);
   } catch (err) {
     //

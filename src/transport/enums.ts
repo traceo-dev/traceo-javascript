@@ -14,9 +14,3 @@ export enum RequestStatus {
   SUCCESS = "success",
   ERROR = "error",
 }
-
-export enum ExceptionPriority {
-  MINOR = "minor",
-  IMPORTANT = "important",
-  CRITICAL = "critical",
-}

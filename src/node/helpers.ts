@@ -62,10 +62,13 @@ export const getOsPlatform = (): Platform => {
 };
 
 export const sanitizeDsn = (dsn: string) => {
-  const [secretKey, rest] = dsn.replace("https://", "").split(":");
+  //TODO: check for https
+  const [secretKey, rest] = dsn.replace("http://", "").split(":");
   const [host, appId] = rest.split("/");
 
   return {
-    secretKey, host, appId
-  }
-}
+    secretKey,
+    host,
+    appId,
+  };
+};

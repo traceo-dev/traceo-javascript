@@ -1,4 +1,4 @@
-import { CatchType, ExceptionPriority } from "./enums";
+import { CatchType } from "./enums";
 import { TraceoRequest } from "./http";
 import { Trace } from "./trace";
 import { Environment } from "./types";
@@ -29,10 +29,6 @@ export interface TraceoEvent {
   traces: Trace[];
   requestData?: TraceoRequest;
   catchType?: CatchType;
-  options?: {
-    priority?: ExceptionPriority;
-    tag?: string;
-  };
   env?: Environment;
   version?: string;
   platform: Platform;
@@ -40,7 +36,7 @@ export interface TraceoEvent {
 
 export interface TraceoReleaseEvent {
   version?: string;
-  env: Environment;
+  env?: Environment;
   os: Platform;
 }
 
