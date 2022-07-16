@@ -3,9 +3,7 @@ import { isClientConnected, isLocalhost } from "../core/is";
 import { TraceoError } from "../transport/base";
 import { TraceoEvent } from "../transport/events";
 import { TraceoIncomingMessage, TraceoServerResponse } from "../transport/http";
-import {
-  ErrorMiddlewareOptions,
-} from "../transport/options";
+import { ErrorMiddlewareOptions } from "../transport/options";
 import { getIp, getProtocol } from "./helpers";
 import { prepareException } from "./parse";
 
@@ -116,7 +114,7 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
 
 const handleException = async (
   error: TraceoError,
-  req?: TraceoIncomingMessage,
+  req?: TraceoIncomingMessage
 ) => {
   try {
     const event: TraceoEvent = await prepareException(error, req);
