@@ -13,6 +13,11 @@ import { getOsPlatform } from "./helpers";
  *
  */
 export const init = (options: TraceoOptions): void => {
+  if (options?.offline) {
+    //SDK is not initialized
+    return;
+  }
+
   if (!isClientConnected()) {
     setGlobalClientData({
       ...options,

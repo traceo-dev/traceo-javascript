@@ -2,6 +2,7 @@ import { Environment } from "./types";
 
 export interface TraceoOptions {
   version?: string;
+  offline?: boolean;
   environment: Environment;
   dsn: string;
 }
