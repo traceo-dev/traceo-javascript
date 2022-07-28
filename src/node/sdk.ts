@@ -1,9 +1,6 @@
 import { setGlobalClientData } from "../core/global";
-import { sendRelease } from "../core/http";
 import { isClientConnected } from "../core/is";
-import { TraceoReleaseEvent } from "../transport/events";
 import { TraceoOptions } from "../transport/options";
-import { getOsPlatform } from "./helpers";
 
 /**
  *
@@ -18,17 +15,16 @@ export const init = (options: TraceoOptions): void => {
     return;
   }
 
+  if (!options.environment) {
+    console.warn(
+      "Traceo SDK: Empty environment property. Please set current env or use use offline mode."
+    );
+    return;
+  }
+
   if (!isClientConnected()) {
     setGlobalClientData({
       ...options,
     });
   }
-
-  const conn: TraceoReleaseEvent = {
-    env: options?.environment,
-    version: options?.version,
-    os: getOsPlatform(),
-  };
-
-  sendRelease(conn);
 };

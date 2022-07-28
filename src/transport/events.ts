@@ -30,14 +30,7 @@ export interface TraceoEvent {
   requestData?: TraceoRequest;
   catchType?: CatchType;
   env?: Environment;
-  version?: string;
   platform: Platform;
-}
-
-export interface TraceoReleaseEvent {
-  version?: string;
-  env?: Environment;
-  os: Platform;
 }
 
 export interface Platform {
