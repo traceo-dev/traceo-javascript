@@ -4,7 +4,7 @@ import { TraceoOptions } from "../transport/options";
 
 /**
  *
- * Function to connect client with Traceo Instance.
+ * Function to connect client with Traceo.
  *
  * @param options
  *
@@ -17,7 +17,7 @@ export const init = (options: TraceoOptions): void => {
 
   if (!options.environment) {
     console.warn(
-      "Traceo SDK: Empty environment property. Please set current env or use use offline mode."
+      "Traceo SDK: Empty environment property. Please set current env or use offline mode."
     );
     return;
   }

@@ -1,11 +1,15 @@
 import * as http from "http";
 import { sanitizeDsn } from "../node/helpers";
-import { RequestStatus } from "../transport/enums";
 import { EventResponse, TraceoEvent } from "../transport/events";
 import { TraceoIncomingMessage, RequestOptions } from "../transport/http";
 import { getGlobalClientData } from "./global";
 import { isClientConnected } from "./is";
 import { TRACEO_SDK_VERSION } from "./version";
+
+enum RequestStatus {
+  SUCCESS = "success",
+  ERROR = "error",
+}
 
 const createHttpOptions = ({
   event,

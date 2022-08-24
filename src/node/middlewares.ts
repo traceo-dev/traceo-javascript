@@ -1,11 +1,11 @@
+import { stacktrace } from "stacktrace-parser-node";
 import { sendEvent } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { TraceoError } from "../transport/base";
 import { TraceoEvent } from "../transport/events";
 import { TraceoIncomingMessage, TraceoServerResponse } from "../transport/http";
 import { ErrorMiddlewareOptions } from "../transport/options";
-import { getIp, getProtocol } from "./helpers";
-import { prepareException } from "./parse";
+import { getIp, getOsPlatform, getProtocol } from "./helpers";
 
 /**
  * Base middleware to catch and intercept error across the express app.
@@ -43,7 +43,7 @@ const errorMiddleware = (options: ErrorMiddlewareOptions = {}) => {
     }
 
     if (isToCatch(req, options)) {
-      await handleException(error, req);
+      await handleException(error);
     }
 
     next(error);
@@ -86,7 +86,7 @@ interface Catch {
  * }
  * ```
  *
- * Usage with optional parameter `shouldBeCatched` as a callback function:
+ * Usage with `shouldBeCatched`:
  * @example
  *
  * ```
@@ -106,22 +106,38 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
   }
 
   if (isClientConnected()) {
-    await handleException(error, undefined);
+    await handleException(error);
   }
 
   return;
 };
 
-const handleException = async (
-  error: TraceoError,
-  req?: TraceoIncomingMessage
-) => {
+const handleException = async (error: TraceoError) => {
   try {
-    const event: TraceoEvent = await prepareException(error, req);
+    const event: TraceoEvent = await prepareException(error);
     await sendEvent(event);
   } catch (err) {
     //
   }
+};
+
+
+const prepareException = async (
+  error: TraceoError
+): Promise<TraceoEvent> => {
+  const { stack } = error;
+  const platform = getOsPlatform();
+
+  const { message, name, traces } = await stacktrace.parse(error);
+  const event: TraceoEvent = {
+    type: name,
+    message,
+    traces,
+    stack: String(stack),
+    platform,
+  };
+
+  return event;
 };
 
 export const Middleware = {

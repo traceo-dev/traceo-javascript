@@ -1,9 +1,5 @@
 import { Environment } from "./types";
 
-export interface BaseObject {
-  [key: string]: any;
-}
-
 export interface TraceoGlobal {
   dsn: string;
   appId?: string;
