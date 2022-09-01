@@ -6,7 +6,6 @@ import { TraceoEvent } from "../transport/events";
 import { TraceoIncomingMessage, TraceoServerResponse } from "../transport/http";
 import { ErrorMiddlewareOptions } from "../transport/options";
 import { getIp, getOsPlatform, getProtocol } from "./helpers";
-
 /**
  * Base middleware to catch and intercept error across the express app.
  * This middleware catch errors only from the no-async methods.
@@ -121,10 +120,7 @@ const handleException = async (error: TraceoError) => {
   }
 };
 
-
-const prepareException = async (
-  error: TraceoError
-): Promise<TraceoEvent> => {
+const prepareException = async (error: TraceoError): Promise<TraceoEvent> => {
   const { stack } = error;
   const platform = getOsPlatform();
 

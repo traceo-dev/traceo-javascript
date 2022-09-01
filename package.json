@@ -1,6 +1,6 @@
 {
   "name": "traceo-sdk",
-  "version": "0.0.84",
+  "version": "0.0.85",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,6 +29,7 @@
     "prettier-check": "^2.0.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.66.1",
+    "stacktrace-parser-node": "1.1.0",
     "ts-node": "^10.4.0",
     "tslib": "^2.3.1",
     "tslint": "^5.11.0",
@@ -48,8 +49,5 @@
     "testMatch": [
       "**/*.test.ts"
     ]
-  },
-  "dependencies": {
-    "stacktrace-parser-node": "^1.0.4"
   }
 }
