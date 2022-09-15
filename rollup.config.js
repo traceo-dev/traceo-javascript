@@ -5,7 +5,7 @@ import pkg from "./package.json";
 
 export default [
   {
-    input: "src/index.ts",
+    input: "lib/index.ts",
     output: {
       name: "typescriptNpmPackage",
       file: pkg.browser,
@@ -20,7 +20,7 @@ export default [
   },
 
   {
-    input: "src/index.ts",
+    input: "lib/index.ts",
     output: [
       { file: pkg.main, format: "cjs", sourcemap: true },
       { file: pkg.module, format: "es", sourcemap: true },
