@@ -1,6 +1,7 @@
 import { setGlobalClientData } from "../core/global";
 import { isClientConnected } from "../core/is";
 import { TraceoOptions } from "../transport/options";
+import { metrics } from "./metrics";
 
 /**
  *
@@ -27,4 +28,8 @@ export const init = (options: TraceoOptions): void => {
       ...options,
     });
   }
+
+  metrics.collectMetricsDataOnRuntime();
 };
+
+export const collectMetricsData = () => {};

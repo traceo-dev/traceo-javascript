@@ -1,8 +1,8 @@
 import { stacktrace } from "stacktrace-parser-node";
-import { sendEvent } from "../core/http";
+import { sendEvent, sendIncidentEvent } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { TraceoError } from "../transport/base";
-import { TraceoEvent } from "../transport/events";
+import { Incident } from "../transport/events";
 import { TraceoIncomingMessage, TraceoServerResponse } from "../transport/http";
 import { ErrorMiddlewareOptions } from "../transport/options";
 import { getIp, getOsPlatform, getProtocol } from "./helpers";
@@ -113,19 +113,19 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
 
 const handleException = async (error: TraceoError) => {
   try {
-    const event: TraceoEvent = await prepareException(error);
-    await sendEvent(event);
+    const event: Incident = await prepareException(error);
+    await sendIncidentEvent(event);
   } catch (err) {
     //
   }
 };
 
-const prepareException = async (error: TraceoError): Promise<TraceoEvent> => {
+const prepareException = async (error: TraceoError): Promise<Incident> => {
   const { stack } = error;
   const platform = getOsPlatform();
 
   const { message, name, traces } = await stacktrace.parse(error);
-  const event: TraceoEvent = {
+  const event: Incident = {
     type: name,
     message,
     traces,

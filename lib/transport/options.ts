@@ -4,6 +4,7 @@ export interface TraceoOptions {
   offline?: boolean;
   environment: Environment;
   dsn: string;
+  appId: number;
 }
 
 export interface ErrorMiddlewareOptions {

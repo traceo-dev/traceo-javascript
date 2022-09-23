@@ -1,24 +1,14 @@
 {
   "compilerOptions": {
-    "alwaysStrict": false,
+    "module": "commonjs",
     "declaration": true,
-    "declarationMap": true,
-    "downlevelIteration": true,
-    "importHelpers": true,
-    "inlineSources": true,
-    "lib": ["es6", "dom"],
-    "moduleResolution": "node",
-    "noEmitHelpers": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitUseStrict": true,
-    "preserveWatchOutput": true,
-    "pretty": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
-    "strict": true,
-    "strictBindCallApply": false,
-    "target": "es5"
+    "incremental": true,
+    "esModuleInterop": true
   }
 }

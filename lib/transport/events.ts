@@ -7,7 +7,7 @@ export interface EventResponse {
   body?: string;
 }
 
-export interface TraceoEvent {
+export interface Incident {
   type: string;
   message: string;
   stack: string;

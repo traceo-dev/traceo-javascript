@@ -1,6 +1,6 @@
 import * as http from "http";
 import { sanitizeDsn } from "../node/helpers";
-import { EventResponse, TraceoEvent } from "../transport/events";
+import { EventResponse, Incident } from "../transport/events";
 import { TraceoIncomingMessage, RequestOptions } from "../transport/http";
 import { getGlobalClientData } from "./global";
 import { isClientConnected } from "./is";
@@ -11,28 +11,23 @@ enum RequestStatus {
   ERROR = "error",
 }
 
-const createHttpOptions = ({
-  event,
-}: {
-  event?: TraceoEvent;
-}): http.RequestOptions => {
+const createHttpOptions = (path: string): http.RequestOptions => {
   const client = getGlobalClientData();
 
   const { dsn } = client;
-  const { host, secretKey, appId } = sanitizeDsn(dsn);
+  const { host, secretKey } = sanitizeDsn(dsn);
 
   const baseOptions: RequestOptions = {
     hostname: host,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Content-Length": `${Buffer.byteLength(JSON.stringify(event))}`,
       "Traceo-Secret-Key": secretKey,
     },
   };
 
   return {
-    path: `/${appId}`,
+    path,
     ...baseOptions,
   };
 };
@@ -40,8 +35,38 @@ const createHttpOptions = ({
 const statusFromCode = (code: number) =>
   code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
 
+export const sendRuntimeMetrics = async (data: {}) => {
+  const { appId, environment } = getGlobalClientData();
+
+  if (!appId) {
+    return;
+  }
+
+  const httpOptions = createHttpOptions(
+    `/${appId}/${environment}/metrics/runtime`
+  );
+  await sendEvent(data, httpOptions);
+};
+
+export const sendIncidentEvent = async (incident: Incident) => {
+  const { environment, appId } = getGlobalClientData();
+
+  if (!environment || !appId) {
+    return;
+  }
+
+  const version = TRACEO_SDK_VERSION;
+  const baseData = { version, env: environment };
+
+  const payload = Object.assign(incident, baseData);
+
+  const httpOptions = createHttpOptions(`/${appId}`);
+  await sendEvent(payload, httpOptions);
+};
+
 export const sendEvent = async (
-  event: TraceoEvent
+  payload: any,
+  httpOptions: http.RequestOptions
 ): Promise<EventResponse | void> => {
   const { environment, dsn } = getGlobalClientData();
 
@@ -49,13 +74,8 @@ export const sendEvent = async (
     return;
   }
 
-  const version = TRACEO_SDK_VERSION;
-  const baseData = { version, env: environment };
-
-  const payload = Object.assign(event, baseData);
-
   return new Promise<EventResponse>((resolve, reject) => {
-    const httpOptions = createHttpOptions({ event });
+    // const httpOptions = createHttpOptions({ payload });
     if (!httpOptions) {
       reject({
         statusCode: 400,
