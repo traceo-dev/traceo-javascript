@@ -1,6 +1,6 @@
 import * as os from "os";
 import * as v8 from "v8";
-import { sendRuntimeMetrics } from "../core/http";
+import { httpService } from "../core/http";
 
 const sanitizePackageName = (pkg: string, pkgType: string) => {
   let targetKey = pkg.replace(pkgType, "").replace("__", "@");
@@ -97,7 +97,7 @@ const collectMetricsDataOnRuntime = () => {
     },
   };
 
-  sendRuntimeMetrics(data);
+  httpService.sendRuntimeMetrics(data);
 };
 
 export const metrics = {

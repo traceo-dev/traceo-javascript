@@ -1,28 +1,25 @@
 import * as http from "http";
-import { sanitizeDsn } from "../node/helpers";
 import { EventResponse, Incident } from "../transport/events";
-import { TraceoIncomingMessage, RequestOptions } from "../transport/http";
+import { TraceoIncomingMessage, RequestOptions, HTTP_ENDPOINT, RequestStatus } from "../transport/http";
+import { TraceoLog } from "../transport/logger";
+import { RequestType } from "../transport/types";
 import { getGlobalClientData } from "./global";
-import { isClientConnected } from "./is";
 import { TRACEO_SDK_VERSION } from "./version";
 
-enum RequestStatus {
-  SUCCESS = "success",
-  ERROR = "error",
-}
-
-const createHttpOptions = (path: string): http.RequestOptions => {
+const createHttpOptions = (
+  path: string,
+  method: RequestType = "POST"
+): http.RequestOptions => {
   const client = getGlobalClientData();
 
-  const { dsn } = client;
-  const { host, secretKey } = sanitizeDsn(dsn);
+  const { host, port } = client;
 
   const baseOptions: RequestOptions = {
     hostname: host,
-    method: "POST",
+    port,
+    method,
     headers: {
       "Content-Type": "application/json",
-      "Traceo-Secret-Key": secretKey,
     },
   };
 
@@ -32,84 +29,44 @@ const createHttpOptions = (path: string): http.RequestOptions => {
   };
 };
 
-const statusFromCode = (code: number) =>
-  code >= 200 && code <= 299 ? RequestStatus.SUCCESS : RequestStatus.ERROR;
+const sendLog = async (log: TraceoLog) => {
+  const httpOptions = createHttpOptions(HTTP_ENDPOINT.LOG);
+  await sendEvent(log, httpOptions);
+};
 
-export const sendRuntimeMetrics = async (data: {}) => {
-  const { appId, environment } = getGlobalClientData();
-
-  if (!appId) {
-    return;
-  }
-
-  const httpOptions = createHttpOptions(
-    `/${appId}/${environment}/metrics/runtime`
-  );
+const sendRuntimeMetrics = async (data: {}) => {
+  const httpOptions = createHttpOptions(HTTP_ENDPOINT.RUNTIME);
   await sendEvent(data, httpOptions);
 };
 
-export const sendIncidentEvent = async (incident: Incident) => {
-  const { environment, appId } = getGlobalClientData();
-
-  if (!environment || !appId) {
-    return;
-  }
-
+const sendIncident = async (incident: Incident) => {
   const version = TRACEO_SDK_VERSION;
-  const baseData = { version, env: environment };
+  const baseData = { version };
 
   const payload = Object.assign(incident, baseData);
 
-  const httpOptions = createHttpOptions(`/${appId}`);
+  const httpOptions = createHttpOptions(HTTP_ENDPOINT.INCIDENT);
   await sendEvent(payload, httpOptions);
 };
 
-export const sendEvent = async (
+const sendEvent = async (
   payload: any,
   httpOptions: http.RequestOptions
 ): Promise<EventResponse | void> => {
-  const { environment, dsn } = getGlobalClientData();
+  const { host, appId } = getGlobalClientData();
 
-  if (!environment || !dsn) {
+  if (!host || !appId) {
     return;
   }
 
-  return new Promise<EventResponse>((resolve, reject) => {
-    // const httpOptions = createHttpOptions({ payload });
-    if (!httpOptions) {
-      reject({
-        statusCode: 400,
-        statusMessage:
-          "[Traceo] Error during sending event to Traceo. No HTTP options.",
-      });
+  return new Promise<EventResponse>((_, reject) => {
+    const options = {
+      ...httpOptions,
+      path: httpOptions.path + `/${appId}`
     }
 
-    if (!isClientConnected()) {
-      reject({
-        statusCode: 400,
-        statusMessage:
-          "[Traceo] Error during sending event to Traceo. No client global data in NodeJS scope.",
-      });
-    }
-
-    const request = http.request(httpOptions, (res: TraceoIncomingMessage) => {
+    const request = http.request(options, (res: TraceoIncomingMessage) => {
       res.setEncoding("utf8");
-
-      const status = statusFromCode(res?.statusCode as number);
-      const isSuccess = status === RequestStatus.SUCCESS;
-
-      if (!isSuccess) {
-        reject({
-          statusCode: res?.statusCode as number,
-          statusMessage: "[Traceo] Error during sending event to Traceo.",
-        });
-      } else {
-        resolve({
-          statusCode: res?.statusCode as number,
-          statusMessage: "[Traceo] Event successfully sended to Traceo.",
-        });
-      }
-
       res.on("error", reject);
     });
 
@@ -128,3 +85,7 @@ export const sendEvent = async (
     request.end();
   });
 };
+
+export const httpService = {
+  sendLog, sendIncident, sendRuntimeMetrics
+}

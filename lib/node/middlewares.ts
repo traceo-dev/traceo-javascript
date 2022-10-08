@@ -1,5 +1,5 @@
 import { stacktrace } from "stacktrace-parser-node";
-import { sendEvent, sendIncidentEvent } from "../core/http";
+import { httpService } from "../core/http";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { TraceoError } from "../transport/base";
 import { Incident } from "../transport/events";
@@ -114,7 +114,7 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
 const handleException = async (error: TraceoError) => {
   try {
     const event: Incident = await prepareException(error);
-    await sendIncidentEvent(event);
+    await httpService.sendIncident(event);
   } catch (err) {
     //
   }

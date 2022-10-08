@@ -1,10 +1,9 @@
-import { Environment } from "./types";
-
 export interface TraceoOptions {
   offline?: boolean;
-  environment: Environment;
-  dsn: string;
+  host: string;
+  port: number;
   appId: number;
+  collectMetrics?: boolean;
 }
 
 export interface ErrorMiddlewareOptions {

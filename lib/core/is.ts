@@ -1,12 +1,5 @@
 import { getGlobalClientData } from "./global";
 
-export const isInternal = (fileName: string): boolean =>
-  !!fileName &&
-  !fileName.includes("node_modules") &&
-  !fileName.startsWith("/") &&
-  !fileName.startsWith("node:") &&
-  fileName.includes(":\\");
-
 export const isEmpty = (obj?: any): boolean => Object.keys(obj).length === 0;
 
 export const isLocalhost = (ip: string): boolean => {

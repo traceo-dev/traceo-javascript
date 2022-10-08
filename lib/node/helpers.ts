@@ -21,16 +21,16 @@ export const getOsPlatform = (): Platform => {
   };
 };
 
-export const sanitizeDsn = (dsn: string) => {
-  const [secretKey, rest] = dsn
-    .replace("http://", "")
-    .replace("https://", "")
-    .split(":");
-  const [host, appId] = rest.split("/");
+// export const sanitizeDsn = (dsn: string) => {
+//   const [secretKey, rest] = dsn
+//     .replace("http://", "")
+//     .replace("https://", "")
+//     .split(":");
+//   const [host, appId] = rest.split("/");
 
-  return {
-    secretKey,
-    host,
-    appId,
-  };
-};
+//   return {
+//     secretKey,
+//     host,
+//     appId,
+//   };
+// };

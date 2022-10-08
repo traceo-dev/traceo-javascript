@@ -16,20 +16,15 @@ export const init = (options: TraceoOptions): void => {
     return;
   }
 
-  if (!options.environment) {
-    console.warn(
-      "Traceo SDK: Empty environment property. Please set current env or use offline mode."
-    );
-    return;
-  }
-
   if (!isClientConnected()) {
     setGlobalClientData({
       ...options,
     });
   }
 
-  metrics.collectMetricsDataOnRuntime();
+  if (options?.collectMetrics) {
+    metrics.collectMetricsDataOnRuntime();
+  }
 };
 
 export const collectMetricsData = () => {};

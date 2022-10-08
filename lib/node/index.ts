@@ -1,4 +1,3 @@
-import { Middleware } from "./middlewares";
-import * as Traceo from "./sdk";
-
-export { Middleware, Traceo };
+export { Middleware, catchException } from "./middlewares";
+export { logger } from "./logger";
+export * as Traceo from "./sdk";

@@ -1,9 +1,7 @@
-import { Environment } from "./types";
-
 export interface TraceoGlobal {
-  dsn?: string;
+  host?: string;
+  port?: number;
   appId?: number;
-  environment?: Environment;
 }
 
 export interface TraceoError extends Error {}
