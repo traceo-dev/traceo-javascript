@@ -22,8 +22,8 @@ export const init = (options: TraceoOptions): void => {
     });
   }
 
-  if (options?.collectMetrics) {
-    metrics.collectMetricsDataOnRuntime();
+  if (options.metrics.collect) {
+    metrics.collectMetrics(options);
   }
 };
 

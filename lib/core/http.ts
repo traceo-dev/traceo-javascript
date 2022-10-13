@@ -1,7 +1,12 @@
 import * as http from "http";
 import { EventResponse, Incident } from "../transport/events";
-import { TraceoIncomingMessage, RequestOptions, HTTP_ENDPOINT, RequestStatus } from "../transport/http";
+import {
+  TraceoIncomingMessage,
+  RequestOptions,
+  HTTP_ENDPOINT,
+} from "../transport/http";
 import { TraceoLog } from "../transport/logger";
+import { Metrics } from "../transport/metrics";
 import { RequestType } from "../transport/types";
 import { getGlobalClientData } from "./global";
 import { TRACEO_SDK_VERSION } from "./version";
@@ -12,8 +17,7 @@ const createHttpOptions = (
 ): http.RequestOptions => {
   const client = getGlobalClientData();
 
-  const { host, port } = client;
-
+  const { host, port } = client.connection;
   const baseOptions: RequestOptions = {
     hostname: host,
     port,
@@ -39,6 +43,11 @@ const sendRuntimeMetrics = async (data: {}) => {
   await sendEvent(data, httpOptions);
 };
 
+const sendMetrics = async (data: Metrics) => {
+  const httpOptions = createHttpOptions(HTTP_ENDPOINT.METRICS);
+  await sendEvent(data, httpOptions);
+};
+
 const sendIncident = async (incident: Incident) => {
   const version = TRACEO_SDK_VERSION;
   const baseData = { version };
@@ -53,24 +62,24 @@ const sendEvent = async (
   payload: any,
   httpOptions: http.RequestOptions
 ): Promise<EventResponse | void> => {
-  const { host, appId } = getGlobalClientData();
+  const { connection, appId } = getGlobalClientData();
 
-  if (!host || !appId) {
+  if (!connection || !appId) {
     return;
   }
 
   return new Promise<EventResponse>((_, reject) => {
-    const options = {
+    const options: http.RequestOptions = {
       ...httpOptions,
-      path: httpOptions.path + `/${appId}`
-    }
+      path: `${httpOptions.path}/${appId}`,
+    };
 
     const request = http.request(options, (res: TraceoIncomingMessage) => {
       res.setEncoding("utf8");
       res.on("error", reject);
     });
 
-    request.on("error", reject);
+    request.on("error", () => { });
 
     request.on("timeout", () => {
       request.destroy();
@@ -87,5 +96,8 @@ const sendEvent = async (
 };
 
 export const httpService = {
-  sendLog, sendIncident, sendRuntimeMetrics
-}
+  sendLog,
+  sendIncident,
+  sendRuntimeMetrics,
+  sendMetrics,
+};

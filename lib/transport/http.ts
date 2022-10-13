@@ -23,8 +23,8 @@ export enum RequestStatus {
 }
 
 export enum HTTP_ENDPOINT {
-  LOG = "/api/worker/log/",
-  INCIDENT = "/api/worker/incident/",
-  RUNTIME = "/api/worker/runtime/",
-  METRICS = "/api/worker/metrics/"
+  LOG = "/api/worker/log",
+  INCIDENT = "/api/worker/incident",
+  RUNTIME = "/api/worker/runtime",
+  METRICS = "/api/worker/metrics",
 }
