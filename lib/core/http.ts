@@ -79,7 +79,7 @@ const sendEvent = async (
       res.on("error", reject);
     });
 
-    request.on("error", () => { });
+    request.on("error", () => {});
 
     request.on("timeout", () => {
       request.destroy();
