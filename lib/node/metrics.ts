@@ -4,7 +4,7 @@ import { TraceoOptions } from "../transport/options";
 import { cpu } from "./metrics/cpu-usage";
 import { loadRuntimeMetrics } from "./metrics/runtime-data";
 import * as os from "node:os";
-import { memory } from "./metrics/memory-sage";
+import { memory } from "./metrics/memory-usage";
 
 const DEFAULT_INTERVAL = 30; //seconds
 
