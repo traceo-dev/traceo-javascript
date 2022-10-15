@@ -5,6 +5,7 @@ import { cpu } from "./metrics/cpu-usage";
 import { loadRuntimeMetrics } from "./metrics/runtime-data";
 import * as os from "node:os";
 import { memory } from "./metrics/memory-usage";
+import { heap } from "./metrics/heap";
 
 const DEFAULT_INTERVAL = 30; //seconds
 
@@ -20,7 +21,8 @@ const collectMetrics = (options: TraceoOptions) => {
     const metrics: Metrics = {
       cpuUsage: cpu.usage(),
       memory: memory.usage(),
-      loadAvg: Number(os.loadavg()[0].toFixed(2)), //The load average is a Unix-specific concept. On Windows, the return value is always [0, 0, 0]
+      loadAvg: Number(os.loadavg()[0].toFixed(2)),
+      heap,
     };
 
     httpService.sendMetrics(metrics);

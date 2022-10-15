@@ -72,9 +72,7 @@ export const loadRuntimeMetrics = () => {
 
   const heapStats = v8.getHeapStatistics();
   const heapStatistics = {
-    heap_size_limit: heapStats.heap_size_limit,
-    total_heap_size_executable: heapStats.total_heap_size_executable,
-    total_physical_size: heapStats.total_physical_size,
+    ...heapStats
   };
 
   const nodeVersion = process.versions;
