@@ -1,103 +1,80 @@
 import * as http from "http";
-import { EventResponse, Incident } from "../transport/events";
-import {
-  TraceoIncomingMessage,
-  RequestOptions,
-  HTTP_ENDPOINT,
-} from "../transport/http";
-import { TraceoLog } from "../transport/logger";
-import { Metrics } from "../transport/metrics";
+import * as https from "https";
+import { Client } from "../node/client";
 import { RequestType } from "../transport/types";
-import { getGlobalClientData } from "./global";
-import { TRACEO_SDK_VERSION } from "./version";
 
-const createHttpOptions = (
-  path: string,
-  method: RequestType = "POST"
-): http.RequestOptions => {
-  const client = getGlobalClientData();
-
-  const { host, port } = client.connection;
-  const baseOptions: RequestOptions = {
-    hostname: host,
-    port,
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  return {
-    path,
-    ...baseOptions,
-  };
+type HttpRequestOptions = {
+  callback?: (stream: http.IncomingMessage) => void;
+  onError?: (error: Error) => void;
 };
+export class HttpModule {
+  host: string;
+  url: URL;
+  body: string;
+  method: RequestType;
 
-const sendLog = async (log: TraceoLog) => {
-  const httpOptions = createHttpOptions(HTTP_ENDPOINT.LOG);
-  await sendEvent(log, httpOptions);
-};
+  constructor(url: string, body?: {}, method: RequestType = "POST") {
+    this.host = Client.config.url;
 
-const sendRuntimeMetrics = async (data: {}) => {
-  const httpOptions = createHttpOptions(HTTP_ENDPOINT.RUNTIME);
-  await sendEvent(data, httpOptions);
-};
-
-const sendMetrics = async (data: Metrics) => {
-  const httpOptions = createHttpOptions(HTTP_ENDPOINT.METRICS);
-  await sendEvent(data, httpOptions);
-};
-
-const sendIncident = async (incident: Incident) => {
-  const version = TRACEO_SDK_VERSION;
-  const baseData = { version };
-
-  const payload = Object.assign(incident, baseData);
-
-  const httpOptions = createHttpOptions(HTTP_ENDPOINT.INCIDENT);
-  await sendEvent(payload, httpOptions);
-};
-
-const sendEvent = async (
-  payload: any,
-  httpOptions: http.RequestOptions
-): Promise<EventResponse | void> => {
-  const { connection, appId } = getGlobalClientData();
-
-  if (!connection || !appId) {
-    return;
+    this.url = new URL(url, this.host);
+    this.body = JSON.stringify(body);
+    this.method = method;
   }
 
-  return new Promise<EventResponse>((_, reject) => {
-    const options: http.RequestOptions = {
-      ...httpOptions,
-      path: `${httpOptions.path}/${appId}`,
+  // TODO: implement callbacks from options later
+  public request(_options?: HttpRequestOptions) {
+    const requestOptions = {
+      ...this.requestHeaders(),
+      ...this.requestOptions(),
     };
 
-    const request = http.request(options, (res: TraceoIncomingMessage) => {
-      res.setEncoding("utf8");
-      res.on("error", reject);
-    });
+    const httpModule = this.requestModule();
 
+    const request = httpModule.request(requestOptions);
     request.on("error", () => {});
 
-    request.on("timeout", () => {
-      request.destroy();
-      reject({
-        statusCode: 400,
-        statusMessage:
-          "[Traceo] Error during sending event to Traceo. Connection timeout.",
-      });
-    });
+    this.requestWriteBody(request);
 
-    request.write(JSON.stringify(payload));
     request.end();
-  });
-};
+  }
 
-export const httpService = {
-  sendLog,
-  sendIncident,
-  sendRuntimeMetrics,
-  sendMetrics,
-};
+  private requestWriteBody(request: http.ClientRequest) {
+    if (this.method === "POST") {
+      request.write(this.body);
+    }
+  }
+
+  private requestModule(): typeof http | typeof https {
+    return this.clientURL.protocol == "http:" ? http : https;
+  }
+
+  private get clientURL(): URL {
+    return new URL(this.host);
+  }
+
+  private requestOptions(): http.RequestOptions {
+    const reqUrl = this.clientURL;
+
+    return {
+      protocol: reqUrl.protocol,
+      port: reqUrl.port,
+      host: reqUrl.hostname,
+      method: this.method,
+      path: this.path,
+    };
+  }
+
+  private get path() {
+    return `${this.url.pathname}/${Client.config.appId}`;
+  }
+
+  private requestHeaders() {
+    if (this.method != "POST") return {};
+    return {
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": this.body.length,
+      },
+    };
+  }
+}

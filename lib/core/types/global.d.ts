@@ -1,6 +1,6 @@
-import { TraceoGlobal } from "../../transport/base";
+import { Client } from "../../node/client";
 
 declare global {
-  var __TRACEO__: TraceoGlobal;
+  var __TRACEO__: Client;
 }
 export {};

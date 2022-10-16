@@ -1,8 +1,3 @@
-import { TraceoGlobal } from "../transport/base";
+import { Client } from "../node/client";
 
-export const getGlobalClientData = (): TraceoGlobal =>
-  global["__TRACEO__"] || {};
-
-export const setGlobalClientData = (data: TraceoGlobal): void => {
-  global.__TRACEO__ = { ...data };
-};
+export const getGlobalClientData = (): Client => global["__TRACEO__"];

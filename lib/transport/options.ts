@@ -1,10 +1,7 @@
 export interface TraceoOptions {
   appId: number;
   offline?: boolean;
-  connection: {
-    host: string;
-    port: number;
-  };
+  url: string;
   metrics?: {
     /* 
       Determining if Traceo should collect metrics from the application.
