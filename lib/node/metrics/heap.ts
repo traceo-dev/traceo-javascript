@@ -1,4 +1,6 @@
 import * as v8 from "v8";
+import { Metrics } from "../../transport/metrics";
+import { toDecimalNumber } from "../helpers";
 
 /**
  * https://www.geeksforgeeks.org/node-js-v8-getheapstatistics-method/
@@ -14,10 +16,10 @@ const getNumberOfNativeContexts = () =>
 const getNumberOfDetachedContexts = () =>
   getHeapStatistics().number_of_detached_contexts;
 
-export const heap = {
-  used: Number((process.memoryUsage().heapUsed / TO_MB).toFixed(2)),
-  total: Number((process.memoryUsage().heapTotal / TO_MB).toFixed(2)),
-  rss: Number((process.memoryUsage().rss / TO_MB).toFixed(2)),
+export const heap: Metrics['heap'] = {
+  used: toDecimalNumber(process.memoryUsage().heapUsed / TO_MB),
+  total: toDecimalNumber(process.memoryUsage().heapTotal / TO_MB),
+  rss: toDecimalNumber(process.memoryUsage().rss / TO_MB),
   nativeContexts: getNumberOfNativeContexts(),
   detachedContexts: getNumberOfDetachedContexts(),
 };

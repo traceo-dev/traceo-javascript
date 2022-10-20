@@ -5,6 +5,8 @@ import { cpu } from "./metrics/cpu-usage";
 import * as os from "node:os";
 import { memory } from "./metrics/memory-usage";
 import { heap } from "./metrics/heap";
+import { eventLoop } from "./metrics/event-loop";
+import { toDecimalNumber } from "./helpers";
 
 const DEFAULT_INTERVAL = 30; //seconds
 
@@ -18,8 +20,9 @@ const collectMetrics = (options: TraceoOptions) => {
     const metrics: Metrics = {
       cpuUsage: cpu.usage(),
       memory: memory.usage(),
-      loadAvg: Number(os.loadavg()[0].toFixed(2)) || 0,
+      loadAvg: toDecimalNumber(os.loadavg()[0]),
       heap,
+      eventLoopLag: eventLoop.collect(),
     };
 
     const httpModule = new HttpModule("/api/worker/metrics", metrics);

@@ -21,6 +21,9 @@ export const getOsPlatform = (): Platform => {
   };
 };
 
+export const toDecimalNumber = (val: number, decimal: number = 2) =>
+  Number(val.toFixed(decimal));
+
 // export const sanitizeDsn = (dsn: string) => {
 //   const [secretKey, rest] = dsn
 //     .replace("http://", "")
