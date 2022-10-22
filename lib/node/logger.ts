@@ -1,9 +1,13 @@
 import { format } from "util";
 import { HttpModule } from "../core/http";
-import { LogLevel, TraceoLog } from "../transport/logger";
+import { LogLevel } from "../transport/logger";
 
 export class Logger {
-  constructor() {}
+  private readonly http: HttpModule;
+
+  constructor() {
+    this.http = new HttpModule("/api/worker/log");
+  }
 
   public log(...args: any[]): void {
     return this.printMessage(this.getEntryFromArgs(args), LogLevel.Log);
@@ -46,8 +50,15 @@ export class Logger {
       resources: this.resources,
     };
 
-    const httpModule = new HttpModule("/api/worker/log", requestPayload);
-    httpModule.request();
+    this.http.request({
+      body: requestPayload,
+      onError: (error: Error) => {
+        console.error(
+          `Traceo Error. Something went wrong while sending new Log to Traceo. Please report this issue.`
+        );
+        console.error(`Caused by: ${error.message}`);
+      },
+    });
   }
 
   private get timestamp(): string {

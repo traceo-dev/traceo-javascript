@@ -3,26 +3,25 @@ import * as https from "https";
 import { Client } from "../node/client";
 import { RequestType } from "../transport/types";
 
-type HttpRequestOptions = {
-  callback?: (stream: http.IncomingMessage) => void;
-  onError?: (error: Error) => void;
+type RequestOptionsType = {
+  body: {};
+  onError: (error: Error) => void;
 };
 export class HttpModule {
   host: string;
   url: URL;
-  body: string;
   method: RequestType;
 
-  constructor(url: string, body?: {}, method: RequestType = "POST") {
+  constructor(url: string, method: RequestType = "POST") {
     this.host = Client.config.url;
 
     this.url = new URL(url, this.host);
-    this.body = JSON.stringify(body);
     this.method = method;
   }
 
-  // TODO: implement callbacks from options later
-  public request(_options?: HttpRequestOptions) {
+  public request(options: RequestOptionsType) {
+    const { body, onError } = options;
+
     const requestOptions = {
       ...this.requestHeaders(),
       ...this.requestOptions(),
@@ -31,16 +30,16 @@ export class HttpModule {
     const httpModule = this.requestModule();
 
     const request = httpModule.request(requestOptions);
-    request.on("error", () => {});
+    request.on("error", () => onError);
 
-    this.requestWriteBody(request);
+    this.requestWriteBody(request, body);
 
     request.end();
   }
 
-  private requestWriteBody(request: http.ClientRequest) {
+  private requestWriteBody(request: http.ClientRequest, body: {}) {
     if (this.method === "POST") {
-      request.write(this.body);
+      request.write(JSON.stringify(body));
     }
   }
 
@@ -73,7 +72,6 @@ export class HttpModule {
     return {
       headers: {
         "Content-Type": "application/json",
-        "Content-Length": this.body.length,
       },
     };
   }

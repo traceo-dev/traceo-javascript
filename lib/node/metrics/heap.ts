@@ -1,5 +1,5 @@
 import * as v8 from "v8";
-import { Metrics } from "../../transport/metrics";
+import { IMetrics } from "../../core/interfaces/IMetrics";
 import { toDecimalNumber } from "../helpers";
 
 /**
@@ -8,18 +8,48 @@ import { toDecimalNumber } from "../helpers";
  */
 const TO_MB = 1024 * 1024;
 
-const getHeapStatistics = () => v8.getHeapStatistics();
-
-const getNumberOfNativeContexts = () =>
-  getHeapStatistics().number_of_native_contexts;
-
-const getNumberOfDetachedContexts = () =>
-  getHeapStatistics().number_of_detached_contexts;
-
-export const heap: Metrics['heap'] = {
-  used: toDecimalNumber(process.memoryUsage().heapUsed / TO_MB),
-  total: toDecimalNumber(process.memoryUsage().heapTotal / TO_MB),
-  rss: toDecimalNumber(process.memoryUsage().rss / TO_MB),
-  nativeContexts: getNumberOfNativeContexts(),
-  detachedContexts: getNumberOfDetachedContexts(),
+type HeapMetricType = {
+  used: number;
+  total: number;
+  rss: number;
+  nativeContexts: number;
+  detachedContexts: number;
 };
+
+export class HeapMetrics implements IMetrics<HeapMetricType> {
+  constructor() {}
+
+  collect(): HeapMetricType {
+    return {
+      used: this.usedHeap,
+      total: this.totalHeap,
+      rss: this.rss,
+      detachedContexts: this.detachedContextsNumber,
+      nativeContexts: this.nativeContextsNumber,
+    };
+  }
+
+  private get usedHeap() {
+    return toDecimalNumber(process.memoryUsage().heapUsed / TO_MB);
+  }
+
+  private get totalHeap() {
+    return toDecimalNumber(process.memoryUsage().heapTotal / TO_MB);
+  }
+
+  private get rss() {
+    return toDecimalNumber(process.memoryUsage().rss / TO_MB);
+  }
+
+  private get detachedContextsNumber() {
+    return this.heapStatistics.number_of_detached_contexts;
+  }
+
+  private get nativeContextsNumber() {
+    return this.heapStatistics.number_of_native_contexts;
+  }
+
+  private get heapStatistics() {
+    return v8.getHeapStatistics();
+  }
+}

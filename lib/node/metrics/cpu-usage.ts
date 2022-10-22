@@ -1,36 +1,44 @@
 import * as os from "node:os";
+import { IMetrics } from "../../core/interfaces/IMetrics";
 
-const averageCpu = (): { idle: number; total: number } => {
-  let totalIdle = 0;
-  let totalTick = 0;
-  const cpus = os.cpus();
+type AverageCpuMetricType = {
+  idle: number;
+  total: number;
+};
+export class CpuUsageMetrics implements IMetrics<number> {
+  measureStart: AverageCpuMetricType;
 
-  for (let i = 0, len = cpus.length; i < len; i++) {
-    const cpu = cpus[i];
-    for (const type in cpu.times) {
-      totalTick += cpu.times[type];
-    }
-
-    totalIdle += cpu.times.idle;
+  constructor() {
+    this.measureStart = this.calculateAverageCpuUsage();
   }
 
-  return { idle: totalIdle / cpus.length, total: totalTick / cpus.length };
-};
+  collect(): number {
+    const endMeasure = this.calculateAverageCpuUsage();
 
-const startMeasure = averageCpu();
+    const idleDifference = endMeasure.idle - this.measureStart.idle;
+    const totalDifference = endMeasure.total - this.measureStart.total;
 
-const getCpuUsage = () => {
-  const endMeasure = averageCpu();
+    const cpuUsage =
+      Math.round((100 - (100 * idleDifference) / totalDifference) * 100) / 100;
 
-  const idleDifference = endMeasure.idle - startMeasure.idle;
-  const totalDifference = endMeasure.total - startMeasure.total;
+    return cpuUsage;
+  }
 
-  const cpuUsage =
-    Math.round((100 - (100 * idleDifference) / totalDifference) * 100) / 100;
+  private calculateAverageCpuUsage(): AverageCpuMetricType {
+    const cpus = os.cpus();
 
-  return cpuUsage;
-};
+    let totalIdle: number = 0;
+    let totalTick: number = 0;
 
-export const cpu = {
-  usage: getCpuUsage,
-};
+    for (let i = 0, len = cpus.length; i < len; i++) {
+      const cpu = cpus[i];
+      for (const type in cpu.times) {
+        totalTick += cpu.times[type];
+      }
+
+      totalIdle += cpu.times.idle;
+    }
+
+    return { idle: totalIdle / cpus.length, total: totalTick / cpus.length };
+  }
+}

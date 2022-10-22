@@ -49,8 +49,16 @@ export const catchException = async (error: any, catchOptions?: Catch) => {
 
 const handleException = async (error: TraceoError) => {
   const event: Incident = await prepareException(error);
-  const httpModule = new HttpModule("/api/worker/incident", event);
-  httpModule.request();
+  const httpModule = new HttpModule("/api/worker/incident");
+  httpModule.request({
+    body: event,
+    onError: (error: Error) => {
+      console.error(
+        `Traceo Error. Something went wrong while sending new Incident to Traceo. Please report this issue.`
+      );
+      console.error(`Caused by: ${error.message}`);
+    },
+  });
 };
 
 const prepareException = async (error: TraceoError): Promise<Incident> => {

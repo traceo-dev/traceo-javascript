@@ -1,25 +1,35 @@
 import * as perf_hooks from "perf_hooks";
-import { Metrics } from "../../transport/metrics";
+import { IMetrics } from "../../core/interfaces/IMetrics";
 import { toDecimalNumber } from "../helpers";
 
-const histogram = perf_hooks.monitorEventLoopDelay({
-  resolution: 10,
-});
-histogram.enable();
-
-const collect = () => {
-  const data: Metrics["eventLoopLag"] = {
-    min: toDecimalNumber(histogram.min / 1e6),
-    max: toDecimalNumber(histogram.max / 1e6),
-    mean: toDecimalNumber(histogram.mean / 1e6),
-    stddev: toDecimalNumber(histogram.stddev / 1e6),
-    p50: toDecimalNumber(histogram.percentile(50) / 1e6),
-    p90: toDecimalNumber(histogram.percentile(90) / 1e6),
-    p99: toDecimalNumber(histogram.percentile(99) / 1e6),
-  };
-  histogram.reset();
-
-  return data;
+type EventLoopMetricType = {
+  min: number;
+  max: number;
+  mean: number;
+  stddev: number;
 };
 
-export const eventLoop = { collect };
+export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
+  //TODO: should be type here, but in different versions there are a different type,
+  //eq. perf_hooks.IntervalHistogram
+  histogram: any;
+
+  constructor() {
+    this.histogram = perf_hooks.monitorEventLoopDelay({
+      resolution: 10,
+    });
+    this.histogram.enable();
+  }
+
+  collect(): EventLoopMetricType {
+    const data: EventLoopMetricType = {
+      min: toDecimalNumber(this.histogram.min / 1e6),
+      max: toDecimalNumber(this.histogram.max / 1e6),
+      mean: toDecimalNumber(this.histogram.mean / 1e6),
+      stddev: toDecimalNumber(this.histogram.stddev / 1e6),
+    };
+    this.histogram.reset();
+
+    return data;
+  }
+}

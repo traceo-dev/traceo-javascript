@@ -1,18 +1,25 @@
 import { isEmpty } from "../core/is";
 import { TraceoOptions } from "../transport/options";
 import { Logger } from "./logger";
-import { metrics } from "./metrics";
-import { loadRuntimeMetrics } from "./metrics/runtime-data";
+import { MetricsProbe } from "./metrics";
+import { RuntimeData } from "./metrics/runtime-data";
 
 export class Client {
-  options: TraceoOptions;
+  private options: TraceoOptions;
+
+  private metricsProbe: MetricsProbe;
+  private runtimeData: RuntimeData;
+
   readonly logger: Logger;
 
   constructor(options: TraceoOptions) {
     this.configGlobalClient();
 
     this.options = options;
+    this.metricsProbe = new MetricsProbe(this.options);
+
     this.logger = new Logger();
+    this.runtimeData = new RuntimeData();
 
     if (!this.isOffline) {
       this.initSDK();
@@ -44,11 +51,11 @@ export class Client {
   }
 
   private initSDK(): void {
-    if (this.options.metrics.collect) {
-      metrics.collectMetrics(this.options);
-    }
+    this.runtimeData.collect();
 
-    loadRuntimeMetrics();
+    if (this.options.metrics.collect) {
+      this.metricsProbe.register();
+    }
   }
 
   private configGlobalClient(): void {

@@ -17,8 +17,8 @@ export interface Metrics {
     max: number;
     mean: number;
     stddev: number;
-    p50: number;
-    p90: number;
-    p99: number;
+    // p50: number;
+    // p90: number;
+    // p99: number;
   };
 }
