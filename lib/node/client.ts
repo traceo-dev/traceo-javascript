@@ -43,7 +43,7 @@ export class Client {
   }
 
   get isCollectMetrics(): boolean {
-    return this.options?.metrics?.collect;
+    return this.options?.collectMetrics;
   }
 
   get isConnected(): boolean {
@@ -53,7 +53,7 @@ export class Client {
   private initSDK(): void {
     this.runtimeData.collect();
 
-    if (this.options.metrics.collect) {
+    if (this.options.collectMetrics) {
       this.metricsProbe.register();
     }
   }

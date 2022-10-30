@@ -7,6 +7,7 @@ import { EventLoopMetrics } from "./metrics/event-loop";
 import { HeapMetrics } from "./metrics/heap";
 import { MemoryUsageMetrics } from "./metrics/memory-usage";
 import * as os from "os";
+import { GCObserver } from "./metrics/gc-observer";
 
 const DEFAULT_INTERVAL = 30; //seconds
 
@@ -20,12 +21,14 @@ export class MetricsProbe {
   private readonly heap: HeapMetrics;
   private readonly memoryUsage: MemoryUsageMetrics;
 
+  private readonly gcObserver: GCObserver;
+
   constructor(options: TraceoOptions) {
-    if (!options.metrics.collect) {
+    if (!options?.collectMetrics) {
       return;
     }
 
-    this.interval = options.metrics.interval || DEFAULT_INTERVAL;
+    this.interval = options.scrapMetricsInterval || DEFAULT_INTERVAL;
 
     this.http = new HttpModule("/api/worker/metrics");
 
@@ -33,6 +36,7 @@ export class MetricsProbe {
     this.eventLoop = new EventLoopMetrics();
     this.heap = new HeapMetrics();
     this.memoryUsage = new MemoryUsageMetrics();
+    this.gcObserver = new GCObserver();
   }
 
   public register() {
@@ -44,6 +48,7 @@ export class MetricsProbe {
     const eventLoop = this.eventLoop.collect();
     const heap = this.heap.collect();
     const memory = this.memoryUsage.collect();
+    const gc = this.gcObserver.collect();
 
     const metrics: Partial<Metrics> = {
       cpuUsage,
@@ -51,6 +56,7 @@ export class MetricsProbe {
       heap,
       memory,
       loadAvg: this.loadAvg,
+      gc,
     };
 
     this.http.request({

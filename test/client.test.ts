@@ -7,10 +7,8 @@ describe("TraceClient", () => {
   const clientOptions: TraceoOptions = {
     appId: 35,
     url: "/",
-    metrics: {
-      collect: true,
-      interval: 15,
-    },
+    collectMetrics: true,
+    scrapMetricsInterval: 15,
   };
 
   beforeEach(() => {
