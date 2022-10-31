@@ -108,9 +108,9 @@ logger.log("Traceo", "Example", "Log");
 logger.debug("Traceo", {
     hello: "World"
 });
-// [TraceoLogger][LOG] - 31.10.2022, 13:58:00 - Traceo { hello: 'World' }
+// [TraceoLogger][DEBUG] - 31.10.2022, 13:58:00 - Traceo { hello: 'World' }
 ```
-`Logger` can be used also as a reference from `TraceoClient` initialization:
+`Logger` can be used also as a reference from `TraceoClient`:
 ```ts
 const traceo = new TraceoClient({...});
 traceo.logger.log("Traceo");
