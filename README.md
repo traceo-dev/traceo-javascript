@@ -128,3 +128,6 @@ new TraceoClient({ scrapMetricsInterval: <interval_in_seconds> });
 ```
 
 Remember that provided `scrapMetricsInterval` can't be less than `15` seconds.
+
+## Support
+Feel free to create Issues, Pull Request and Discussion. If you want to contact with the developer working on this package click [here](mailto:piotr.szewczyk.software@gmail.com).
