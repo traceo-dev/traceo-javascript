@@ -5,10 +5,6 @@ import { TraceoError } from "../../transport/base";
 import { Incident } from "../../transport/events";
 import { getOsPlatform } from "../helpers";
 
-type Catch = {
-  shouldBeCatched?: (error: any) => boolean;
-};
-
 /**
  * For using in middleware and as an function in try/catch
  *
@@ -21,25 +17,9 @@ type Catch = {
  * }
  * ```
  *
- * Usage with `shouldBeCatched`:
- * @example
- *
- * ```
- * catchException(error, {
- *   shouldBeCatched: () => {
- *     return true;
- *   }
- * });
- * ```
  *
  */
-export const catchException = async (error: any, catchOptions?: Catch) => {
-  if (catchOptions?.shouldBeCatched !== undefined) {
-    if (!catchOptions?.shouldBeCatched(error)) {
-      return;
-    }
-  }
-
+export const catchException = async (error: any) => {
   if (isClientConnected()) {
     await handleException(error);
   }
@@ -70,7 +50,7 @@ const prepareException = async (error: TraceoError): Promise<Incident> => {
     type: name,
     message,
     traces,
-    stack: String(stack),
+    stack,
     platform,
   };
 
