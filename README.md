@@ -1,4 +1,6 @@
 # Traceo SDK for Node.js
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Library for integration with the Traceo Platform.
 
 ### Installation
