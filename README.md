@@ -1,4 +1,6 @@
 # Traceo SDK for Node.js
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Library for integration with the Traceo Platform.
 
 ### Installation
@@ -108,9 +110,9 @@ logger.log("Traceo", "Example", "Log");
 logger.debug("Traceo", {
     hello: "World"
 });
-// [TraceoLogger][LOG] - 31.10.2022, 13:58:00 - Traceo { hello: 'World' }
+// [TraceoLogger][DEBUG] - 31.10.2022, 13:58:00 - Traceo { hello: 'World' }
 ```
-`Logger` can be used also as a reference from `TraceoClient` initialization:
+`Logger` can be used also as a reference from `TraceoClient`:
 ```ts
 const traceo = new TraceoClient({...});
 traceo.logger.log("Traceo");
@@ -128,3 +130,6 @@ new TraceoClient({ scrapMetricsInterval: <interval_in_seconds> });
 ```
 
 Remember that provided `scrapMetricsInterval` can't be less than `15` seconds.
+
+## Support
+Feel free to create Issues, Pull Request and Discussion. If you want to contact with the developer working on this package click [here](mailto:piotr.szewczyk.software@gmail.com).
