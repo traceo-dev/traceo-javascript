@@ -1,5 +1,6 @@
 export interface TraceoOptions {
-  appId: number;
+  apiKey: string;
+  appId: string;
   offline?: boolean;
   url: string;
   /* 

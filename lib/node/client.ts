@@ -1,12 +1,14 @@
 import { isEmpty } from "../core/is";
+import { TRACEO_SDK_VERSION } from "../core/version";
 import { TraceoOptions } from "../transport/options";
 import { Logger } from "./logger";
 import { MetricsProbe } from "./metrics";
 import { RuntimeData } from "./metrics/runtime-data";
 
 export class Client {
-  private options: TraceoOptions;
+  public headers: { [key: string]: any };
 
+  private options: TraceoOptions;
   private metricsProbe: MetricsProbe;
   private runtimeData: RuntimeData;
 
@@ -16,6 +18,11 @@ export class Client {
     this.configGlobalClient();
 
     this.options = options;
+    this.headers = {
+      "x-sdk-name": "Node.js",
+      "x-sdk-version": TRACEO_SDK_VERSION,
+      "x-sdk-key": this.options.apiKey,
+    };
     this.metricsProbe = new MetricsProbe(this.options);
 
     this.logger = new Logger();

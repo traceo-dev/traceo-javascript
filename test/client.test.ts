@@ -5,7 +5,8 @@ describe("TraceClient", () => {
   let client: Client;
 
   const clientOptions: TraceoOptions = {
-    appId: 35,
+    apiKey: "sasdasdads",
+    appId: "92873498234",
     url: "/",
     collectMetrics: true,
     scrapMetricsInterval: 15,

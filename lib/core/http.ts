@@ -68,10 +68,15 @@ export class HttpModule {
   }
 
   private requestHeaders() {
-    if (this.method != "POST") return {};
+    const headers = Client.client.headers;
+    const baseHeaders = {
+      ...headers,
+    };
+    if (this.method !== "POST") return baseHeaders;
     return {
       headers: {
         "Content-Type": "application/json",
+        ...baseHeaders,
       },
     };
   }
