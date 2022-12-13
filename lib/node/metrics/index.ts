@@ -1,26 +1,17 @@
-import { IClientMetrics } from "../../core/interfaces/metrics";
+import { IClientMetrics, ICounter } from "../../core/interfaces/metrics";
+import { Counter } from "./counter";
 import { MetricsRunner } from "./runner";
 
 export class Metrics extends MetricsRunner implements IClientMetrics {
+  private _counter: Counter;
+
   constructor() {
     super();
+
+    this._counter = new Counter(this);
   }
 
-  public increment(key: string, val: number = 1): IClientMetrics {
-    if (!this.clientMetrics[key]) {
-      this.clientMetrics[key] = 0;
-    }
-    this.clientMetrics[key] += val;
-
-    return this;
-  }
-
-  public decrement(key: string, val: number = 1): IClientMetrics {
-    if (!this.clientMetrics[key]) {
-      this.clientMetrics[key] = 0;
-    }
-    this.clientMetrics[key] -= val;
-
-    return this;
+  public counter(): ICounter {
+    return this._counter;
   }
 }

@@ -3,6 +3,11 @@ export interface IMetrics<T> {
 }
 
 export interface IClientMetrics {
-  increment(key: string, val?: number): IClientMetrics;
-  decrement(key: string, val?: number): IClientMetrics;
+  counter(): ICounter;
+}
+
+export interface ICounter {
+  increment(key: string, val?: number): this;
+  decrement(key: string, val?: number): this;
+  reset(key: string): this;
 }
