@@ -1,18 +1,18 @@
-import { isEmpty } from "../core/is";
+import { IClientMetrics } from "../core/interfaces/metrics";
 import { TRACEO_SDK_VERSION } from "../core/version";
 import { TraceoOptions } from "../transport/options";
 import { Logger } from "./logger";
-import { MetricsProbe } from "./metrics";
-import { RuntimeData } from "./metrics/runtime-data";
+import { Metrics } from "./metrics";
+import { RuntimeData } from "./metrics/default/runtime-data";
 
 export class Client {
   public headers: { [key: string]: any };
 
-  private options: TraceoOptions;
-  private metricsProbe: MetricsProbe;
+  private _metrics: Metrics;
   private runtimeData: RuntimeData;
 
-  readonly logger: Logger;
+  public readonly logger: Logger;
+  public options: TraceoOptions;
 
   constructor(options: TraceoOptions) {
     this.configGlobalClient();
@@ -23,10 +23,11 @@ export class Client {
       "x-sdk-version": TRACEO_SDK_VERSION,
       "x-sdk-key": this.options.apiKey,
     };
-    this.metricsProbe = new MetricsProbe(this.options);
 
     this.logger = new Logger();
     this.runtimeData = new RuntimeData();
+
+    this._metrics = new Metrics();
 
     if (!this.isOffline) {
       this.initSDK();
@@ -45,24 +46,20 @@ export class Client {
     return this.client.options;
   }
 
-  get isOffline(): boolean {
+  private get isOffline(): boolean {
     return this.options.offline;
-  }
-
-  get isCollectMetrics(): boolean {
-    return this.options?.collectMetrics;
-  }
-
-  get isConnected(): boolean {
-    return !isEmpty(global.__TRACEO__);
   }
 
   private initSDK(): void {
     this.runtimeData.collect();
 
     if (this.options.collectMetrics) {
-      this.metricsProbe.register();
+      this._metrics.register();
     }
+  }
+
+  public metrics(): IClientMetrics {
+    return this._metrics;
   }
 
   private configGlobalClient(): void {

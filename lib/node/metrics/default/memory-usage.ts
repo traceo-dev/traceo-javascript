@@ -1,15 +1,12 @@
 import * as os from "node:os";
-import { IMetrics } from "../../core/interfaces/IMetrics";
-import { toDecimalNumber } from "../helpers";
+import { IMetrics } from "../../../core/interfaces/metrics";
+import { MemoryUsageMetricType } from "../../../transport/metrics";
+import { toDecimalNumber } from "../../helpers";
 
-type MemoryUsageMetricType = {
-  mb: number;
-  percentage: number;
-};
 export class MemoryUsageMetrics implements IMetrics<MemoryUsageMetricType> {
   constructor() {}
 
-  collect(): MemoryUsageMetricType {
+  public collect(): MemoryUsageMetricType {
     return {
       mb: this.usedMemory,
       percentage: this.percentageUsage,

@@ -1,10 +1,7 @@
 import * as os from "node:os";
-import { IMetrics } from "../../core/interfaces/IMetrics";
+import { IMetrics } from "../../../core/interfaces/metrics";
+import { AverageCpuMetricType } from "../../../transport/metrics";
 
-type AverageCpuMetricType = {
-  idle: number;
-  total: number;
-};
 export class CpuUsageMetrics implements IMetrics<number> {
   measureStart: AverageCpuMetricType;
 
@@ -12,7 +9,7 @@ export class CpuUsageMetrics implements IMetrics<number> {
     this.measureStart = this.calculateAverageCpuUsage();
   }
 
-  collect(): number {
+  public collect(): number {
     const endMeasure = this.calculateAverageCpuUsage();
 
     const idleDifference = endMeasure.idle - this.measureStart.idle;

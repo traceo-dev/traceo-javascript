@@ -1,6 +1,7 @@
 import * as v8 from "v8";
-import { IMetrics } from "../../core/interfaces/IMetrics";
-import { toDecimalNumber } from "../helpers";
+import { IMetrics } from "../../../core/interfaces/metrics";
+import { HeapMetricType } from "../../../transport/metrics";
+import { toDecimalNumber } from "../../helpers";
 
 /**
  * https://www.geeksforgeeks.org/node-js-v8-getheapstatistics-method/
@@ -8,18 +9,10 @@ import { toDecimalNumber } from "../helpers";
  */
 const TO_MB = 1024 * 1024;
 
-type HeapMetricType = {
-  used: number;
-  total: number;
-  rss: number;
-  nativeContexts: number;
-  detachedContexts: number;
-};
-
 export class HeapMetrics implements IMetrics<HeapMetricType> {
   constructor() {}
 
-  collect(): HeapMetricType {
+  public collect(): HeapMetricType {
     return {
       used: this.usedHeap,
       total: this.totalHeap,

@@ -1,5 +1,4 @@
-import { Client } from "../lib/node/client";
-import { CpuUsageMetrics } from "../lib/node/metrics/cpu-usage";
+import { CpuUsageMetrics } from "../lib/node/metrics/default/cpu-usage";
 
 describe("CpuUsageMetrics", () => {
   let metric: CpuUsageMetrics;

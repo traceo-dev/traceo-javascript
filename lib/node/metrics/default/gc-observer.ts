@@ -1,14 +1,11 @@
-import { IMetrics } from "../../core/interfaces/IMetrics";
 import * as perf_hooks from "node:perf_hooks";
-import { toDecimalNumber } from "../helpers";
+import { IMetrics } from "../../../core/interfaces/metrics";
+import { GCObserverType } from "../../../transport/metrics";
+import { toDecimalNumber } from "../../helpers";
 
-type GCObserverType = {
-  duration: {
-    total: number;
-    average: number;
-  };
-};
-
+/**
+ * Temporary switched off due to not properly returned values
+ */
 export class GCObserver implements IMetrics<GCObserverType> {
   private gcDurations: number[] = [];
 
@@ -27,7 +24,7 @@ export class GCObserver implements IMetrics<GCObserverType> {
     obs.observe({ entryTypes: ["gc"] });
   }
 
-  collect(): GCObserverType {
+  public collect(): GCObserverType {
     const total = this.gcDurations.reduce((prev, curr) => prev + curr, 0);
     const average = total / this.gcDurations.length;
 

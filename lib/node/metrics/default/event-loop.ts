@@ -1,13 +1,7 @@
 import * as perf_hooks from "perf_hooks";
-import { IMetrics } from "../../core/interfaces/IMetrics";
-import { toDecimalNumber } from "../helpers";
-
-type EventLoopMetricType = {
-  min: number;
-  max: number;
-  mean: number;
-  stddev: number;
-};
+import { IMetrics } from "../../../core/interfaces/metrics";
+import { EventLoopMetricType } from "../../../transport/metrics";
+import { toDecimalNumber } from "../../helpers";
 
 export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
   //TODO: should be type here, but in different versions there are a different type,
@@ -21,7 +15,7 @@ export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
     this.histogram.enable();
   }
 
-  collect(): EventLoopMetricType {
+  public collect(): EventLoopMetricType {
     const data: EventLoopMetricType = {
       min: toDecimalNumber(this.histogram.min / 1e6),
       max: toDecimalNumber(this.histogram.max / 1e6),

@@ -1,6 +1,6 @@
 import * as os from "node:os";
 import * as v8 from "node:v8";
-import { HttpModule } from "../../core/http";
+import { HttpModule } from "../../../core/http";
 
 const NPM_PKG_DEP = "npm_package_dependencies_";
 const NPM_PKG_DEV_DEP = "npm_package_devDependencies_";
@@ -13,7 +13,7 @@ export class RuntimeData {
     this.http = new HttpModule("/api/worker/runtime");
   }
 
-  collect(): void {
+  public collect(): void {
     const { traceoVersion, ...rest } = this.packageJsonInfo;
     const data = {
       node: {
