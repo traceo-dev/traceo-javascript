@@ -38,6 +38,8 @@ export interface Metrics extends DefaultMetrics {
   [key: string]: any;
 }
 
+export type MeauserementValueType = { [key: string]: any };
+
 export type AverageCpuMetricType = {
   idle: number;
   total: number;

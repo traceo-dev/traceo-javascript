@@ -2,32 +2,36 @@ import { Metrics } from ".";
 import { ICounter } from "../../core/interfaces/metrics";
 
 export class Counter implements ICounter {
-  private metrics: Metrics;
+  private field: Record<string, number>;
 
-  constructor(runner: Metrics) {
-    this.metrics = runner;
+  constructor(metrics: Metrics) {
+    this.field = metrics.clientCounterMetrics;
+
+    if (!this.field) {
+      this.field = {};
+    }
   }
 
   public increment(key: string, val: number = 1): this {
-    if (!this.metrics.clientMetrics[key]) {
-      this.metrics.clientMetrics[key] = 0;
+    if (!this.field[key]) {
+      this.field[key] = 0;
     }
-    this.metrics.clientMetrics[key] += val;
+    this.field[key] += val;
 
     return this;
   }
 
   public decrement(key: string, val: number = 1): this {
-    if (!this.metrics.clientMetrics[key]) {
-      this.metrics.clientMetrics[key] = 0;
+    if (!this.field[key]) {
+      this.field[key] = 0;
     }
-    this.metrics.clientMetrics[key] -= val;
+    this.field[key] -= val;
 
     return this;
   }
 
   public reset(key: string): this {
-    this.metrics.clientMetrics[key] = 0;
+    this.field[key] = 0;
 
     return this;
   }

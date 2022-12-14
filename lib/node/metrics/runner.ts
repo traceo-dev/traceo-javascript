@@ -16,8 +16,6 @@ import { Metrics } from "../../transport/metrics";
 
 const DEFAULT_INTERVAL = 30; //seconds
 
-type MetricValueType = { [key: string]: number };
-
 export class MetricsRunner {
   private client: Client;
 
@@ -29,7 +27,10 @@ export class MetricsRunner {
   private readonly heap: HeapMetrics;
   private readonly memoryUsage: MemoryUsageMetrics;
 
-  public clientMetrics: MetricValueType;
+  public clientCounterMetrics: Record<string, number>;
+  public clientGaugeMetrics: Record<string, number>;
+  public clientTimeSeriesMetrics: Record<string, number>;
+  public clientMeauserementMetrics: Record<string, number[]>;
 
   constructor() {
     this.client = global.__TRACEO__;
@@ -47,7 +48,11 @@ export class MetricsRunner {
     this.eventLoop = new EventLoopMetrics();
     this.heap = new HeapMetrics();
     this.memoryUsage = new MemoryUsageMetrics();
-    this.clientMetrics = {};
+
+    this.clientCounterMetrics = {};
+    this.clientMeauserementMetrics = {};
+    this.clientGaugeMetrics = {};
+    this.clientTimeSeriesMetrics = {};
   }
 
   public register(): void {
@@ -55,7 +60,10 @@ export class MetricsRunner {
   }
 
   private clearClientMetrics(): void {
-    this.clientMetrics = {};
+    this.clientCounterMetrics = {};
+    this.clientMeauserementMetrics = {};
+    this.clientGaugeMetrics = {};
+    this.clientTimeSeriesMetrics = {};
   }
 
   private collectDefaultMetrics(): Partial<Metrics> {
@@ -82,7 +90,10 @@ export class MetricsRunner {
 
     const metrics = {
       ...defaultMetrics,
-      ...this.clientMetrics,
+      ...this.clientCounterMetrics,
+      ...this.clientMeauserementMetrics,
+      ...this.clientGaugeMetrics,
+      ...this.clientTimeSeriesMetrics
     };
 
     console.log("METRICS: ", metrics);

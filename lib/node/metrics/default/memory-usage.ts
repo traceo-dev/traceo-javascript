@@ -1,4 +1,4 @@
-import * as os from "node:os";
+import * as os from "os";
 import { IMetrics } from "../../../core/interfaces/metrics";
 import { MemoryUsageMetricType } from "../../../transport/metrics";
 import { toDecimalNumber } from "../../helpers";

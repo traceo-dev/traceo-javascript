@@ -37,3 +37,14 @@ export const toDecimalNumber = (val: number, decimal: number = 2) =>
 //     appId,
 //   };
 // };
+
+export const calculatePercentile = (percentile: number, values: number[]): number => {
+  const sortedScores = values.sort((a, b) => a - b);
+  const index = (percentile / 100) * sortedScores.length;
+
+  if (Number.isInteger(index)) {
+    return (sortedScores[index - 1] + sortedScores[index]) / 2;
+  }
+
+  return sortedScores[Math.floor(index) - 1];
+}

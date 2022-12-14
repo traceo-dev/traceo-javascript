@@ -1,5 +1,5 @@
-import * as os from "node:os";
-import * as v8 from "node:v8";
+import * as os from "os";
+import * as v8 from "v8";
 import { HttpModule } from "../../../core/http";
 
 const NPM_PKG_DEP = "npm_package_dependencies_";
