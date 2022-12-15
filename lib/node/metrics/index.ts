@@ -1,4 +1,10 @@
-import { IClientMetrics, ICounter, IGauge, IMeauserement, ITimeSeries } from "../../core/interfaces/metrics";
+import {
+  IClientMetrics,
+  ICounter,
+  IGauge,
+  IMeauserement,
+  ITimeSeries,
+} from "../../core/interfaces/metrics";
 import { Counter } from "./counter";
 import { Gauge } from "./gauge";
 import { Meauserement } from "./meauserement";

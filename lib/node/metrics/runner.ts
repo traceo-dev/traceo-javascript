@@ -89,11 +89,11 @@ export class MetricsRunner {
     const defaultMetrics = this.collectDefaultMetrics();
 
     const metrics = {
-      ...defaultMetrics,
-      ...this.clientCounterMetrics,
-      ...this.clientMeauserementMetrics,
-      ...this.clientGaugeMetrics,
-      ...this.clientTimeSeriesMetrics
+      default: defaultMetrics,
+      counter: this.clientCounterMetrics,
+      meauserement: this.clientMeauserementMetrics,
+      gauge: this.clientGaugeMetrics,
+      timeSeries: this.clientTimeSeriesMetrics,
     };
 
     console.log("METRICS: ", metrics);

@@ -19,12 +19,12 @@ export interface ICounter {
 
 export interface IMeauserement {
   add(key: string, val: number): this;
-  clear(key: string): this
+  clear(key: string): this;
 }
 
 export interface IGauge {
   set(key: string, val: number): this;
-  reset(key: string): this
+  reset(key: string): this;
 }
 
 export interface ITimeSeries {

@@ -38,7 +38,10 @@ export const toDecimalNumber = (val: number, decimal: number = 2) =>
 //   };
 // };
 
-export const calculatePercentile = (percentile: number, values: number[]): number => {
+export const calculatePercentile = (
+  percentile: number,
+  values: number[]
+): number => {
   const sortedScores = values.sort((a, b) => a - b);
   const index = (percentile / 100) * sortedScores.length;
 
@@ -47,4 +50,4 @@ export const calculatePercentile = (percentile: number, values: number[]): numbe
   }
 
   return sortedScores[Math.floor(index) - 1];
-}
+};
