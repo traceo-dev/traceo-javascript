@@ -1,21 +1,21 @@
 export type EventLoopMetricType = {
-  min: number;
-  max: number;
-  mean: number;
-  stddev: number;
+  loop_min: number;
+  loop_max: number;
+  loop_mean: number;
+  loop_stddev: number;
 };
 
 export type MemoryUsageMetricType = {
-  mb: number;
-  percentage: number;
+  memory_usage_mb: number;
+  memory_usage_percentage: number;
 };
 
 export type HeapMetricType = {
-  used: number;
-  total: number;
-  rss: number;
-  nativeContexts: number;
-  detachedContexts: number;
+  heap_used: number;
+  heap_total: number;
+  heap_rss: number;
+  heap_native_contexts: number;
+  heap_detached_contexts: number;
 };
 
 export type GCObserverType = {
@@ -25,14 +25,12 @@ export type GCObserverType = {
   };
 };
 
-export interface DefaultMetrics {
-  cpuUsage: number;
-  memory: MemoryUsageMetricType;
-  loadAvg?: number;
-  heap: HeapMetricType;
-  eventLoopLag: EventLoopMetricType;
-  gc: GCObserverType;
-}
+export type DefaultMetrics = {
+  cpu_usage: number;
+  load_avg: number;
+} & HeapMetricType &
+  EventLoopMetricType &
+  MemoryUsageMetricType;
 
 export interface Metrics extends DefaultMetrics {
   [key: string]: any;

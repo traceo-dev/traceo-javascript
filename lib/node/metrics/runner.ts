@@ -68,18 +68,16 @@ export class MetricsRunner {
 
   private collectDefaultMetrics(): Partial<Metrics> {
     const cpuUsage = this.cpuUsage.collect();
-    const eventLoopLag = this.eventLoop.collect();
+    const eventLoop = this.eventLoop.collect();
     const heap = this.heap.collect();
     const memory = this.memoryUsage.collect();
 
-    const metrics = {
-      cpuUsage,
-      eventLoopLag: {
-        ...eventLoopLag,
-      },
-      heap,
-      memory,
-      loadAvg: this.loadAvg,
+    const metrics: Metrics = {
+      cpu_usage: cpuUsage,
+      load_avg: this.loadAvg,
+      ...memory,
+      ...heap,
+      ...eventLoop,
     };
 
     return metrics;
@@ -95,8 +93,6 @@ export class MetricsRunner {
       gauge: this.clientGaugeMetrics,
       timeSeries: this.clientTimeSeriesMetrics,
     };
-
-    console.log("METRICS: ", metrics);
 
     this.http.request({
       body: metrics,

@@ -8,8 +8,8 @@ export class MemoryUsageMetrics implements IMetrics<MemoryUsageMetricType> {
 
   public collect(): MemoryUsageMetricType {
     return {
-      mb: this.usedMemory,
-      percentage: this.percentageUsage,
+      memory_usage_mb: this.usedMemory,
+      memory_usage_percentage: this.percentageUsage,
     };
   }
 

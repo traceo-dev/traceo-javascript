@@ -17,10 +17,10 @@ export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
 
   public collect(): EventLoopMetricType {
     const data: EventLoopMetricType = {
-      min: toDecimalNumber(this.histogram.min / 1e6),
-      max: toDecimalNumber(this.histogram.max / 1e6),
-      mean: toDecimalNumber(this.histogram.mean / 1e6),
-      stddev: toDecimalNumber(this.histogram.stddev / 1e6),
+      loop_min: toDecimalNumber(this.histogram.min / 1e6),
+      loop_max: toDecimalNumber(this.histogram.max / 1e6),
+      loop_mean: toDecimalNumber(this.histogram.mean / 1e6),
+      loop_stddev: toDecimalNumber(this.histogram.stddev / 1e6),
     };
     this.histogram.reset();
 
