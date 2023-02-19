@@ -6,17 +6,17 @@ Library for integration with the [Traceo Platform](https://github.com/traceo-dev
 ### Installation
 To install this SDK add this package to your package.json like below:
 ```
-yarn add traceo
+yarn add @traceo-sdk/node
 ```
 or
 ```
-npm install traceo
+npm install @traceo-sdk/node
 ```
 
 ### Usage
 First what you need is to initialize `TraceoClient` in your application.
 ```ts
-import { TraceoClient } from "traceo";
+import { TraceoClient } from "@traceo-sdk/node";
 
 new TraceoClient({
     appId: <your_application_id>,
@@ -32,7 +32,7 @@ Incidents are all the exceptions and other problems that occur in your applicati
 ##### Handlers
 The easiest way is to use `ExceptionsHandlers.catchException()` in `try-catch` clause like below:
 ```ts
-import { ExceptionHandlers } from "traceo";
+import { ExceptionHandlers } from "@traceo-sdk/node";
 
 try {
     //your code
@@ -45,7 +45,7 @@ If you use [NestJS](https://nestjs.com/) framework then you can also create [Int
 
 traceo.interceptor.ts
 ```ts
-import { ExceptionHandlers } from "traceo";
+import { ExceptionHandlers } from "@traceo-sdk/node";
 //other imports
 
 @Injectable()
@@ -70,14 +70,14 @@ Another approach is to use `ExceptionMiddlewares.errorMiddleware()`. If you use 
 
 Javascript:
 ```js
-import { ExceptionMiddlewares } from "traceo";
+import { ExceptionMiddlewares } from "@traceo-sdk/node";
 
 app.use(ExceptionMiddlewares.errorMiddleware());
 ```
 
 Typescript:
 ```ts
-const { ExceptionMiddlewares } from "traceo";
+const { ExceptionMiddlewares } from "@traceo-sdk/node";
 
 app.use(ExceptionMiddlewares.errorMiddleware() as express.ErrorRequestHandler);
 ```
@@ -97,7 +97,7 @@ The Traceo SDK can be used also as a logger. Each log is saved on the Traceo Pla
 
 To use logger feature in your app use `Logger` from `traceo` package like below:
 ```ts
-import { Logger } from "traceo";
+import { Logger } from "@traceo-sdk/node";
 
 const logger = new Logger();
 ```
