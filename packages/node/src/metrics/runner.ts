@@ -41,7 +41,7 @@ export class MetricsRunner {
     this.interval =
       this.client.options.scrapMetricsInterval || DEFAULT_INTERVAL;
 
-    this.http = new HttpModule("/api/worker/metrics");
+    this.http = HttpModule.getInstance();
 
     this.cpuUsage = new CpuUsageMetrics();
     this.eventLoop = new EventLoopMetrics();
@@ -94,6 +94,7 @@ export class MetricsRunner {
     };
 
     this.http.request({
+      url: "/api/worker/metrics",
       body: metrics,
       onError: (error: Error) => {
         console.error(
@@ -101,10 +102,10 @@ export class MetricsRunner {
         );
         console.error(`Caused by: ${error.message}`);
       },
+      callback: () => {
+        this.clearClientMetrics();
+      }
     });
-
-    // TODO: This shouldn't be called when there is error on http.request
-    this.clearClientMetrics();
   }
 
   private get loadAvg(): number {

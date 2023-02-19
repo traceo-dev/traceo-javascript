@@ -1,6 +1,6 @@
 {
     "name": "@traceo-sdk/node",
-    "version": "0.31.5",
+    "version": "0.31.6",
     "author": "Traceo",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

@@ -24,7 +24,7 @@ export class Client {
       "x-sdk-key": this.options.apiKey,
     };
 
-    this.logger = new Logger();
+    this.logger = new Logger(options?.scrapLogsInterval);
     this.scrappedData = new Scrapper();
 
     this._metrics = new Metrics();

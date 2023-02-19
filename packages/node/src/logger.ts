@@ -1,12 +1,23 @@
 import { format } from "util";
 import { HttpModule } from "./core/http";
 import { LogLevel } from "./types";
+import * as http from "http";
 
 export class Logger {
   private readonly http: HttpModule;
+  private DEFAULT_INTERVAL = 60; //60s
+  private logsQueue = [];
 
-  constructor() {
-    this.http = new HttpModule("/api/worker/log");
+  constructor(scrapInterval?: number) {
+    this.http = HttpModule.getInstance();
+    this.logsQueue = [];
+
+    let interval = this.DEFAULT_INTERVAL;
+    if (scrapInterval && scrapInterval >= 15) {
+      interval = scrapInterval;
+    }
+
+    setInterval(() => this.sendLogs(), interval * 1000);
   }
 
   public log(...args: any[]): void {
@@ -50,15 +61,25 @@ export class Logger {
       resources: this.resources,
     };
 
-    this.http.request({
-      body: requestPayload,
-      onError: (error: Error) => {
-        console.error(
-          `Traceo Error. Something went wrong while sending new Log to Traceo. Please report this issue.`
-        );
-        console.error(`Caused by: ${error.message}`);
-      },
-    });
+    this.logsQueue.push(requestPayload);
+  }
+
+  private async sendLogs() {
+    if (this.logsQueue.length > 0) {
+      this.http.request({
+        url: "/api/worker/log",
+        body: this.logsQueue,
+        onError: (error: Error) => {
+          console.error(
+            `Traceo Error. Something went wrong while sending new Logs to Traceo. Please report this issue.`
+          );
+          console.error(`Caused by: ${error.message}`);
+        },
+        callback: () => {
+          this.logsQueue = [];
+        },
+      });
+    }
   }
 
   private get timestamp(): string {
@@ -82,8 +103,8 @@ export class Logger {
       packageName: process.env["npm_package_name"],
       packageVersion: process.env["npm_package_version"],
       traceoVersion:
-        process.env["npm_package_dependencies_traceo"] ||
-        process.env["npm_package_devDependencies_traceo"],
+        process.env["npm_package_dependencies_@traceo-sdk/node"] ??
+        process.env["npm_package_devDependencies_@traceo-sdk/node"],
     };
   }
 

@@ -28,8 +28,9 @@ export const catchException = async (error: any) => {
 
 const handleException = async (error: TraceoError) => {
   const event: Incident = await prepareException(error);
-  const httpModule = new HttpModule("/api/worker/incident");
+  const httpModule = HttpModule.getInstance();
   httpModule.request({
+    url: "/api/worker/incident",
     body: event,
     onError: (error: Error) => {
       console.error(

@@ -10,7 +10,7 @@ export class Scrapper {
   private readonly http: HttpModule;
 
   constructor() {
-    this.http = new HttpModule("/api/worker/runtime");
+    this.http = HttpModule.getInstance();
   }
 
   collect(): void {
@@ -29,6 +29,7 @@ export class Scrapper {
     };
 
     this.http.request({
+      url: "/api/worker/runtime",
       body: data,
       onError: (error: Error) => {
         console.error(
@@ -41,11 +42,7 @@ export class Scrapper {
 
   private get heap() {
     const heapStats = v8.getHeapStatistics();
-    // const heapCodeStats = v8.getHeapCodeStatistics();
-    return {
-      ...heapStats,
-      // ...heapCodeStats,
-    };
+    return heapStats;
   }
 
   private get packageJsonInfo() {

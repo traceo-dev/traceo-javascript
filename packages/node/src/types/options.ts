@@ -13,6 +13,11 @@ export interface TraceoOptions {
     then the data will be downloaded just for this time.
   */
   scrapMetricsInterval?: number;
+  /*
+    Default is 60s.
+    Value can't be smaller than 15.
+  */
+  scrapLogsInterval?: number;
 }
 
 export interface ErrorMiddlewareOptions {
