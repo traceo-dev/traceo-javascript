@@ -104,7 +104,7 @@ export class MetricsRunner {
       },
       callback: () => {
         this.clearClientMetrics();
-      }
+      },
     });
   }
 

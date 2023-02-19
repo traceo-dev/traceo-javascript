@@ -8,10 +8,10 @@
     "files": [
         "dist"
     ],
-    "homepage": "https://github.com/traceo-dev/traceo-node",
+    "homepage": "https://github.com/traceo-dev/traceo-sdk",
     "repository": {
         "type": "git",
-        "url": "git://github.com/traceo-dev/traceo-node.git"
+        "url": "git://github.com/traceo-dev/traceo-sdk.git"
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json --outDir dist",
