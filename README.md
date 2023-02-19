@@ -4,7 +4,7 @@
 Library for integration with the [Traceo Platform](https://github.com/traceo-dev/traceo).
 
 ### Installation
-To install this SDK add this package to your package.json like below:
+To install this SDK add this package to your project like below:
 ```
 yarn add @traceo-sdk/node
 ```
