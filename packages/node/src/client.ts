@@ -2,7 +2,6 @@ import { Logger } from "./logger";
 import { Metrics } from "./metrics";
 import { Scrapper } from "./scrapper";
 import { TraceoOptions } from "./types";
-import { IClientMetrics } from "./types/interfaces/IMetrics";
 import { TRACEO_SDK_VERSION } from "./version";
 
 export class Client {
@@ -24,7 +23,7 @@ export class Client {
       "x-sdk-key": this.options.apiKey,
     };
 
-    this.logger = new Logger(options?.scrapLogsInterval);
+    this.logger = new Logger();
     this.scrappedData = new Scrapper();
 
     this._metrics = new Metrics();
@@ -58,9 +57,9 @@ export class Client {
     }
   }
 
-  public metrics(): IClientMetrics {
-    return this._metrics;
-  }
+  // private metrics(): IClientMetrics {
+  //   return this._metrics;
+  // }
 
   private configGlobalClient(): void {
     global["__TRACEO__"] = this;

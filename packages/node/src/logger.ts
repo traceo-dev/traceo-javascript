@@ -1,23 +1,27 @@
 import { format } from "util";
 import { HttpModule } from "./core/http";
 import { LogLevel } from "./types";
-import * as http from "http";
+import { Client } from "./client";
 
 export class Logger {
   private readonly http: HttpModule;
-  private DEFAULT_INTERVAL = 60; //60s
   private logsQueue = [];
+  private INTERVAL = 60;
 
-  constructor(scrapInterval?: number) {
+  constructor() {
     this.http = HttpModule.getInstance();
     this.logsQueue = [];
 
-    let interval = this.DEFAULT_INTERVAL;
-    if (scrapInterval && scrapInterval >= 15) {
-      interval = scrapInterval;
+    const scrapLogsInterval = Client.config?.scrapLogsInterval;
+    if (scrapLogsInterval && scrapLogsInterval >= 15) {
+      this.INTERVAL = scrapLogsInterval;
     }
 
-    setInterval(() => this.sendLogs(), interval * 1000);
+    this.register();
+  }
+
+  private register() {
+    setInterval(() => this.sendLogs(), this.INTERVAL * 1000);
   }
 
   public log(...args: any[]): void {
