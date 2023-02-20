@@ -1,5 +1,4 @@
-import { Klepper } from "./klepper";
+export { Client as TraceoClient } from "./client";
 
-const klepper = Klepper.connect({ apiKey: "=== API KEY 1111 ===", secretKey: "=== SECRET KEY 2222 ===" });
-klepper.errorHandler;
-klepper.requestHandler;
+export * as ExceptionHandlers from "./exceptions/handler";
+export * as ExceptionMiddlewares from "./exceptions/middleware";

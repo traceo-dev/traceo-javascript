@@ -1,8 +1,39 @@
+# dependencies
 node_modules/
-
-build/
 packages/*/dist/
+/.pnp
+.pnp.js
 
-yarn-error.log
+# testing
+/coverage
+
+# production
+/dist
+
+# misc
+.DS_Store
+*.pem
+
+
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+yarn.lock
+package-lock.json
 npm-debug.log
 lerna-debug.log
+
+# local env files
+.env
+.env.*
+
+#firebase
+ui-debug.log
+
+.vscode
+.idea
+
+#tarballs
+*.tgz
