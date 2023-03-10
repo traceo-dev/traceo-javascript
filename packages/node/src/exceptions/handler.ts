@@ -37,7 +37,7 @@ const handleException = async (error: TraceoError) => {
         `Traceo Error. Something went wrong while sending new Incident to Traceo. Please report this issue.`
       );
       console.error(`Caused by: ${error.message}`);
-    },
+    }
   });
 };
 
@@ -51,7 +51,7 @@ const prepareException = async (error: TraceoError): Promise<Incident> => {
     message,
     traces,
     stack,
-    platform,
+    platform
   };
 
   return event;

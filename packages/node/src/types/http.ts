@@ -19,12 +19,12 @@ export interface RequestOptions extends http.RequestOptions {
 
 export enum RequestStatus {
   SUCCESS = "success",
-  ERROR = "error",
+  ERROR = "error"
 }
 
 export enum HTTP_ENDPOINT {
   LOG = "/api/worker/log",
   INCIDENT = "/api/worker/incident",
   RUNTIME = "/api/worker/runtime",
-  METRICS = "/api/worker/metrics",
+  METRICS = "/api/worker/metrics"
 }

@@ -20,7 +20,7 @@ export class Client {
     this.headers = {
       "x-sdk-name": "Node.js",
       "x-sdk-version": TRACEO_SDK_VERSION,
-      "x-sdk-key": this.options.apiKey,
+      "x-sdk-key": this.options.apiKey
     };
 
     this.logger = new Logger();
