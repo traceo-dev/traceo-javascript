@@ -1,5 +1,6 @@
 import { IBrowserClient, TraceoOptions } from "./types/client";
 import { Transport } from "./transport";
+import { utils } from "./utils";
 
 export abstract class BrowserClient implements IBrowserClient {
   public headers!: { [key: string]: any };
@@ -16,18 +17,16 @@ export abstract class BrowserClient implements IBrowserClient {
   public abstract postInitSDK(): void;
 
   public sendError(error: Error): void {
-    const event = {
+    const browser = utils.browserDetails();
+    this.transport.send({
       type: error.name,
       message: error.message,
-      traces: [],
-      stack: error.stack,
-      platform: {}
-    };
-    this.transport.send(event, this.headers);
+      stack: error.stack as string,
+      browser
+    }, this.headers);
   }
 
   private initSDK(): void {
-    // TODO: we need to make something here?
     this.postInitSDK();
   }
 }

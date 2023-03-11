@@ -18,7 +18,7 @@ export class Client {
 
     this.options = options;
     this.headers = {
-      "x-sdk-name": "Node.js",
+      "x-sdk-name": "node",
       "x-sdk-version": TRACEO_SDK_VERSION,
       "x-sdk-key": this.options.apiKey
     };

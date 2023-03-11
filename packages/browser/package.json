@@ -23,7 +23,7 @@
         "test:watch": "jest --watch --notify"
     },
     "dependencies": {
-        "stacktrace-parser-node": "1.1.4"
+        "bowser": "2.11.0"
     },
     "publishConfig": {
         "access": "public"

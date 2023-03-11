@@ -15,7 +15,7 @@ export class Transport {
       const options = this.requestOptions(body, headers);
       this.transport(options).request();
     } catch (error) {
-      console.log("Error on send data: ", error);
+      console.log("Error sending data to traceo: ", error);
     }
   }
 

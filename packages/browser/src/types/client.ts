@@ -4,10 +4,10 @@ export interface TraceoOptions {
   url: string;
 }
 
-export interface TraceoError extends Error {}
+export interface TraceoBrowserError extends Error {}
 
 export interface IBrowserClient {
-  sendError(error: TraceoError): void;
+  sendError(error: TraceoBrowserError): void;
 }
 
 export type Dictionary<T> = {
