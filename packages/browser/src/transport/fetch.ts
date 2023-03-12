@@ -1,9 +1,9 @@
 import { ITransport, RequestOptions } from "../types/transport";
 
-export class FetchTransport implements ITransport {
-  private _options: RequestOptions;
+export class FetchTransport<T> implements ITransport {
+  private _options: RequestOptions<T>;
 
-  constructor(options: RequestOptions) {
+  constructor(options: RequestOptions<T>) {
     this._options = options;
   }
 

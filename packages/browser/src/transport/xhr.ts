@@ -1,10 +1,10 @@
 import { ITransport, RequestOptions } from "../types/transport";
 
 const XHR_DONE = 4;
-export class XhrTransport implements ITransport {
-  public _options: RequestOptions;
+export class XhrTransport<T> implements ITransport {
+  public _options: RequestOptions<T>;
 
-  constructor(options: RequestOptions) {
+  constructor(options: RequestOptions<T>) {
     this._options = options;
   }
 
