@@ -38,8 +38,7 @@ export class MetricsRunner {
       return;
     }
 
-    this.interval =
-      this.client.options.scrapMetricsInterval || DEFAULT_INTERVAL;
+    this.interval = this.client.options.scrapMetricsInterval || DEFAULT_INTERVAL;
 
     this.http = HttpModule.getInstance();
 
@@ -76,7 +75,7 @@ export class MetricsRunner {
       load_avg: this.loadAvg,
       ...memory,
       ...heap,
-      ...eventLoop,
+      ...eventLoop
     };
 
     return metrics;
@@ -90,7 +89,7 @@ export class MetricsRunner {
       counter: this.clientCounterMetrics,
       meauserement: this.clientMeauserementMetrics,
       gauge: this.clientGaugeMetrics,
-      timeSeries: this.clientTimeSeriesMetrics,
+      timeSeries: this.clientTimeSeriesMetrics
     };
 
     this.http.request({
@@ -104,7 +103,7 @@ export class MetricsRunner {
       },
       callback: () => {
         this.clearClientMetrics();
-      },
+      }
     });
   }
 

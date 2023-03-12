@@ -15,8 +15,7 @@ export class CpuUsageMetrics implements IMetrics<number> {
     const idleDifference = endMeasure.idle - this.measureStart.idle;
     const totalDifference = endMeasure.total - this.measureStart.total;
 
-    const cpuUsage =
-      Math.round((100 - (100 * idleDifference) / totalDifference) * 100) / 100;
+    const cpuUsage = Math.round((100 - (100 * idleDifference) / totalDifference) * 100) / 100;
 
     return cpuUsage;
   }

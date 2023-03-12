@@ -25,16 +25,10 @@ export class HttpModule {
     return HttpModule.instance;
   }
 
-  public request({
-    url,
-    method = "POST",
-    body,
-    onError,
-    callback,
-  }: RequestOptionsType) {
+  public request({ url, method = "POST", body, onError, callback }: RequestOptionsType) {
     const requestOptions = {
       ...this.requestHeaders(method),
-      ...this.requestOptions(url, method),
+      ...this.requestOptions(url, method)
     };
 
     const httpModule = this.requestModule();
@@ -47,11 +41,7 @@ export class HttpModule {
     request.end();
   }
 
-  private requestWriteBody(
-    method: RequestType,
-    request: http.ClientRequest,
-    body: {}
-  ) {
+  private requestWriteBody(method: RequestType, request: http.ClientRequest, body: {}) {
     if (method === "POST") {
       request.write(JSON.stringify(body));
     }
@@ -65,10 +55,7 @@ export class HttpModule {
     return new URL(this.host);
   }
 
-  private requestOptions(
-    url: string,
-    method: RequestType
-  ): http.RequestOptions {
+  private requestOptions(url: string, method: RequestType): http.RequestOptions {
     const reqUrl = this.clientURL;
     const path = new URL(url, this.host);
 
@@ -77,21 +64,21 @@ export class HttpModule {
       port: reqUrl.port,
       host: reqUrl.hostname,
       method,
-      path: `${path.pathname}/${Client.config.appId}`,
+      path: `${path.pathname}/${Client.config.appId}`
     };
   }
 
   private requestHeaders(method: RequestType) {
     const headers = Client.client.headers;
     const baseHeaders = {
-      ...headers,
+      ...headers
     };
     if (method !== "POST") return baseHeaders;
     return {
       headers: {
         "Content-Type": "application/json",
-        ...baseHeaders,
-      },
+        ...baseHeaders
+      }
     };
   }
 }

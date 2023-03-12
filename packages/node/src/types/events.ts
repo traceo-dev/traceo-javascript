@@ -7,18 +7,16 @@ export interface EventResponse {
   body?: string;
 }
 
-export interface Incident {
+export type NodeIncidentType = {
   type: string;
   message: string;
   stack: string;
   traces: Trace[];
-  env?: Environment;
   platform: Platform;
-}
+};
 
 export interface Platform {
   arch: string;
   platform: string;
   release: string;
-  // version: string;
 }

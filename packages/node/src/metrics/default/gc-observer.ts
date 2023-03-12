@@ -33,8 +33,8 @@ export class GCObserver implements IMetrics<GCObserverType> {
     return {
       duration: {
         total: toDecimalNumber(total),
-        average: toDecimalNumber(average),
-      },
+        average: toDecimalNumber(average)
+      }
     };
   }
 }

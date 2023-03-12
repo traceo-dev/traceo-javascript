@@ -18,14 +18,14 @@ export class Scrapper {
     const data = {
       node: {
         ...this.heap,
-        ...this.nodeVersion,
+        ...this.nodeVersion
       },
       os: this.osData,
       ...this.packageJsonDependencies,
       npm: rest,
       traceo: {
-        version: traceoVersion,
-      },
+        version: traceoVersion
+      }
     };
 
     this.http.request({
@@ -36,7 +36,7 @@ export class Scrapper {
           `Traceo Error. Something went wrong while sending new runtime data to Traceo. Please report this issue.`
         );
         console.error(`Caused by: ${error.message}`);
-      },
+      }
     });
   }
 
@@ -51,7 +51,7 @@ export class Scrapper {
       npm_package_name: packageName,
       npm_package_description: packageDescription,
       npm_package_version: packageVersion,
-      npm_package_dependencies_traceo: traceoVersion,
+      npm_package_dependencies_traceo: traceoVersion
     } = process.env;
 
     return {
@@ -59,7 +59,7 @@ export class Scrapper {
       packageDescription,
       packageName,
       packageVersion,
-      traceoVersion,
+      traceoVersion
     };
   }
 
@@ -77,7 +77,7 @@ export class Scrapper {
       "homedir",
       "tmpdir",
       "type",
-      "hostname",
+      "hostname"
     ];
     for (const [key, _] of Object.entries(os)) {
       if (osDataToScrap.includes(key)) {

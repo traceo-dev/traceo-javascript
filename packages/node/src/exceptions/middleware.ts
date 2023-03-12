@@ -2,7 +2,7 @@ import {
   TraceoError,
   TraceoIncomingMessage,
   TraceoServerResponse,
-  ErrorMiddlewareOptions,
+  ErrorMiddlewareOptions
 } from "../types";
 import { isClientConnected, isLocalhost } from "../core/is";
 import { getProtocol, getIp } from "../helpers";
@@ -50,10 +50,7 @@ export const errorMiddleware = (options: ErrorMiddlewareOptions = {}) => {
   };
 };
 
-const isToCatch = (
-  req: TraceoIncomingMessage,
-  options: ErrorMiddlewareOptions = {}
-): boolean => {
+const isToCatch = (req: TraceoIncomingMessage, options: ErrorMiddlewareOptions = {}): boolean => {
   if (options.allowHttp !== undefined && !options.allowHttp) {
     const isSecure = getProtocol(req) === "https" ? true : false;
     if (!isSecure) {
