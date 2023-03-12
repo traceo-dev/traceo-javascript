@@ -28,7 +28,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       onError(error, componentStack);
     }
 
-    traceo.sendError(error);
+    traceo.handleError(error);
     this.setState({ error, stacktrace: componentStack });
   }
 

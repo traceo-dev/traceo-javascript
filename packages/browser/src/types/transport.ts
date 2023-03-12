@@ -17,9 +17,9 @@ export type RequestOptions<T> = {
 };
 
 export type BrowserIncidentType = {
-  type: string;
-  message: string;
-  stack: string;
+  type?: string;
+  message?: string;
+  stack?: string;
   browser: BrowserInfoType;
-  traces: Trace[];
+  traces?: Trace[];
 };

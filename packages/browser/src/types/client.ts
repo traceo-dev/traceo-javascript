@@ -2,12 +2,13 @@ export interface TraceoOptions {
   apiKey: string;
   appId: string;
   url: string;
+  offline?: boolean;
 }
 
 export interface TraceoBrowserError extends Error {}
 
 export interface IBrowserClient {
-  sendError(error: TraceoBrowserError): void;
+  handleError(error: TraceoBrowserError): void;
 }
 
 export type Dictionary<T> = {

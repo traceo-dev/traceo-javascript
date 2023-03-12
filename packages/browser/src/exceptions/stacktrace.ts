@@ -12,7 +12,7 @@ const parse = (stackTrace: string): Trace[] => {
 
   for (const line of lines) {
     const stackTraceLine = parseStackTraceLine(line);
-    if (stackTraceLine) {
+    if (stackTraceLine && stackTraceLine?.filename) {
       traces.push(stackTraceLine);
     }
   }
