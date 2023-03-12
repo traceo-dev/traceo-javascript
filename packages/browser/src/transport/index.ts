@@ -10,24 +10,24 @@ export class Transport {
     this._options = options;
   }
 
-  public send(body: object, headers: Dictionary<string>) {
+  public send<T>(body: T, headers: Dictionary<string>) {
     try {
-      const options = this.requestOptions(body, headers);
-      this.transport(options).request();
+      const options = this.requestOptions<T>(body, headers);
+      this.transport<T>(options).request();
     } catch (error) {
       console.log("Error sending data to traceo: ", error);
     }
   }
 
-  private transport(options: RequestOptions) {
+  private transport<T>(options: RequestOptions<T>) {
     if (window.XMLHttpRequest && !window.fetch) {
-      return new XhrTransport(options);
+      return new XhrTransport<T>(options);
     }
 
-    return new FetchTransport(options);
+    return new FetchTransport<T>(options);
   }
 
-  private requestOptions(body: {}, headers: Dictionary<string>): RequestOptions {
+  private requestOptions<T>(body: T, headers: Dictionary<string>): RequestOptions<T> {
     const reqUrl = this.clientURL;
 
     // http://localhost:3000/api/worker/incident/app-id

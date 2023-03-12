@@ -1,12 +1,13 @@
 import { BrowserInfoType } from "./browser";
 import { Dictionary } from "./client";
+import { Trace } from "./stacktrace";
 
 export interface ITransport {
   request(): Promise<void>;
 }
 
-export type RequestOptions = {
-  body: object;
+export type RequestOptions<T> = {
+  body: T;
   headers: Dictionary<string>;
   url: string;
   protocol: string; //"http" | "https"
@@ -20,4 +21,5 @@ export type BrowserIncidentType = {
   message: string;
   stack: string;
   browser: BrowserInfoType;
+  traces: Trace[];
 };
