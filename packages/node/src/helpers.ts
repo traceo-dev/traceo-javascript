@@ -1,9 +1,7 @@
 import { Platform, TraceoIncomingMessage } from "./types";
 import * as os from "os";
 
-export const getIp = (
-  req: TraceoIncomingMessage
-): string | string[] | undefined => {
+export const getIp = (req: TraceoIncomingMessage): string | string[] | undefined => {
   return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 };
 
@@ -15,13 +13,12 @@ export const getOsDetails = (): Platform => {
   return {
     arch: os.arch(),
     platform: os.platform(),
-    release: os.release(),
+    release: os.release()
     // version: os.version(),
   };
 };
 
-export const toDecimalNumber = (val: number, decimal: number = 2) =>
-  Number(val.toFixed(decimal));
+export const toDecimalNumber = (val: number, decimal: number = 2) => Number(val.toFixed(decimal));
 
 // export const sanitizeDsn = (dsn: string) => {
 //   const [secretKey, rest] = dsn

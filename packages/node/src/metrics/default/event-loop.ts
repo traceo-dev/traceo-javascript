@@ -17,7 +17,7 @@ export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
   constructor() {
     if (perf_hooks && perf_hooks.monitorEventLoopDelay) {
       this.histogram = perf_hooks.monitorEventLoopDelay({
-        resolution: 10,
+        resolution: 10
       });
       this.histogram.enable();
     }
@@ -28,7 +28,7 @@ export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
       loop_min: toDecimalNumber(this.histogram.min / 1e6),
       loop_max: toDecimalNumber(this.histogram.max / 1e6),
       loop_mean: toDecimalNumber(this.histogram.mean / 1e6),
-      loop_stddev: toDecimalNumber(this.histogram.stddev / 1e6),
+      loop_stddev: toDecimalNumber(this.histogram.stddev / 1e6)
     };
     this.histogram.reset();
 

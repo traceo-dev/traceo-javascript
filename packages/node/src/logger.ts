@@ -44,10 +44,7 @@ export class Logger {
     return this.printMessage(this.getEntryFromArgs(args), LogLevel.Debug);
   }
 
-  private printMessage(
-    { message }: { message: string },
-    level: LogLevel
-  ): void {
+  private printMessage({ message }: { message: string }, level: LogLevel): void {
     const timestamp = this.timestamp;
     const messagePayload = `[TraceoLogger][${level.toUpperCase()}] - ${timestamp} - ${message}`;
 
@@ -62,7 +59,7 @@ export class Logger {
       message,
       timestamp,
       unix: Math.floor(Date.now() / 1000),
-      resources: this.resources,
+      resources: this.resources
     };
 
     this.logsQueue.push(requestPayload);
@@ -81,7 +78,7 @@ export class Logger {
         },
         callback: () => {
           this.logsQueue = [];
-        },
+        }
       });
     }
   }
@@ -93,7 +90,7 @@ export class Logger {
       minute: "numeric",
       second: "numeric",
       day: "2-digit",
-      month: "2-digit",
+      month: "2-digit"
     };
     return new Date(Date.now()).toLocaleString(
       undefined,
@@ -108,7 +105,7 @@ export class Logger {
       packageVersion: process.env["npm_package_version"],
       traceoVersion:
         process.env["npm_package_dependencies_@traceo-sdk/node"] ??
-        process.env["npm_package_devDependencies_@traceo-sdk/node"],
+        process.env["npm_package_devDependencies_@traceo-sdk/node"]
     };
   }
 
@@ -116,7 +113,7 @@ export class Logger {
     return Object.assign(
       {},
       {
-        message: format.apply(null, args),
+        message: format.apply(null, args)
       }
     );
   }

@@ -32,7 +32,6 @@ lerna-debug.log
 #firebase
 ui-debug.log
 
-.vscode
 .idea
 
 #tarballs

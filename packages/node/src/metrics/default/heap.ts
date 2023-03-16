@@ -15,7 +15,7 @@ export class HeapMetrics implements IMetrics<HeapMetricType> {
     return {
       heap_used: this.usedHeap,
       heap_total: this.totalHeap,
-      heap_rss: this.rss,
+      heap_rss: this.rss
       // heap_detached_contexts: this.detachedContextsNumber,
       // heap_native_contexts: this.nativeContextsNumber,
     };
