@@ -14,6 +14,12 @@ export class FetchTransport<T> implements ITransport {
       body: JSON.stringify(this._options.body)
     };
 
-    await fetch(this._options.url, options);
+    try {
+      await fetch(this._options.url, options);
+    } catch (error) {
+      throw new Error(
+        `[Traceo SDK] Cannot send data to Traceo Platform. Make sure the application is running. Caused by: ${error}`
+      );
+    }
   }
 }

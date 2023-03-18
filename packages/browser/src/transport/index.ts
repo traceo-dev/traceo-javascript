@@ -11,12 +11,8 @@ export class Transport {
   }
 
   public send<T>(body: T, headers: Dictionary<string>) {
-    try {
-      const options = this.requestOptions<T>(body, headers);
-      this.transport<T>(options).request();
-    } catch (error) {
-      console.log("Error sending data to traceo: ", error);
-    }
+    const options = this.requestOptions<T>(body, headers);
+    this.transport<T>(options).request();
   }
 
   private transport<T>(options: RequestOptions<T>) {
