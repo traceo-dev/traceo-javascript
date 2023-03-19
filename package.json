@@ -11,7 +11,8 @@
   "workspaces": [
     "packages/node",
     "packages/browser",
-    "packages/react"
+    "packages/react",
+    "packages/vue"
   ],
   "devDependencies": {
     "@types/node": "10.17.0",

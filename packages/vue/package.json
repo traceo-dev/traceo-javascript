@@ -1,5 +1,5 @@
 {
-    "name": "@traceo-sdk/react",
+    "name": "@traceo-sdk/vue",
     "version": "0.32.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -24,9 +24,6 @@
     },
     "dependencies": {
         "@traceo-sdk/browser": "0.31.14"
-    },
-    "peerDependencies": {
-        "react": ">= 16.8.6 < 19"
     },
     "publishConfig": {
         "access": "public"

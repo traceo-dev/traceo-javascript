@@ -1,4 +1,4 @@
-import { BrowserClient, TraceoOptions, VERSION } from "@traceo-sdk/browser";
+import { BrowserClient, TraceoOptions, VERSION  } from "@traceo-sdk/browser";
 
 export class Client extends BrowserClient {
   constructor(options: TraceoOptions) {
@@ -6,7 +6,7 @@ export class Client extends BrowserClient {
 
     this.options = options;
     this.headers = {
-      "x-sdk-name": "react",
+      "x-sdk-name": "vue",
       "x-sdk-version": VERSION,
       "x-sdk-key": this.options.apiKey
     };

@@ -5,3 +5,4 @@ export type {
   TraceoOptions,
   TraceoBrowserError as TraceoError
 } from "./types/client";
+export { VERSION } from "./version";
