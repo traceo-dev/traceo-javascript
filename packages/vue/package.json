@@ -23,7 +23,7 @@
         "test:watch": "jest --watch --notify"
     },
     "dependencies": {
-        "@traceo-sdk/browser": "0.31.14"
+        "@traceo-sdk/browser": "0.32.0"
     },
     "publishConfig": {
         "access": "public"
