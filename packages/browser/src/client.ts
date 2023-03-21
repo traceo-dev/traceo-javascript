@@ -1,5 +1,6 @@
-import { IBrowserClient, TraceoBrowserError, TraceoOptions } from "./types/client";
+import { BrowserClientConfigType, IBrowserClient, TraceoBrowserError } from "./types/client";
 import { Transport } from "./transport";
+import { Performance } from "./performance";
 import { utils } from "./utils";
 import { stacktrace } from "./exceptions/stacktrace";
 import { Trace } from "./types/stacktrace";
@@ -8,17 +9,39 @@ import { EventOnErrorType, EventOnUnhandledRejectionType, windowEventHandlers } 
 import { BrowserInfoType } from "./types/browser";
 
 export abstract class BrowserClient implements IBrowserClient {
-  public headers!: { [key: string]: any };
-  public options: TraceoOptions;
-  public transport: Transport;
+  private configs: BrowserClientConfigType;
+
+  private transport: Transport;
+  private performance: Performance;
   private browser: BrowserInfoType;
 
-  constructor(options: TraceoOptions) {
-    this.options = options;
-    this.transport = new Transport(this.options);
+  constructor(options: BrowserClientConfigType) {
+    this.configs = options;
+
+    this.configGlobalClient();
+
+    this.transport = new Transport(this.configs);
+    this.performance = new Performance(this.configs);
+
     this.browser = utils.browserDetails();
 
     this.initSDK();
+  }
+
+  private initSDK(): void {
+    if (this.isOffline) {
+      return;
+    }
+
+    if (window !== undefined) {
+      this.initWindowEventHandlers();
+    }
+
+    if (this.configs.options.performance) {
+      this.performance.initPerformanceCollection();
+    }
+
+    this.postInitSDK();
   }
 
   /**
@@ -35,7 +58,7 @@ export abstract class BrowserClient implements IBrowserClient {
   public handleError(error: TraceoBrowserError): void {
     const err = this.constructError(error);
     if (err) {
-      this.transport.send<BrowserIncidentType>(err, this.headers);
+      this.transport.send<BrowserIncidentType>(this.incidentsUrl, err, this.configs.headers);
     }
   }
 
@@ -44,12 +67,11 @@ export abstract class BrowserClient implements IBrowserClient {
    * @param error
    */
   private sendError(error: BrowserIncidentType): void {
-    this.transport.send<BrowserIncidentType>(error, this.headers);
+    this.transport.send<BrowserIncidentType>(this.incidentsUrl, error, this.configs.headers);
   }
 
   private constructError(error?: Error): BrowserIncidentType | null {
     if (!error) {
-      console.debug("-- : --");
       return null;
     }
 
@@ -71,16 +93,19 @@ export abstract class BrowserClient implements IBrowserClient {
     return err;
   }
 
-  private initSDK(): void {
-    if (this.isOffline) {
-      return;
-    }
+  /**
+   * Persist configs data (client options and headers) inside browser window object
+   */
+  private configGlobalClient(): void {
+    window.__TRACEO__ = this.configs;
+  }
 
-    if (window !== undefined) {
-      this.initWindowEventHandlers();
-    }
-
-    this.postInitSDK();
+  /**
+   * Public accessor to browser client configs
+   * @see also utils.getGlobalConfigs
+   */
+  public static get client(): BrowserClientConfigType {
+    return window.__TRACEO__;
   }
 
   private initWindowEventHandlers() {
@@ -98,7 +123,6 @@ export abstract class BrowserClient implements IBrowserClient {
     if (data.error) {
       const eventError = this.constructError(data?.error);
       if (!eventError) {
-        console.debug("-- --- --");
         return;
       }
 
@@ -139,6 +163,10 @@ export abstract class BrowserClient implements IBrowserClient {
   };
 
   private get isOffline(): boolean | undefined {
-    return this.options.offline;
+    return this.configs.options.offline;
+  }
+
+  private get incidentsUrl() {
+    return `/api/worker/incident/${this.configs.options.appId}`;
   }
 }

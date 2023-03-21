@@ -23,3 +23,21 @@ export type BrowserIncidentType = {
   browser: BrowserInfoType;
   traces?: Trace[];
 };
+
+export type BatchPayload = {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | undefined
+    | null
+    | BatchPayload
+    | Array<BatchPayload>;
+};
+
+export interface BatchOptions {
+  url: string;
+  headers: Dictionary<string>;
+  batchMaxMessageCount?: number;
+  batchMaxMessageBytes?: number;
+}

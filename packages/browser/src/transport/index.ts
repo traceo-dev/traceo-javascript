@@ -1,17 +1,17 @@
-import { Dictionary, TraceoOptions } from "../types/client";
+import { BrowserClientConfigType, Dictionary } from "../types/client";
 import { RequestOptions } from "../types/transport";
 import { FetchTransport } from "./fetch";
 import { XhrTransport } from "./xhr";
 
 export class Transport {
-  private _options: TraceoOptions;
+  private _options: BrowserClientConfigType;
 
-  constructor(options: TraceoOptions) {
+  constructor(options: BrowserClientConfigType) {
     this._options = options;
   }
 
-  public send<T>(body: T, headers: Dictionary<string>) {
-    const options = this.requestOptions<T>(body, headers);
+  public send<T>(url: string, body: T, headers: Dictionary<string>) {
+    const options = this.requestOptions<T>(url, body, headers);
     this.transport<T>(options).request();
   }
 
@@ -23,11 +23,13 @@ export class Transport {
     return new FetchTransport<T>(options);
   }
 
-  private requestOptions<T>(body: T, headers: Dictionary<string>): RequestOptions<T> {
+  private requestOptions<T>(
+    url: string,
+    body: T,
+    headers: Dictionary<string>
+  ): RequestOptions<T> {
     const reqUrl = this.clientURL;
-
-    // http://localhost:3000/api/worker/incident/app-id
-    const url = `${reqUrl.origin}/api/worker/incident/${this._options.appId}`;
+    const hostUrl = `${reqUrl.origin}${url}`;
 
     return {
       protocol: reqUrl.protocol,
@@ -37,13 +39,13 @@ export class Transport {
       },
       host: reqUrl.hostname,
       method: "POST",
-      url,
+      url: hostUrl,
       port: reqUrl.port,
       body
     };
   }
 
   private get clientURL(): URL {
-    return new URL(this._options.url);
+    return new URL(this._options.options.url);
   }
 }

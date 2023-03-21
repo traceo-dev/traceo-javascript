@@ -1,5 +1,6 @@
 import Bowser from "bowser";
 import { BrowserInfoType } from "./types/browser";
+import { BrowserClientConfigType } from "./types/client";
 
 const bowser = Bowser.getParser(window.navigator.userAgent);
 
@@ -19,6 +20,26 @@ const browserDetails = (): BrowserInfoType => {
   };
 };
 
+const toBytes = (obj: any) => {
+  let str = null;
+  if (typeof obj === "string") {
+    str = obj;
+  } else {
+    str = JSON.stringify(obj);
+  }
+  const bytes = new TextEncoder().encode(str).length;
+  return bytes;
+};
+
+const getGlobalConfigs = (): BrowserClientConfigType => {
+  return window.__TRACEO__ || {
+    headers: undefined,
+    options: undefined
+  }
+}
+
 export const utils = {
-  browserDetails
+  browserDetails,
+  getGlobalConfigs,
+  toBytes
 };
