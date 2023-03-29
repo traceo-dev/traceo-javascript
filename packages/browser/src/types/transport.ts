@@ -6,6 +6,11 @@ export interface ITransport {
   request(): Promise<void>;
 }
 
+export enum CAPTURE_ENDPOINT {
+  INCIDENT = "/api/capture/incident",
+  BROWSER_PERFS = "/api/capture/browser/perfs"
+}
+
 export type RequestOptions<T> = {
   body: T;
   headers: Dictionary<string>;

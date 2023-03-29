@@ -1,6 +1,6 @@
 import { format } from "util";
 import { HttpModule } from "./core/http";
-import { LogLevel } from "./types";
+import { CAPTURE_ENDPOINT, LogLevel } from "./types";
 import { Client } from "./client";
 
 export class Logger {
@@ -68,7 +68,7 @@ export class Logger {
   private async sendLogs() {
     if (this.logsQueue.length > 0) {
       this.http.request({
-        url: "/api/worker/log",
+        url: CAPTURE_ENDPOINT.LOG,
         body: this.logsQueue,
         onError: (error: Error) => {
           console.error(

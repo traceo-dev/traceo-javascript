@@ -1,6 +1,7 @@
 import * as os from "os";
 import * as v8 from "v8";
 import { HttpModule } from "./core/http";
+import { CAPTURE_ENDPOINT } from "./types";
 
 const NPM_PKG_DEP = "npm_package_dependencies_";
 const NPM_PKG_DEV_DEP = "npm_package_devDependencies_";
@@ -29,7 +30,7 @@ export class Scrapper {
     };
 
     this.http.request({
-      url: "/api/worker/runtime",
+      url: CAPTURE_ENDPOINT.RUNTIME,
       body: data,
       onError: (error: Error) => {
         console.error(

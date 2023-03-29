@@ -4,7 +4,7 @@ import { Performance } from "./performance";
 import { utils } from "./utils";
 import { stacktrace } from "./exceptions/stacktrace";
 import { Trace } from "./types/stacktrace";
-import { BrowserIncidentType } from "./types/transport";
+import { BrowserIncidentType, CAPTURE_ENDPOINT } from "./types/transport";
 import { EventOnErrorType, EventOnUnhandledRejectionType, windowEventHandlers } from "./handlers";
 import { BrowserInfoType } from "./types/browser";
 
@@ -167,6 +167,6 @@ export abstract class BrowserClient implements IBrowserClient {
   }
 
   private get incidentsUrl() {
-    return `/api/worker/incident/${this.configs.options.projectId}`;
+    return `${CAPTURE_ENDPOINT.INCIDENT}/${this.configs.options.projectId}`;
   }
 }

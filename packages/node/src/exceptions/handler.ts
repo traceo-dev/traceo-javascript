@@ -1,7 +1,7 @@
 import { stacktrace } from "stacktrace-parser-node";
 import { HttpModule } from "../core/http";
 import { isClientConnected } from "../core/is";
-import { TraceoError, NodeIncidentType } from "../types";
+import { TraceoError, NodeIncidentType, CAPTURE_ENDPOINT } from "../types";
 import { getOsDetails } from "../helpers";
 
 /**
@@ -30,7 +30,7 @@ const handleException = async (error: TraceoError) => {
   const event: NodeIncidentType = await prepareException(error);
   const httpModule = HttpModule.getInstance();
   httpModule.request({
-    url: "/api/worker/incident",
+    url: CAPTURE_ENDPOINT.INCIDENT,
     body: event,
     onError: (error: Error) => {
       console.error(

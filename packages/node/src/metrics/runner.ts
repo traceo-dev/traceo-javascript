@@ -7,7 +7,7 @@ import { MemoryUsageMetrics } from "./default/memory-usage";
 import { toDecimalNumber } from "../helpers";
 import * as os from "os";
 import { HttpModule } from "../core/http";
-import { DefaultMetrics, Metrics } from "../types";
+import { CAPTURE_ENDPOINT, DefaultMetrics, Metrics } from "../types";
 
 /**
  * Runner for metrics collecting
@@ -93,7 +93,7 @@ export class MetricsRunner {
     };
 
     this.http.request({
-      url: "/api/worker/metrics",
+      url: CAPTURE_ENDPOINT.METRICS,
       body: metrics,
       onError: (error: Error) => {
         console.error(

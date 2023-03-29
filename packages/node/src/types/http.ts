@@ -22,9 +22,9 @@ export enum RequestStatus {
   ERROR = "error"
 }
 
-export enum HTTP_ENDPOINT {
-  LOG = "/api/worker/log",
-  INCIDENT = "/api/worker/incident",
-  RUNTIME = "/api/worker/runtime",
-  METRICS = "/api/worker/metrics"
+export enum CAPTURE_ENDPOINT {
+  LOG = "/api/capture/log",
+  INCIDENT = "/api/capture/incident",
+  RUNTIME = "/api/capture/runtime",
+  METRICS = "/api/capture/metrics"
 }

@@ -1,6 +1,7 @@
 import { Batch } from "../transport/batch";
 import { BrowserClientConfigType } from "../types/client";
 import { BrowserPerformanceType, LargestContentfulPaint, LayoutShift, ObserverType } from "../types/performance";
+import { CAPTURE_ENDPOINT } from "../types/transport";
 import { utils } from "../utils";
 
 export class Performance {
@@ -9,7 +10,7 @@ export class Performance {
     constructor(configs: BrowserClientConfigType) {
         this.batch = new Batch(configs, {
             headers: configs?.headers,
-            url: `/api/worker/browser/perf/${configs?.options?.projectId}`
+            url: `${CAPTURE_ENDPOINT.BROWSER_PERFS}/${configs?.options?.projectId}`
         });
     }
 
