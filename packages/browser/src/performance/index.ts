@@ -18,7 +18,7 @@ export class Performance {
         this.handleCLS();
         this.handleFID();
         this.handleLCP();
-        this.handleNavigationEntry();
+        // this.handleNavigationEntry();
         this.handlePaintEntry();
     }
 
