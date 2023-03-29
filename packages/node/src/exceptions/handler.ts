@@ -18,7 +18,7 @@ import { getOsDetails } from "../helpers";
  *
  *
  */
-export const catchException = async (error: any) => {
+export const catchException = async (error: Error) => {
   if (isClientConnected()) {
     await handleException(error);
   }
