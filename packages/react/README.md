@@ -18,7 +18,7 @@ To use this SDK initialize `TraceoClient` in your application.
 import { TraceoClient } from "@traceo-sdk/react";
 
 new TraceoClient({
-    appId: <your_application_id>,
+    projectId: <your_project_id>,
     apiKey: <app_api_key>,
     url: <you_traceo_instance_url>
 });
@@ -36,7 +36,7 @@ If you are using React in version >16 you can use `ErrorBoundary` component impo
 ```ts
 
 const traceoInstance = new TraceoClient({
-    appId: <your_application_id>,
+    projectId: <your_application_id>,
     apiKey: <app_api_key>,
     url: <you_traceo_instance_url>
 });

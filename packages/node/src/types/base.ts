@@ -1,5 +1,5 @@
 export interface TraceoGlobal {
-  appId?: number;
+  projectId?: number;
   offline?: boolean;
   connection?: {
     host: string;

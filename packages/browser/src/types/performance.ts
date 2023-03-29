@@ -15,6 +15,7 @@ export type MeasureType = {
 
 export type BrowserPerformanceType = {
   event: string;
+  timestamp: number;
   performance: MeasureType[];
 }
 

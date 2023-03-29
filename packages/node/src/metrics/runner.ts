@@ -7,7 +7,7 @@ import { MemoryUsageMetrics } from "./default/memory-usage";
 import { toDecimalNumber } from "../helpers";
 import * as os from "os";
 import { HttpModule } from "../core/http";
-import { DefaultMetrics, Metrics } from "src/types";
+import { DefaultMetrics, Metrics } from "../types";
 
 /**
  * Runner for metrics collecting

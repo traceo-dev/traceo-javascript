@@ -8,7 +8,7 @@ export interface EventResponse {
 }
 
 export type NodeIncidentType = {
-  type: string;
+  name: string;
   message: string;
   stack: string;
   traces: Trace[];

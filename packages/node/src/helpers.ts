@@ -19,17 +19,3 @@ export const getOsDetails = (): Platform => {
 };
 
 export const toDecimalNumber = (val: number, decimal: number = 2) => Number(val.toFixed(decimal));
-
-// export const sanitizeDsn = (dsn: string) => {
-//   const [secretKey, rest] = dsn
-//     .replace("http://", "")
-//     .replace("https://", "")
-//     .split(":");
-//   const [host, appId] = rest.split("/");
-
-//   return {
-//     secretKey,
-//     host,
-//     appId,
-//   };
-// };

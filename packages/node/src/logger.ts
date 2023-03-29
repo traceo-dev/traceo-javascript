@@ -46,7 +46,7 @@ export class Logger {
 
   private printMessage({ message }: { message: string }, level: LogLevel): void {
     const timestamp = this.timestamp;
-    const messagePayload = `[TraceoLogger][${level.toUpperCase()}] - ${timestamp} - ${message}`;
+    const messagePayload = `[${level.toUpperCase()}] - ${timestamp} - ${message}`;
 
     if (level === LogLevel.Error) {
       console[level](`\x1B[31m${messagePayload}\x1B[39m`);

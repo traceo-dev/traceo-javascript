@@ -5,7 +5,7 @@ export type BrowserClientConfigType = {
 
 export interface TraceoOptions {
   apiKey: string;
-  appId: string;
+  projectId: string;
   url: string;
   offline?: boolean;
   performance?: boolean;

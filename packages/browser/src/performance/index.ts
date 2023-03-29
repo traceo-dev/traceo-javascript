@@ -1,6 +1,7 @@
 import { Batch } from "../transport/batch";
 import { BrowserClientConfigType } from "../types/client";
 import { BrowserPerformanceType, LargestContentfulPaint, LayoutShift, ObserverType } from "../types/performance";
+import { utils } from "../utils";
 
 export class Performance {
     private batch: Batch;
@@ -8,7 +9,7 @@ export class Performance {
     constructor(configs: BrowserClientConfigType) {
         this.batch = new Batch(configs, {
             headers: configs?.headers,
-            url: `/api/worker/browser/perf/${configs?.options?.appId}`
+            url: `/api/worker/browser/perf/${configs?.options?.projectId}`
         });
     }
 
@@ -24,6 +25,7 @@ export class Performance {
     // first-paint, first-contentful-paint
     private handlePaintEntry() {
         const handle = (entries: PerformancePaintTiming[]): void => {
+            // const now = dayjs
             for (const entry of entries) {
                 const entryName = entry.name === "first-paint"
                     ? "FP"
@@ -33,6 +35,7 @@ export class Performance {
 
                 const payload: BrowserPerformanceType = {
                     event: entry.entryType,
+                    timestamp: utils.currentUnix(),
                     performance: [{
                         name: entryName,
                         unit: "miliseconds",
@@ -58,6 +61,7 @@ export class Performance {
             const entry = entries[entries.length - 1];
             const payload: BrowserPerformanceType = {
                 event: entry.entryType,
+                timestamp: utils.currentUnix(),
                 performance: [{
                     value: entry.startTime,
                     unit: 'millisecond',
@@ -81,6 +85,7 @@ export class Performance {
 
                 const payload: BrowserPerformanceType = {
                     event: entry.entryType,
+                    timestamp: utils.currentUnix(),
                     performance: [{
                         name: "CLS",
                         unit: " ",
@@ -101,6 +106,7 @@ export class Performance {
             for (const entry of entries) {
                 const payload: BrowserPerformanceType = {
                     event: entry.entryType,
+                    timestamp: utils.currentUnix(),
                     performance: [{
                         name: "FID",
                         unit: "miliseconds",
@@ -119,6 +125,7 @@ export class Performance {
             for (const entry of entries) {
                 const payload: BrowserPerformanceType = {
                     event: entry.entryType,
+                    timestamp: utils.currentUnix(),
                     performance: [
                         {
                             name: "domCompleted",

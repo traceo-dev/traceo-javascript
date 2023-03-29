@@ -64,7 +64,7 @@ export class HttpModule {
       port: reqUrl.port,
       host: reqUrl.hostname,
       method,
-      path: `${path.pathname}/${Client.config.appId}`
+      path: `${path.pathname}/${Client.config.projectId}`
     };
   }
 

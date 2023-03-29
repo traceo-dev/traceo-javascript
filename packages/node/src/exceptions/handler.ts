@@ -47,7 +47,7 @@ const prepareException = async (error: TraceoError): Promise<NodeIncidentType> =
 
   const { message, name, traces } = await stacktrace.parse(error);
   const event: NodeIncidentType = {
-    type: name,
+    name,
     message,
     traces,
     stack,

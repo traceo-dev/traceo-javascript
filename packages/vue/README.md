@@ -20,7 +20,7 @@ import { TraceoClient } from "@traceo-sdk/vue";
 const app = createApp({ ... });
 
 new TraceoClient({
-    appId: <your_application_id>,
+    projectId: <your_project_id>,
     apiKey: <app_api_key>,
     url: <you_traceo_instance_url>
 });

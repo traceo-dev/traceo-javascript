@@ -167,6 +167,6 @@ export abstract class BrowserClient implements IBrowserClient {
   }
 
   private get incidentsUrl() {
-    return `/api/worker/incident/${this.configs.options.appId}`;
+    return `/api/worker/incident/${this.configs.options.projectId}`;
   }
 }
