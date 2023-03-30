@@ -84,6 +84,10 @@ export class Performance {
                     return;
                 }
 
+                if (entry.value === 0) {
+                    return;
+                }
+
                 const payload: BrowserPerformanceType = {
                     event: entry.entryType,
                     timestamp: utils.currentUnix(),
