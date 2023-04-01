@@ -1,7 +1,7 @@
 import { Batch } from "../transport/batch";
 import { BrowserClientConfigType } from "../types/client";
 import { BrowserPerformanceType, LargestContentfulPaint, LayoutShift, ObserverType } from "../types/performance";
-import { CAPTURE_ENDPOINT } from "../types/transport";
+import { BatchPayload, CAPTURE_ENDPOINT } from "../types/transport";
 import { utils } from "../utils";
 
 export class Performance {
@@ -20,6 +20,18 @@ export class Performance {
         this.handleLCP();
         // this.handleNavigationEntry();
         this.handlePaintEntry();
+    }
+
+    // overrride to this.batch.add which inlcude some necessary data for each perfs
+    public addToBatch(payload: BatchPayload): void {
+        const pathname = utils.pathname();
+
+        const batchPayload: BatchPayload = {
+            view: pathname,
+            ...payload
+        };
+
+        this.batch.add(batchPayload);
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/API/PerformancePaintTiming
@@ -44,7 +56,7 @@ export class Performance {
                     }]
                 };
 
-                this.batch.add(payload);
+                this.addToBatch(payload);
             }
         }
 
@@ -69,7 +81,7 @@ export class Performance {
                     name: "LCP"
                 }]
             };
-            this.batch.add(payload);
+            this.addToBatch(payload);
         }
         this.observe<LargestContentfulPaint>("largest-contentful-paint", handle);
     }
@@ -97,7 +109,7 @@ export class Performance {
                         value: entry.value
                     }]
                 }
-                this.batch.add(payload);
+                this.addToBatch(payload);
             }
 
         }
@@ -118,7 +130,7 @@ export class Performance {
                         value: entry.processingStart - entry.startTime
                     }]
                 };
-                this.batch.add(payload);
+                this.addToBatch(payload);
             }
         }
         this.observe<PerformanceEventTiming>("first-input", handle);
@@ -155,7 +167,7 @@ export class Performance {
                     ]
                 };
 
-                this.batch.add(payload);
+                this.addToBatch(payload);
             }
         };
 

@@ -9,7 +9,7 @@ const browserDetails = (): BrowserInfoType => {
   const engine = bowser.getEngine();
   const platform = bowser.getPlatform();
   const os = bowser.getOS();
-  const url = window.location.href;
+  const url = window.location.pathname;
 
   return {
     browser,
@@ -42,9 +42,14 @@ const currentUnix = (): number => {
   return Math.floor(Date.now() / 1000);
 }
 
+const pathname = () => {
+  return window.location.pathname;
+}
+
 export const utils = {
   browserDetails,
   getGlobalConfigs,
   toBytes,
-  currentUnix
+  currentUnix,
+  pathname
 };
