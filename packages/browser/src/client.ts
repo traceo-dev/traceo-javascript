@@ -87,7 +87,7 @@ export abstract class BrowserClient implements IBrowserClient {
       message,
       stack,
       traces,
-      browser: this.browser
+      details: this.browser
     };
 
     return err;
@@ -155,7 +155,7 @@ export abstract class BrowserClient implements IBrowserClient {
         message,
         stack,
         traces,
-        browser: this.browser
+        details: this.browser
       };
 
       this.sendError(err);
@@ -167,6 +167,6 @@ export abstract class BrowserClient implements IBrowserClient {
   }
 
   private get incidentsUrl() {
-    return `${CAPTURE_ENDPOINT.INCIDENT}/${this.configs.options.projectId}`;
+    return CAPTURE_ENDPOINT.INCIDENT;
   }
 }

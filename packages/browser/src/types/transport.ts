@@ -25,7 +25,7 @@ export type BrowserIncidentType = {
   type?: string;
   message?: string;
   stack?: string;
-  browser: BrowserInfoType;
+  details: object;
   traces?: Trace[];
 };
 

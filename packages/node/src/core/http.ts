@@ -15,7 +15,7 @@ export class HttpModule {
   private host: string;
 
   constructor() {
-    this.host = Client.config.url;
+    this.host = Client.config.host;
   }
 
   public static getInstance() {
@@ -64,7 +64,7 @@ export class HttpModule {
       port: reqUrl.port,
       host: reqUrl.hostname,
       method,
-      path: `${path.pathname}/${Client.config.projectId}`
+      path: path.pathname
     };
   }
 

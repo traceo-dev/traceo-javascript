@@ -1,14 +1,17 @@
-import { BrowserClient, TraceoOptions, VERSION } from "@traceo-sdk/browser";
+import { BrowserClient, ClientOptions, VERSION } from "@traceo-sdk/browser";
 
 export class Client extends BrowserClient {
-  constructor(options: TraceoOptions) {
+  constructor(apiKey: string, options: ClientOptions) {
     super({
       headers: {
         "x-sdk-name": "vue",
         "x-sdk-version": VERSION,
-        "x-sdk-key": options.apiKey
+        "x-sdk-key": apiKey
       },
-      options
+      options: {
+        ...options,
+        apiKey
+      }
     });
   }
 

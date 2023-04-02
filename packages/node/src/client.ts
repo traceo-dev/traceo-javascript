@@ -1,7 +1,7 @@
 import { Logger } from "./logger";
 import { Metrics } from "./metrics";
 import { Scrapper } from "./scrapper";
-import { TraceoOptions } from "./types";
+import { ClientOptions, TraceoOptions } from "./types";
 import { TRACEO_SDK_VERSION } from "./version";
 
 export class Client {
@@ -13,14 +13,18 @@ export class Client {
   public readonly logger: Logger;
   public options: TraceoOptions;
 
-  constructor(options: TraceoOptions) {
+  constructor(apiKey: string, options: ClientOptions) {
     this.configGlobalClient();
 
-    this.options = options;
+    this.options = {
+      ...options,
+      apiKey
+    };
+
     this.headers = {
       "x-sdk-name": "node",
       "x-sdk-version": TRACEO_SDK_VERSION,
-      "x-sdk-key": this.options.apiKey
+      "x-sdk-key": apiKey
     };
 
     this.logger = new Logger();
@@ -56,10 +60,6 @@ export class Client {
       this._metrics.register();
     }
   }
-
-  // private metrics(): IClientMetrics {
-  //   return this._metrics;
-  // }
 
   private configGlobalClient(): void {
     global["__TRACEO__"] = this;

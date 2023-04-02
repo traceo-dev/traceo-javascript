@@ -46,6 +46,6 @@ export class Transport {
   }
 
   private get clientURL(): URL {
-    return new URL(this._options.options.url);
+    return new URL(this._options.options.host);
   }
 }

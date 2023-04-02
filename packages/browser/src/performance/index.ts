@@ -10,7 +10,7 @@ export class Performance {
     constructor(configs: BrowserClientConfigType) {
         this.batch = new Batch(configs, {
             headers: configs?.headers,
-            url: `${CAPTURE_ENDPOINT.BROWSER_PERFS}/${configs?.options?.projectId}`
+            url: CAPTURE_ENDPOINT.BROWSER_PERFS
         });
     }
 
@@ -25,9 +25,17 @@ export class Performance {
     // overrride to this.batch.add which inlcude some necessary data for each perfs
     public addToBatch(payload: BatchPayload): void {
         const pathname = utils.pathname();
+        const { browser, platform } = utils.browserDetails();
 
         const batchPayload: BatchPayload = {
             view: pathname,
+            browser: {
+                name: browser.name,
+                version: browser.version
+            },
+            platform: {
+                type: platform?.type
+            },
             ...payload
         };
 

@@ -1,8 +1,7 @@
 export interface TraceoOptions {
   apiKey: string;
-  projectId: string;
   offline?: boolean;
-  url: string;
+  host: string;
   /* 
     Determining if Traceo should collect metrics from the application.
   */
@@ -19,6 +18,8 @@ export interface TraceoOptions {
   */
   scrapLogsInterval?: number;
 }
+
+export interface ClientOptions extends Omit<TraceoOptions, "apiKey"> { }
 
 export interface ErrorMiddlewareOptions {
   allowLocalhost?: boolean;

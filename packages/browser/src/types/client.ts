@@ -5,13 +5,14 @@ export type BrowserClientConfigType = {
 
 export interface TraceoOptions {
   apiKey: string;
-  projectId: string;
-  url: string;
+  host: string;
   offline?: boolean;
   performance?: boolean;
 }
 
-export interface TraceoBrowserError extends Error {}
+export interface ClientOptions extends Omit<TraceoOptions, "apiKey"> { };
+
+export interface TraceoBrowserError extends Error { }
 
 export interface IBrowserClient {
   handleError(error: TraceoBrowserError): void;

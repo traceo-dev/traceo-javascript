@@ -1,19 +1,17 @@
-import { TraceoOptions } from "../src/types";
+import { ClientOptions } from "../src/types";
 import { Client } from "../src/client";
 
 describe("TraceClient", () => {
   let client: Client;
 
-  const clientOptions: TraceoOptions = {
-    apiKey: "sasdasdads",
-    projectId: "92873498234",
-    url: "/",
+  const clientOptions: ClientOptions = {
+    host: "/",
     collectMetrics: true,
     scrapMetricsInterval: 15,
   };
 
   beforeEach(() => {
-    client = new Client(clientOptions);
+    client = new Client("xxx", clientOptions);
   });
 
   //
