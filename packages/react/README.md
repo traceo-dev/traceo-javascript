@@ -46,5 +46,15 @@ const traceoInstance = new TraceoClient({
 
 ```
 
+### Performance
+To enable collect of web-vitals data, you have to set `performance` param to `true` like below:
+
+```ts
+new TraceoClient(<app_api_key>, {
+    host: <traceo_host>,
+    performance: true
+});
+```
+
 ## Support
 Feel free to create Issues, Pull Request and Discussion.
