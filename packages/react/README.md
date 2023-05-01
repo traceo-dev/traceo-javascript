@@ -17,10 +17,8 @@ To use this SDK initialize `TraceoClient` in your application.
 ```ts
 import { TraceoClient } from "@traceo-sdk/react";
 
-new TraceoClient({
-    projectId: <your_project_id>,
-    apiKey: <app_api_key>,
-    url: <you_traceo_instance_url>
+new TraceoClient(<app_api_key>, {
+    host: <traceo_host>
 });
 
 // your code
@@ -49,4 +47,4 @@ const traceoInstance = new TraceoClient({
 ```
 
 ## Support
-Feel free to create Issues, Pull Request and Discussion. If you want to contact with the developer working on this package click [here](mailto:piotr.szewczyk.software@gmail.com).
+Feel free to create Issues, Pull Request and Discussion.
