@@ -75,7 +75,7 @@ export abstract class BrowserClient implements IBrowserClient {
       return null;
     }
 
-    const type = error?.name || "Error";
+    const name = error?.name || "Error";
     const message = error?.message || "(No message)";
 
     const stack = error?.stack || "";
@@ -83,7 +83,7 @@ export abstract class BrowserClient implements IBrowserClient {
     const traces: Trace[] = stacktrace.parse(stack);
 
     const err: BrowserIncidentType = {
-      type,
+      name,
       message,
       stack,
       traces,
@@ -127,7 +127,7 @@ export abstract class BrowserClient implements IBrowserClient {
       }
 
       if (data?.event) {
-        eventError.type = data.event.toString();
+        eventError.name = data.event.toString();
       }
 
       this.sendError(eventError);
@@ -139,7 +139,7 @@ export abstract class BrowserClient implements IBrowserClient {
     if ("reason" in data.event) {
       const reason = data.event.reason;
 
-      const type = "Unhandled rejection";
+      const name = "Unhandled rejection";
       const message = reason.message;
 
       let stack = "";
@@ -151,7 +151,7 @@ export abstract class BrowserClient implements IBrowserClient {
 
       const traces: Trace[] = stacktrace.parse(stack);
       const err: BrowserIncidentType = {
-        type,
+        name,
         message,
         stack,
         traces,

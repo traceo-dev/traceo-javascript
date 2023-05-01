@@ -22,7 +22,7 @@ export type RequestOptions<T> = {
 };
 
 export type BrowserIncidentType = {
-  type?: string;
+  name?: string;
   message?: string;
   stack?: string;
   details: object;
