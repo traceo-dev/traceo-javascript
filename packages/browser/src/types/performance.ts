@@ -1,23 +1,28 @@
-export type ObserverType = "navigation" | "paint" | "layout-shift" | "first-input" | "largest-contentful-paint";
+export type ObserverType =
+  | "navigation"
+  | "paint"
+  | "layout-shift"
+  | "first-input"
+  | "largest-contentful-paint";
 
 export type SupportedObserverType =
-  PerformanceEventTiming[] |
-  PerformanceNavigationTiming[] |
-  PerformancePaintTiming[] |
-  LayoutShift[] |
-  LargestContentfulPaint[];
+  | PerformanceEventTiming[]
+  | PerformanceNavigationTiming[]
+  | PerformancePaintTiming[]
+  | LayoutShift[]
+  | LargestContentfulPaint[];
 
 export type MeasureType = {
   name: string | undefined;
   unit: string | undefined;
   value: string | number | boolean | null | undefined;
-}
+};
 
 export type BrowserPerformanceType = {
   event: string;
   timestamp: number;
   performance: MeasureType[];
-}
+};
 
 interface LayoutShiftAttribution {
   node?: Node;

@@ -19,7 +19,7 @@ export interface TraceoOptions {
   scrapLogsInterval?: number;
 }
 
-export interface ClientOptions extends Omit<TraceoOptions, "apiKey"> { }
+export interface ClientOptions extends Omit<TraceoOptions, "apiKey"> {}
 
 export interface ErrorMiddlewareOptions {
   allowLocalhost?: boolean;

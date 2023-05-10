@@ -32,19 +32,21 @@ const toBytes = (obj: any) => {
 };
 
 const getGlobalConfigs = (): BrowserClientConfigType => {
-  return window.__TRACEO__ || {
-    headers: undefined,
-    options: undefined
-  }
+  return (
+    window.__TRACEO__ || {
+      headers: undefined,
+      options: undefined
+    }
+  );
 };
 
 const currentUnix = (): number => {
   return Math.floor(Date.now() / 1000);
-}
+};
 
 const pathname = () => {
   return window.location.pathname;
-}
+};
 
 export const utils = {
   browserDetails,

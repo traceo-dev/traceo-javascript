@@ -15,5 +15,5 @@ export class Client extends BrowserClient {
     });
   }
 
-  public postInitSDK(): void { }
+  public postInitSDK(): void {}
 }

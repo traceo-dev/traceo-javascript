@@ -1,7 +1,7 @@
 export type BrowserClientConfigType = {
-  headers: Dictionary<string>,
+  headers: Dictionary<string>;
   options: TraceoOptions;
-}
+};
 
 export interface TraceoOptions {
   apiKey: string;
@@ -10,9 +10,9 @@ export interface TraceoOptions {
   performance?: boolean;
 }
 
-export interface ClientOptions extends Omit<TraceoOptions, "apiKey"> { };
+export interface ClientOptions extends Omit<TraceoOptions, "apiKey"> {}
 
-export interface TraceoBrowserError extends Error { }
+export interface TraceoBrowserError extends Error {}
 
 export interface IBrowserClient {
   handleError(error: TraceoBrowserError): void;
