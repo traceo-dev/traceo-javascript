@@ -10,6 +10,7 @@
   },
   "workspaces": [
     "packages/node",
+    "packages/opentelemetry-node",
     "packages/browser",
     "packages/react",
     "packages/vue"
