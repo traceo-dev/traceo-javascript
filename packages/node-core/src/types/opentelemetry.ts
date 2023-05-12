@@ -115,6 +115,10 @@ export interface SumMetricData extends BaseMetricData {
     readonly dataPoints: DataPoint<number>[];
     readonly isMonotonic: boolean;
 }
+export interface TimeSeriesMetricData extends BaseMetricData {
+    readonly dataPointType: DataPointType.TIME_SERIES;
+    readonly dataPoints: DataPoint<number>[];
+}
 export interface GaugeMetricData extends BaseMetricData {
     readonly dataPointType: DataPointType.GAUGE;
     readonly dataPoints: DataPoint<number>[];
@@ -136,7 +140,7 @@ export interface ExponentialHistogramMetricData extends BaseMetricData {
 /**
  * Represents an aggregated metric data.
  */
-export type MetricData = SumMetricData | GaugeMetricData | HistogramMetricData | ExponentialHistogramMetricData;
+export type MetricData = SumMetricData | GaugeMetricData | TimeSeriesMetricData | HistogramMetricData | ExponentialHistogramMetricData;
 export interface ScopeMetrics {
     scope: InstrumentationScope;
     metrics: MetricData[];
@@ -167,7 +171,11 @@ export enum DataPointType {
      * A sum metric data point has a single numeric value and a
      * monotonicity-indicator.
      */
-    SUM = 3
+    SUM = 3,
+    /**
+     * A value correlated to time when occur
+     */
+    TIME_SERIES = 4
 }
 /**
  * Represents an aggregated point data with start time, end time and their

@@ -1,4 +1,4 @@
-import { utils, IMetrics, EventLoopMetricType, MetricType, InstrumentType, ValueType } from "@traceo-sdk/node-core";
+import { utils, IMetrics, EventLoopMetricType, MetricType, InstrumentType, ValueType, DataPointType } from "@traceo-sdk/node-core";
 
 let perf_hooks;
 try {
@@ -38,7 +38,8 @@ export class EventLoopMetrics implements IMetrics {
         type: InstrumentType.TIME_SERIES,
         valueType: ValueType.DOUBLE
       },
-      dataPoints: [{ value: data[metric] }]
+      dataPointType: DataPointType.TIME_SERIES,
+      dataPoints: [{ value: data[metric], startTime: [utils.currentUnix()] }]
     }));
 
     return response;

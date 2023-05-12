@@ -1,4 +1,4 @@
-import { utils, IMetrics, MetricType, InstrumentType } from "@traceo-sdk/node-core";
+import { utils, IMetrics, MetricType, InstrumentType, DataPointType } from "@traceo-sdk/node-core";
 
 /**
  * https://www.geeksforgeeks.org/node-js-v8-getheapstatistics-method/
@@ -13,15 +13,18 @@ export class HeapMetrics implements IMetrics {
     return [
       {
         descriptor: { name: "heap_used", type: InstrumentType.TIME_SERIES },
-        dataPoints: [{ value: this.usedHeap }]
+        dataPointType: DataPointType.TIME_SERIES,
+        dataPoints: [{ value: this.usedHeap, startTime: [utils.currentUnix()] }]
       },
       {
         descriptor: { name: "heap_total", type: InstrumentType.TIME_SERIES },
-        dataPoints: [{ value: this.totalHeap }]
+        dataPointType: DataPointType.TIME_SERIES,
+        dataPoints: [{ value: this.totalHeap, startTime: [utils.currentUnix()] }]
       },
       {
         descriptor: { name: "heap_rss", type: InstrumentType.TIME_SERIES },
-        dataPoints: [{ value: this.rss }]
+        dataPointType: DataPointType.TIME_SERIES,
+        dataPoints: [{ value: this.rss, startTime: [utils.currentUnix()] }]
       },
     ];
   }

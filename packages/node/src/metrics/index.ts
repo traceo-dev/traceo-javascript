@@ -2,7 +2,7 @@ import { CpuUsageMetrics } from "./default/cpu-usage";
 import { EventLoopMetrics } from "./default/event-loop";
 import { HeapMetrics } from "./default/heap";
 import { MemoryUsageMetrics } from "./default/memory-usage";
-import { transport, CAPTURE_ENDPOINT, utils, MetricType, InstrumentType, ValueType, INodeClient } from "@traceo-sdk/node-core";
+import { transport, CAPTURE_ENDPOINT, utils, MetricType, InstrumentType, ValueType, INodeClient, DataPointType } from "@traceo-sdk/node-core";
 import * as os from "os";
 
 /**
@@ -79,9 +79,10 @@ export class MetricsRunner {
       descriptor: {
         name: "load_avg",
         type: InstrumentType.OBSERVABLE_GAUGE,
-        valueType: ValueType.DOUBLE
+        valueType: ValueType.DOUBLE,
       },
-      dataPoints: [{ value: load }]
+      dataPointType: DataPointType.GAUGE,
+      dataPoints: [{ value: load, startTime: [utils.currentUnix()] }]
     }]
   }
 }

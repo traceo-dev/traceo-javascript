@@ -1,5 +1,5 @@
 import * as os from "os";
-import { IMetrics, utils, MetricType, InstrumentType } from "@traceo-sdk/node-core";
+import { IMetrics, utils, MetricType, InstrumentType, DataPointType } from "@traceo-sdk/node-core";
 
 export class MemoryUsageMetrics implements IMetrics {
   constructor() { }
@@ -7,12 +7,14 @@ export class MemoryUsageMetrics implements IMetrics {
   public collect(): MetricType {
     return [
       {
-        descriptor: { name: "memory_usage_mb", type: InstrumentType.TIME_SERIES, unit: "mb", },
-        dataPoints: [{ value: this.usedMemory }]
+        descriptor: { name: "memory_usage_mb", type: InstrumentType.TIME_SERIES, unit: "mb" },
+        dataPointType: DataPointType.TIME_SERIES,
+        dataPoints: [{ value: this.usedMemory, startTime: [utils.currentUnix()] }]
       },
       {
-        descriptor: { name: "memory_usage_percentage", type: InstrumentType.TIME_SERIES, unit: "mb", },
-        dataPoints: [{ value: this.percentageUsage }]
+        descriptor: { name: "memory_usage_percentage", type: InstrumentType.TIME_SERIES, unit: "mb" },
+        dataPointType: DataPointType.TIME_SERIES,
+        dataPoints: [{ value: this.percentageUsage, startTime: [utils.currentUnix()] }]
       }
     ];
   }

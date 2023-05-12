@@ -1,5 +1,5 @@
 import * as os from "os";
-import { IMetrics, AverageCpuMetricType, InstrumentType, ValueType, MetricType } from "@traceo-sdk/node-core";
+import { IMetrics, AverageCpuMetricType, InstrumentType, ValueType, MetricType, utils, DataPointType } from "@traceo-sdk/node-core";
 
 export class CpuUsageMetrics implements IMetrics {
   private measureStart: AverageCpuMetricType;
@@ -22,7 +22,8 @@ export class CpuUsageMetrics implements IMetrics {
         type: InstrumentType.TIME_SERIES,
         valueType: ValueType.DOUBLE
       },
-      dataPoints: [{ value: cpuUsage }]
+      dataPointType: DataPointType.TIME_SERIES,
+      dataPoints: [{ value: cpuUsage, startTime: [utils.currentUnix()] }]
     }];
   }
 
