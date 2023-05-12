@@ -8,18 +8,31 @@ import {
     AggregationTemporality,
     ExportResult,
     ExportResultCode,
-    ResourceMetrics
+    ResourceMetrics,
+    INodeClient
 } from "@traceo-sdk/node-core";
+import { getGlobalTraceo } from "@traceo-sdk/node-core/dist/utils";
 
 export class TraceoOTLPMetricExporter extends OTLPMetricExporter {
-    constructor(config: OTLPExporterNodeConfigBase) {
+    private client: INodeClient;
+
+    constructor(config?: OTLPExporterNodeConfigBase) {
         super({
             ...config,
             temporalityPreference: AggregationTemporality.DELTA
         });
+
+        this.client = getGlobalTraceo();
     }
 
     public export(metrics: ResourceMetrics, resultCallback: (result: ExportResult) => void): void {
+        const isOffline = this.client.options.offline;
+        const isCollectMetrics = this.client.options.collectMetrics;
+
+        if (isOffline || !isCollectMetrics) {
+            return;
+        }
+
         const scopeMetrics: ScopeMetrics[] = metrics.scopeMetrics;
         const flatMetrics: MetricData[] = scopeMetrics.flatMap(scope => scope.metrics || []);
 
