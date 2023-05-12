@@ -1,5 +1,5 @@
 {
-    "name": "@traceo-sdk/opentelemetry-node",
+    "name": "@traceo-sdk/node-core",
     "version": "0.32.2",
     "author": "Traceo",
     "main": "dist/index.js",
@@ -23,15 +23,8 @@
         "test": "jest",
         "test:watch": "jest --watch --notify"
     },
-    "dependencies": {
-        "@opentelemetry/api": "^1.4.1",
-        "@opentelemetry/exporter-metrics-otlp-proto": "^0.38.0",
-        "@traceo-sdk/node-core": "0.32.2",
-        "os": "^0.1.2",
-        "stacktrace-parser-node": "^1.1.3"
-    },
     "devDependencies": {
-        "@types/node": "^20.1.1"
+        "@types/node": "10.17.0"
     },
     "engines": {
         "node": ">=10"

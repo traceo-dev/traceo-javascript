@@ -1,36 +1,40 @@
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto";
-import { AggregationTemporality } from "@opentelemetry/sdk-metrics";
-import * as opentelemetry from "@opentelemetry/sdk-node";
-import { TraceoClient } from "@traceo-sdk/node";
+import {
+    CAPTURE_ENDPOINT,
+    MetricData,
+    ScopeMetrics,
+    transport,
+    OTLPExporterNodeConfigBase,
+    AggregationTemporality,
+    ExportResult,
+    ExportResultCode,
+    ResourceMetrics
+} from "@traceo-sdk/node-core";
 
-type ExporterOptions = {
-    client: TraceoClient,
-    /**
-     * Add docs
-     */
-    temporalityPreference?: AggregationTemporality
-}
 export class TraceoOTLPMetricExporter extends OTLPMetricExporter {
-    private client: TraceoClient;
-
-    constructor({
-        client,
-        temporalityPreference = AggregationTemporality.DELTA
-    }: ExporterOptions) {
+    constructor(config: OTLPExporterNodeConfigBase) {
         super({
-            temporalityPreference
+            ...config,
+            temporalityPreference: AggregationTemporality.DELTA
         });
-
-        this.client = client;
     }
 
-    export(metrics: opentelemetry.metrics.ResourceMetrics, resultCallback: (result: opentelemetry.core.ExportResult) => void): void {
+    public export(metrics: ResourceMetrics, resultCallback: (result: ExportResult) => void): void {
+        const scopeMetrics: ScopeMetrics[] = metrics.scopeMetrics;
+        const flatMetrics: MetricData[] = scopeMetrics.flatMap(scope => scope.metrics || []);
 
-        /**
-         * TODO: Create common node package and put there http/request service
-         */
-        // parse metrics and send to traceo
+        transport.request({
+            body: flatMetrics,
+            url: CAPTURE_ENDPOINT.METRICS,
+            method: "POST",
+            onError: (error: Error) => {
+                console.error(
+                    `Traceo Error. Something went wrong while sending new Metrics to Traceo. Please report this issue.`
+                );
+                console.error(`Caused by: ${error.message}`);
+            }
+        });
 
-        resultCallback({ code: opentelemetry.core.ExportResultCode.SUCCESS });
+        resultCallback({ code: ExportResultCode.SUCCESS });
     }
 };
