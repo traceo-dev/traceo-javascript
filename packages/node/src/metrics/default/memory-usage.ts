@@ -7,11 +7,11 @@ export class MemoryUsageMetrics implements IMetrics {
   public collect(): MetricType {
     return [
       {
-        descriptor: { name: "memory_usage_mb", type: InstrumentType.HISTOGRAM, unit: "", },
+        descriptor: { name: "memory_usage_mb", type: InstrumentType.TIME_SERIES, unit: "mb", },
         dataPoints: [{ value: this.usedMemory }]
       },
       {
-        descriptor: { name: "memory_usage_percentage", type: InstrumentType.HISTOGRAM, unit: "", },
+        descriptor: { name: "memory_usage_percentage", type: InstrumentType.TIME_SERIES, unit: "mb", },
         dataPoints: [{ value: this.percentageUsage }]
       }
     ];

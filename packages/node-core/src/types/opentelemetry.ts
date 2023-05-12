@@ -18,7 +18,7 @@ export interface Attributes {
  *
  * null or undefined attribute values are invalid and will result in undefined behavior.
  */
-export declare type AttributeValue = string | number | boolean | Array<null | undefined | string> | Array<null | undefined | number> | Array<null | undefined | boolean>;
+export type AttributeValue = string | number | boolean | Array<null | undefined | string> | Array<null | undefined | number> | Array<null | undefined | boolean>;
 
 /**
  * Defines High-Resolution Time.
@@ -32,7 +32,7 @@ export declare type AttributeValue = string | number | boolean | Array<null | un
  * HrTime[1] = Number((1609504210.150 - HrTime[0]).toFixed(9)) * 1e9 = 150000000.
  * This is represented in HrTime format as [1609504210, 150000000].
  */
-export declare type HrTime = [number, number];
+export type HrTime = [number, number];
 
 /**
  * An instrumentation scope consists of the name and optional version
@@ -136,7 +136,7 @@ export interface ExponentialHistogramMetricData extends BaseMetricData {
 /**
  * Represents an aggregated metric data.
  */
-export declare type MetricData = SumMetricData | GaugeMetricData | HistogramMetricData | ExponentialHistogramMetricData;
+export type MetricData = SumMetricData | GaugeMetricData | HistogramMetricData | ExponentialHistogramMetricData;
 export interface ScopeMetrics {
     scope: InstrumentationScope;
     metrics: MetricData[];
@@ -145,7 +145,7 @@ export interface ScopeMetrics {
 /**
  * The aggregated point data type.
  */
-export declare enum DataPointType {
+export enum DataPointType {
     /**
      * A histogram data point contains a histogram statistics of collected
      * values with a list of explicit bucket boundaries and statistics such
@@ -199,17 +199,20 @@ export interface DataPoint<T> {
 /**
  * Supported types of metric instruments.
  */
-export declare enum InstrumentType {
+export enum InstrumentType {
     COUNTER = "COUNTER",
     HISTOGRAM = "HISTOGRAM",
     UP_DOWN_COUNTER = "UP_DOWN_COUNTER",
     OBSERVABLE_COUNTER = "OBSERVABLE_COUNTER",
     OBSERVABLE_GAUGE = "OBSERVABLE_GAUGE",
-    OBSERVABLE_UP_DOWN_COUNTER = "OBSERVABLE_UP_DOWN_COUNTER"
+    OBSERVABLE_UP_DOWN_COUNTER = "OBSERVABLE_UP_DOWN_COUNTER",
+
+    // NEW
+    TIME_SERIES = "TIME_SERIES"
 }
 
 /** The Type of value. It describes how the data is reported. */
-export declare enum ValueType {
+export enum ValueType {
     INT = 0,
     DOUBLE = 1
 }
@@ -294,7 +297,7 @@ export interface ResourceMetrics {
     scopeMetrics: ScopeMetrics[];
 }
 
-export declare enum ExportResultCode {
+export enum ExportResultCode {
     SUCCESS = 0,
     FAILED = 1
 }

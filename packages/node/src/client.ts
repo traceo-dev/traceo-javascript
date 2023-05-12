@@ -23,6 +23,8 @@ export class Client extends CoreClient implements INodeClient {
     const scrapper = new Scrapper();
     scrapper.collect();
 
+    console.log("options: ", this.options);
+
     if (this.options.collectMetrics) {
       const metrics = new MetricsRunner();
       metrics.register();

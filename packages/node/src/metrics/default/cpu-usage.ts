@@ -19,7 +19,7 @@ export class CpuUsageMetrics implements IMetrics {
     return [{
       descriptor: {
         name: "cpu_usage",
-        type: InstrumentType.HISTOGRAM,
+        type: InstrumentType.TIME_SERIES,
         valueType: ValueType.DOUBLE
       },
       dataPoints: [{ value: cpuUsage }]

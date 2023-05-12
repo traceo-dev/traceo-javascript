@@ -35,7 +35,7 @@ export class EventLoopMetrics implements IMetrics {
     const response: MetricType = metrics.map((metric) => ({
       descriptor: {
         name: metric,
-        type: InstrumentType.HISTOGRAM,
+        type: InstrumentType.TIME_SERIES,
         valueType: ValueType.DOUBLE
       },
       dataPoints: [{ value: data[metric] }]

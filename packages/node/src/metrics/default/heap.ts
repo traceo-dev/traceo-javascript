@@ -12,15 +12,15 @@ export class HeapMetrics implements IMetrics {
   collect(): MetricType {
     return [
       {
-        descriptor: { name: "heap_used", type: InstrumentType.HISTOGRAM, unit: "", },
+        descriptor: { name: "heap_used", type: InstrumentType.TIME_SERIES },
         dataPoints: [{ value: this.usedHeap }]
       },
       {
-        descriptor: { name: "heap_total", type: InstrumentType.HISTOGRAM, unit: "", },
+        descriptor: { name: "heap_total", type: InstrumentType.TIME_SERIES },
         dataPoints: [{ value: this.totalHeap }]
       },
       {
-        descriptor: { name: "heap_rss", type: InstrumentType.HISTOGRAM, unit: "", },
+        descriptor: { name: "heap_rss", type: InstrumentType.TIME_SERIES },
         dataPoints: [{ value: this.rss }]
       },
     ];

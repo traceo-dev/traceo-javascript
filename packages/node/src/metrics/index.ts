@@ -42,7 +42,7 @@ export class MetricsRunner {
   }
 
   public register(): void {
-    setInterval(() => this.collectMetrics(), this.interval * 1000);
+    setInterval(() => this.collectMetrics(), this.interval);
   }
 
   private collectMetrics(): void {
