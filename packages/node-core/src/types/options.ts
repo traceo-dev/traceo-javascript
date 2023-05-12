@@ -1,25 +1,30 @@
 /**
- * Interface with data provided by client
+ * Interface with data provided by client.
  */
 export interface TraceoOptions {
   apiKey: string;
+
+  /**
+   * In offline mode no data is collected by the SDK.
+   */
+
   offline?: boolean;
+  
+  /**
+   * Host address to your Traceo Platform.
+   */
   host: string;
+
   /* 
-    Determining if Traceo should collect metrics from the application.
-  */
+   * Determining if Traceo should collect metrics from the application.
+   * Default set to true.    
+   */
   collectMetrics?: boolean;
+
   /*
-    The number of seconds that the metrics are downloaded. 
-    The minimum value for this field is 15. If the value is set below this value, 
-    then the data will be downloaded just for this time.
-  */
-  scrapMetricsInterval?: number;
-  /*
-    Default is 60s.
-    Value can't be smaller than 15.
-  */
-  scrapLogsInterval?: number;
+   * The number of miliseconds to scrap metrics and logs.
+   */
+  exportIntervalMillis?: number;
 }
 
 export interface ErrorMiddlewareOptions {

@@ -1,19 +1,18 @@
-import { Client } from "../client";
 import { CpuUsageMetrics } from "./default/cpu-usage";
 import { EventLoopMetrics } from "./default/event-loop";
 import { HeapMetrics } from "./default/heap";
 import { MemoryUsageMetrics } from "./default/memory-usage";
-import { transport, CAPTURE_ENDPOINT, utils, MetricType, InstrumentType, ValueType } from "@traceo-sdk/node-core";
+import { transport, CAPTURE_ENDPOINT, utils, MetricType, InstrumentType, ValueType, INodeClient } from "@traceo-sdk/node-core";
 import * as os from "os";
 
 /**
  * Runner for metrics collecting
  */
 
-const DEFAULT_INTERVAL = 30; //seconds
+const DEFAULT_INTERVAL = 15000; //ms -> 15s
 
 export class MetricsRunner {
-  private client: Client;
+  private client: INodeClient;
 
   private readonly interval: number;
 
@@ -28,13 +27,13 @@ export class MetricsRunner {
   public clientMeauserementMetrics: Record<string, number[]>;
 
   constructor() {
-    this.client = global["__TRACEO__"];
+    this.client = utils.getGlobalTraceo();
 
     if (!this.client.options.collectMetrics) {
       return;
     }
 
-    this.interval = this.client.options.scrapMetricsInterval || DEFAULT_INTERVAL;
+    this.interval = this.client.options.exportIntervalMillis || DEFAULT_INTERVAL;
 
     this.cpuUsage = new CpuUsageMetrics();
     this.eventLoop = new EventLoopMetrics();

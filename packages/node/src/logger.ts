@@ -2,17 +2,18 @@ import { format } from "util";
 import { CAPTURE_ENDPOINT, LogLevel, transport } from "@traceo-sdk/node-core";
 import { getGlobalTraceo } from "@traceo-sdk/node-core/dist/utils";
 
+const DEFAULT_EXPORT_INTERVAL = 15000;
 export class Logger {
   private logsQueue = [];
-  private INTERVAL = 60;
+  private INTERVAL = DEFAULT_EXPORT_INTERVAL;
 
   constructor() {
     this.logsQueue = [];
 
     const client = getGlobalTraceo();
         
-    const scrapLogsInterval = client.options.scrapLogsInterval;
-    if (scrapLogsInterval && scrapLogsInterval >= 15) {
+    const scrapLogsInterval = client.options.exportIntervalMillis;
+    if (scrapLogsInterval && scrapLogsInterval >= DEFAULT_EXPORT_INTERVAL) {
       this.INTERVAL = scrapLogsInterval;
     }
 

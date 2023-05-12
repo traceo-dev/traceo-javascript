@@ -5,11 +5,13 @@ export abstract class CoreClient implements INodeClient {
     public options: TraceoOptions;
     public headers: { [key: string]: any; };
 
-    constructor(apiKey: string, options: Omit<TraceoOptions, "apiKey">) {
+    constructor(apiKey: string, { collectMetrics = true, offline = false, ...opts }: Omit<TraceoOptions, "apiKey">) {
         this.configGlobalClient();
 
         this.options = {
-            ...options,
+            ...opts,
+            collectMetrics,
+            offline,
             apiKey
         };
 
