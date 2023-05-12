@@ -1,20 +1,24 @@
 import * as os from "os";
-import { IMetrics } from "../../types/interfaces/IMetrics";
-import { toDecimalNumber } from "../../helpers";
-import { MemoryUsageMetricType } from "../../types";
+import { IMetrics, utils, MetricType, InstrumentType } from "@traceo-sdk/node-core";
 
-export class MemoryUsageMetrics implements IMetrics<MemoryUsageMetricType> {
-  constructor() {}
+export class MemoryUsageMetrics implements IMetrics {
+  constructor() { }
 
-  public collect(): MemoryUsageMetricType {
-    return {
-      memory_usage_mb: this.usedMemory,
-      memory_usage_percentage: this.percentageUsage
-    };
+  public collect(): MetricType {
+    return [
+      {
+        descriptor: { name: "memory_usage_mb", type: InstrumentType.HISTOGRAM, unit: "", },
+        dataPoints: [{ value: this.usedMemory }]
+      },
+      {
+        descriptor: { name: "memory_usage_percentage", type: InstrumentType.HISTOGRAM, unit: "", },
+        dataPoints: [{ value: this.percentageUsage }]
+      }
+    ];
   }
 
   private get percentageUsage() {
-    return toDecimalNumber((this.usedMemory / this.totalMemory) * 100);
+    return utils.toDecimalNumber((this.usedMemory / this.totalMemory) * 100);
   }
 
   private get usedMemory() {

@@ -1,67 +1,31 @@
+import { INodeClient, CoreClient, TraceoOptions, Dictionary } from "@traceo-sdk/node-core";
 import { Logger } from "./logger";
-import { Metrics } from "./metrics";
+import { MetricsRunner } from "./metrics";
 import { Scrapper } from "./scrapper";
-import { ClientOptions, TraceoOptions } from "./types";
-import { TRACEO_SDK_VERSION } from "./version";
 
-export class Client {
-  public headers: { [key: string]: any };
-
-  private _metrics: Metrics;
-  private scrappedData: Scrapper;
+export class Client extends CoreClient implements INodeClient {
+  public headers: Dictionary<any>;
 
   public readonly logger: Logger;
   public options: TraceoOptions;
 
-  constructor(apiKey: string, options: ClientOptions) {
-    this.configGlobalClient();
-
-    this.options = {
-      ...options,
-      apiKey
-    };
-
-    this.headers = {
-      "x-sdk-name": "node",
-      "x-sdk-version": TRACEO_SDK_VERSION,
-      "x-sdk-key": apiKey
-    };
+  constructor(apiKey: string, options: Omit<TraceoOptions, "apiKey">) {
+    super(apiKey, options);
 
     this.logger = new Logger();
-    this.scrappedData = new Scrapper();
-
-    this._metrics = new Metrics();
-
-    if (!this.isOffline) {
-      this.initSDK();
-    }
-  }
-
-  public static get client(): Client {
-    return global["__TRACEO__"];
   }
 
   public static get logger(): Logger {
-    return this.client.logger;
+    return this.logger;
   }
 
-  public static get config(): TraceoOptions {
-    return this.client.options;
-  }
-
-  private get isOffline(): boolean {
-    return this.options.offline;
-  }
-
-  private initSDK(): void {
-    this.scrappedData.collect();
+  public initSDK(): void {
+    const scrapper = new Scrapper();
+    scrapper.collect();
 
     if (this.options.collectMetrics) {
-      this._metrics.register();
+      const metrics = new MetricsRunner();
+      metrics.register();
     }
-  }
-
-  private configGlobalClient(): void {
-    global["__TRACEO__"] = this;
   }
 }

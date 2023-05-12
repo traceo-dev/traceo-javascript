@@ -1,6 +1,4 @@
-import { IMetrics } from "../../types/interfaces/IMetrics";
-import { toDecimalNumber } from "../../helpers";
-import { HeapMetricType } from "../../types";
+import { utils, IMetrics, MetricType, InstrumentType } from "@traceo-sdk/node-core";
 
 /**
  * https://www.geeksforgeeks.org/node-js-v8-getheapstatistics-method/
@@ -8,29 +6,36 @@ import { HeapMetricType } from "../../types";
  */
 const TO_MB = 1024 * 1024;
 
-export class HeapMetrics implements IMetrics<HeapMetricType> {
-  constructor() {}
+export class HeapMetrics implements IMetrics {
+  constructor() { }
 
-  collect(): HeapMetricType {
-    return {
-      heap_used: this.usedHeap,
-      heap_total: this.totalHeap,
-      heap_rss: this.rss
-      // heap_detached_contexts: this.detachedContextsNumber,
-      // heap_native_contexts: this.nativeContextsNumber,
-    };
+  collect(): MetricType {
+    return [
+      {
+        descriptor: { name: "heap_used", type: InstrumentType.HISTOGRAM, unit: "", },
+        dataPoints: [{ value: this.usedHeap }]
+      },
+      {
+        descriptor: { name: "heap_total", type: InstrumentType.HISTOGRAM, unit: "", },
+        dataPoints: [{ value: this.totalHeap }]
+      },
+      {
+        descriptor: { name: "heap_rss", type: InstrumentType.HISTOGRAM, unit: "", },
+        dataPoints: [{ value: this.rss }]
+      },
+    ];
   }
 
   private get usedHeap() {
-    return toDecimalNumber(process.memoryUsage().heapUsed / TO_MB);
+    return utils.toDecimalNumber(process.memoryUsage().heapUsed / TO_MB);
   }
 
   private get totalHeap() {
-    return toDecimalNumber(process.memoryUsage().heapTotal / TO_MB);
+    return utils.toDecimalNumber(process.memoryUsage().heapTotal / TO_MB);
   }
 
   private get rss() {
-    return toDecimalNumber(process.memoryUsage().rss / TO_MB);
+    return utils.toDecimalNumber(process.memoryUsage().rss / TO_MB);
   }
 
   // private get detachedContextsNumber() {

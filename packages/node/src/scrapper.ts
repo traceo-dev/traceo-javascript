@@ -1,20 +1,15 @@
 import * as os from "os";
 import * as v8 from "v8";
-import { HttpModule } from "./core/http";
-import { CAPTURE_ENDPOINT } from "./types";
+import { CAPTURE_ENDPOINT, transport } from "@traceo-sdk/node-core";
 
 const NPM_PKG_DEP = "npm_package_dependencies_";
 const NPM_PKG_DEV_DEP = "npm_package_devDependencies_";
 const NPM_PKG_SCRIPTS = "npm_package_scripts_";
 
 export class Scrapper {
-  private readonly http: HttpModule;
+  constructor() { }
 
-  constructor() {
-    this.http = HttpModule.getInstance();
-  }
-
-  collect(): void {
+  public collect(): void {
     const { traceoVersion, ...rest } = this.packageJsonInfo;
     const data = {
       node: {
@@ -29,7 +24,7 @@ export class Scrapper {
       }
     };
 
-    this.http.request({
+    transport.request({
       url: CAPTURE_ENDPOINT.RUNTIME,
       body: data,
       onError: (error: Error) => {

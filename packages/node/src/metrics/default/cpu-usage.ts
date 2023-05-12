@@ -1,15 +1,14 @@
 import * as os from "os";
-import { AverageCpuMetricType } from "src/types";
-import { IMetrics } from "../../types/interfaces/IMetrics";
+import { IMetrics, AverageCpuMetricType, InstrumentType, ValueType, MetricType } from "@traceo-sdk/node-core";
 
-export class CpuUsageMetrics implements IMetrics<number> {
-  measureStart: AverageCpuMetricType;
+export class CpuUsageMetrics implements IMetrics {
+  private measureStart: AverageCpuMetricType;
 
   constructor() {
     this.measureStart = this.calculateAverageCpuUsage();
   }
 
-  public collect(): number {
+  public collect(): MetricType {
     const endMeasure = this.calculateAverageCpuUsage();
 
     const idleDifference = endMeasure.idle - this.measureStart.idle;
@@ -17,7 +16,14 @@ export class CpuUsageMetrics implements IMetrics<number> {
 
     const cpuUsage = Math.round((100 - (100 * idleDifference) / totalDifference) * 100) / 100;
 
-    return cpuUsage;
+    return [{
+      descriptor: {
+        name: "cpu_usage",
+        type: InstrumentType.HISTOGRAM,
+        valueType: ValueType.DOUBLE
+      },
+      dataPoints: [{ value: cpuUsage }]
+    }];
   }
 
   private calculateAverageCpuUsage(): AverageCpuMetricType {
