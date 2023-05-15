@@ -13,7 +13,7 @@ import {
 export class TraceoTracingExporter extends OTLPTraceExporter {
     private client: INodeClient;
 
-    constructor(config: OTLPExporterNodeConfigBase) {
+    constructor(config: OTLPExporterNodeConfigBase = {}) {
         super(config);
 
         this.client = utils.getGlobalTraceo();

@@ -16,7 +16,7 @@ import {
 export class TraceoMetricExporter extends OTLPMetricExporter {
     private client: INodeClient;
 
-    constructor(config?: OTLPExporterNodeConfigBase) {
+    constructor(config: OTLPExporterNodeConfigBase = {}) {
         super({
             ...config,
             temporalityPreference: AggregationTemporality.DELTA
