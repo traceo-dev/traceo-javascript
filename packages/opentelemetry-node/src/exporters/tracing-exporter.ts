@@ -26,8 +26,27 @@ export class TraceoTracingExporter extends OTLPTraceExporter {
             return;
         }
 
+        const spans = items.map((span) => {
+            return {
+                name: span.name,
+                attributes: span.attributes,
+                links: span.links,
+                events: span.events,
+                duration: span.duration,
+                startTime: span.startTime,
+                endTime: span.endTime,
+                parentSpanId: span?.parentSpanId,
+                kind: span.kind,
+                resource: span.resource,
+                spanContext: {
+                    traceId: span.spanContext().traceId,
+                    spanId: span.spanContext().spanId
+                }
+            }
+        });
+
         transport.request({
-            body: items,
+            body: spans,
             url: CAPTURE_ENDPOINT.TRACING,
             method: "POST",
             callback: () => {
