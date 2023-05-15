@@ -1,1 +1,2 @@
-export { TraceoOTLPMetricExporter } from "./otel-metrics-exporter";
+export { TraceoMetricExporter } from "./metrics-exporter";
+export { TraceoTracingExporter } from "./tracing-exporter";

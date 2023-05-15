@@ -25,7 +25,8 @@
     },
     "dependencies": {
         "@opentelemetry/api": "^1.4.1",
-        "@opentelemetry/exporter-metrics-otlp-proto": "^0.38.0",
+        "@opentelemetry/exporter-metrics-otlp-http": "^0.38.0",
+        "@opentelemetry/exporter-trace-otlp-http": "^0.39.1",
         "@traceo-sdk/node-core": "0.32.2",
         "os": "^0.1.2",
         "stacktrace-parser-node": "^1.1.3"

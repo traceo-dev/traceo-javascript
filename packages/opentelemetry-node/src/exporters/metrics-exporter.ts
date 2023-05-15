@@ -1,4 +1,4 @@
-import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto";
+import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
 import {
     CAPTURE_ENDPOINT,
     MetricData,
@@ -9,11 +9,11 @@ import {
     ExportResult,
     ExportResultCode,
     ResourceMetrics,
-    INodeClient
+    INodeClient,
+    utils
 } from "@traceo-sdk/node-core";
-import { getGlobalTraceo } from "@traceo-sdk/node-core/dist/utils";
 
-export class TraceoOTLPMetricExporter extends OTLPMetricExporter {
+export class TraceoMetricExporter extends OTLPMetricExporter {
     private client: INodeClient;
 
     constructor(config?: OTLPExporterNodeConfigBase) {
@@ -22,7 +22,7 @@ export class TraceoOTLPMetricExporter extends OTLPMetricExporter {
             temporalityPreference: AggregationTemporality.DELTA
         });
 
-        this.client = getGlobalTraceo();
+        this.client = utils.getGlobalTraceo();
     }
 
     public export(metrics: ResourceMetrics, resultCallback: (result: ExportResult) => void): void {
@@ -40,14 +40,17 @@ export class TraceoOTLPMetricExporter extends OTLPMetricExporter {
             body: flatMetrics,
             url: CAPTURE_ENDPOINT.METRICS,
             method: "POST",
+            callback: () => {
+                resultCallback({ code: ExportResultCode.SUCCESS });
+            },
             onError: (error: Error) => {
                 console.error(
-                    `Traceo Error. Something went wrong while sending new Metrics to Traceo. Please report this issue.`
+                    `Traceo Error. Something went wrong while sending new metrics to Traceo. Please report this issue.`
                 );
                 console.error(`Caused by: ${error.message}`);
+
+                resultCallback({ code: ExportResultCode.FAILED });
             }
         });
-
-        resultCallback({ code: ExportResultCode.SUCCESS });
     }
 };
