@@ -30,6 +30,7 @@ export class TraceoTracingExporter extends OTLPTraceExporter {
             return {
                 name: span.name,
                 attributes: span.attributes,
+                status: span.status,
                 links: span.links,
                 events: span.events,
                 duration: span.duration,
