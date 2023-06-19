@@ -19,7 +19,7 @@ import { TraceoClient } from "@traceo-sdk/vue";
 
 const app = createApp({ ... });
 
-new TraceoClient(<app_api_key>, {
+new TraceoClient(<project_api_key>, {
     host: <traceo_host>
 });
 
@@ -31,7 +31,7 @@ app.mount("#app");
 ### Performance
 To enable collect of web-vitals data, you have to set performance param to true like below:
 ```ts
-new TraceoClient(<app_api_key>, {
+new TraceoClient(<project_api_key>, {
     host: <traceo_host>,
     performance: true
 });

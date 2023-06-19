@@ -6,6 +6,7 @@ A set of SDKS for integration with the [Traceo Platform](https://github.com/trac
 This repository contains all the SDKs needed for integration in Javascript/Typescript projects. Detailed instructions for the SDK implementation process can be found in the individual README for each SDK.
 
 - [`@traceo-sdk/node`](https://github.com/traceo-dev/traceo-sdk/tree/develop/packages/node) - NodeJS.
+- [`@traceo-sdk/opentelemetry-node`](https://github.com/traceo-dev/traceo-sdk/tree/develop/packages/opentelemetry-node) - Open Telemetry for Node.
 - [`@traceo-sdk/react`](https://github.com/traceo-dev/traceo-sdk/tree/develop/packages/react) - React.
 - [`@traceo-sdk/vue`](https://github.com/traceo-dev/traceo-sdk/tree/develop/packages/vue) - Vue.
 

@@ -17,13 +17,12 @@ First what you need is to initialize `TraceoClient` in your application.
 ```ts
 import { TraceoClient } from "@traceo-sdk/node";
 
-new TraceoClient({
-    projectId: <your_project_id>,
-    url: <you_traceo_instance_url>
+new TraceoClient(<project_api_key>, {
+    host: <traceo_host>
 });
 ```
 
-`TraceoClient` options require two parameters. `projectId` is a unique identifier of an application created on the Traceo platform. Information about application ID you can get from the Traceo Platform in `Settings|Details` tab.  `url` parameter specifies the address where your Traceo Platform instance is located. Address should be passed in the format `<protocol>://<domain>:<port>`, eq. `http://localhost:3000`.
+`TraceoClient` constructor required two attribtues. First one in api key which you can generate in project settings. Second is an object contains required attribute `host` which specifies the address where your Traceo Platform instance is located. Address should be passed in the format `<protocol>://<domain>:<port>`, eq. `http://localhost:3000`.
 
 ### Incidents handling
 Incidents are all the exceptions and other problems that occur in your application. After each exception occurs, the Traceo SDK catches the exception and sends it to the Traceo Platform. This package provide the two main ways to catch exceptions in your application - `Handlers` and `Middlewares`.
@@ -96,7 +95,8 @@ The Traceo SDK can be used also as a logger. Each log is saved on the Traceo Pla
 ```ts
 import { TraceoClient } from "@traceo-sdk/node";
 
-new TraceoClient({
+new TraceoClient(<project_api_key>, {
+    host: <traceo_host>,
     scrapLogsInterval: 120 //in seconds
 });
 ```
