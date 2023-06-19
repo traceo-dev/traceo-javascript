@@ -1,6 +1,6 @@
 {
     "name": "@traceo-sdk/react",
-    "version": "0.32.1",
+    "version": "0.33.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "license": "MIT",
@@ -23,7 +23,7 @@
         "test:watch": "jest --watch --notify"
     },
     "dependencies": {
-        "@traceo-sdk/browser": "0.32.1"
+        "@traceo-sdk/browser": "0.33.0"
     },
     "peerDependencies": {
         "react": ">= 16.8.6 < 19"

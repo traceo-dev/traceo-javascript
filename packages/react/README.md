@@ -17,7 +17,7 @@ To use this SDK initialize `TraceoClient` in your application.
 ```ts
 import { TraceoClient } from "@traceo-sdk/react";
 
-new TraceoClient(<app_api_key>, {
+new TraceoClient(<project_api_key>, {
     host: <traceo_host>
 });
 
@@ -33,10 +33,8 @@ If you are using React in version >16 you can use `ErrorBoundary` component impo
 
 ```ts
 
-const traceoInstance = new TraceoClient({
-    projectId: <your_application_id>,
-    apiKey: <app_api_key>,
-    url: <you_traceo_instance_url>
+const traceoInstance = new TraceoClient(<project_api_key>, {
+    host: <traceo_host>
 });
 
 
@@ -50,7 +48,7 @@ const traceoInstance = new TraceoClient({
 To enable collect of web-vitals data, you have to set `performance` param to `true` like below:
 
 ```ts
-new TraceoClient(<app_api_key>, {
+new TraceoClient(<project_api_key>, {
     host: <traceo_host>,
     performance: true
 });
