@@ -12,6 +12,7 @@ This repository contains all the SDKs needed for integration in Javascript/Types
 
 # Other
 - [`@traceo-sdk/browser`](https://github.com/traceo/traceo-sdk/tree/develop/packages/browser): A package that contains common logic used by all SDKs running in the browser.
+- [`@traceo-sdk/node-core`](https://github.com/traceo/traceo-sdk/tree/develop/packages/node-core): A package that contains common logic used by all SDKs used NodeJS.
 
 ## Support
 Feel free to create Issues, Pull Request and Discussion. If you want to contact with the developer working on this package click [here](mailto:piotr.szewczyk.software@gmail.com).
