@@ -1,7 +1,6 @@
 import { INodeClient, CoreClient, TraceoOptions, Dictionary } from "@traceo-sdk/node-core";
 import { Logger } from "./logger";
 import { MetricsRunner } from "./metrics";
-import { Scrapper } from "./scrapper";
 
 export class Client extends CoreClient implements INodeClient {
   public headers: Dictionary<any>;
@@ -20,11 +19,6 @@ export class Client extends CoreClient implements INodeClient {
   }
 
   public initSDK(): void {
-    const scrapper = new Scrapper();
-    scrapper.collect();
-
-    console.log("options: ", this.options);
-
     if (this.options.collectMetrics) {
       const metrics = new MetricsRunner();
       metrics.register();

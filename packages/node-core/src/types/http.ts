@@ -25,7 +25,6 @@ export enum RequestStatus {
 export enum CAPTURE_ENDPOINT {
   LOG = "/api/capture/log",
   INCIDENT = "/api/capture/incident",
-  RUNTIME = "/api/capture/runtime",
   METRICS = "/api/capture/metrics",
   TRACING = "/api/capture/traces"
 }

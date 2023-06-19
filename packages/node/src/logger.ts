@@ -11,7 +11,7 @@ export class Logger {
     this.logsQueue = [];
 
     const client = getGlobalTraceo();
-        
+
     const scrapLogsInterval = client.options.exportIntervalMillis;
     if (scrapLogsInterval && scrapLogsInterval >= DEFAULT_EXPORT_INTERVAL) {
       this.INTERVAL = scrapLogsInterval;
@@ -21,7 +21,7 @@ export class Logger {
   }
 
   private register() {
-    setInterval(() => this.sendLogs(), this.INTERVAL * 1000);
+    setInterval(() => this.sendLogs(), this.INTERVAL);
   }
 
   public log(...args: any[]): void {
@@ -58,11 +58,21 @@ export class Logger {
       level,
       message,
       timestamp,
-      unix: Math.floor(Date.now() / 1000),
+      unix: this.getUnix,
       resources: this.resources
     };
 
     this.logsQueue.push(requestPayload);
+  }
+
+  private get getUnix(): number {
+    const currentDate = new Date();
+
+    const unixTimestamp = Math.floor(currentDate.getTime() / 1000);
+    const milliseconds = currentDate.getMilliseconds();
+    const unixWithMilliseconds = unixTimestamp * 1000 + milliseconds;
+
+    return unixWithMilliseconds;
   }
 
   private async sendLogs() {
@@ -84,18 +94,16 @@ export class Logger {
   }
 
   private get timestamp(): string {
-    const localeStringOptions = {
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      day: "2-digit",
-      month: "2-digit"
-    };
-    return new Date(Date.now()).toLocaleString(
-      undefined,
-      localeStringOptions as Intl.DateTimeFormatOptions
-    );
+    const date = new Date();
+    const year = date.getFullYear().toString().padStart(4, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    const milliseconds = date.getMilliseconds().toString().padStart(3, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}:${milliseconds}`;
   }
 
   private get resources(): { [key: string]: any } {
