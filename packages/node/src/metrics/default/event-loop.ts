@@ -1,15 +1,13 @@
-import { EventLoopMetricType } from "src/types";
-import { toDecimalNumber } from "../../helpers";
-import { IMetrics } from "../../types/interfaces/IMetrics";
+import { utils, IMetrics, EventLoopMetricType, MetricType, InstrumentType, ValueType, DataPointType } from "@traceo-sdk/node-core";
 
 let perf_hooks;
 try {
   perf_hooks = require("perf_hooks");
 } catch {
-  console.warn(`[Traceo] Yoour Node.JS version is too old to user perf_hooks.`);
+  console.warn(`[Traceo] Your NodeJS version is too old to user perf_hooks.`);
 }
 
-export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
+export class EventLoopMetrics implements IMetrics {
   //TODO: should be type here, but in different versions there are a different type,
   //eq. perf_hooks.IntervalHistogram
   histogram: any;
@@ -23,15 +21,27 @@ export class EventLoopMetrics implements IMetrics<EventLoopMetricType> {
     }
   }
 
-  public collect(): EventLoopMetricType {
+  public collect(): MetricType {
+    const metrics = ["loop_min", "loop_max", "loop_mean", "loop_stddev"];
+
     const data: EventLoopMetricType = {
-      loop_min: toDecimalNumber(this.histogram.min / 1e6),
-      loop_max: toDecimalNumber(this.histogram.max / 1e6),
-      loop_mean: toDecimalNumber(this.histogram.mean / 1e6),
-      loop_stddev: toDecimalNumber(this.histogram.stddev / 1e6)
+      loop_min: utils.toDecimalNumber(this.histogram.min / 1e6),
+      loop_max: utils.toDecimalNumber(this.histogram.max / 1e6),
+      loop_mean: utils.toDecimalNumber(this.histogram.mean / 1e6),
+      loop_stddev: utils.toDecimalNumber(this.histogram.stddev / 1e6)
     };
     this.histogram.reset();
 
-    return data;
+    const response: MetricType = metrics.map((metric) => ({
+      descriptor: {
+        name: metric,
+        type: InstrumentType.TIME_SERIES,
+        valueType: ValueType.DOUBLE
+      },
+      dataPointType: DataPointType.TIME_SERIES,
+      dataPoints: [{ value: data[metric], startTime: [utils.currentUnix()] }]
+    }));
+
+    return response;
   }
 }

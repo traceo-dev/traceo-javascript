@@ -1,3 +1,11 @@
+import { DeepPartial } from ".";
+import { MetricData } from "./opentelemetry";
+
+export type MetricType = DeepPartial<MetricData>[];
+export interface IMetrics {
+  collect(): MetricType;
+}
+
 export type EventLoopMetricType = {
   loop_min: number;
   loop_max: number;
@@ -35,8 +43,6 @@ export type DefaultMetrics = {
 export interface Metrics extends DefaultMetrics {
   [key: string]: any;
 }
-
-export type MeauserementValueType = { [key: string]: any };
 
 export type AverageCpuMetricType = {
   idle: number;

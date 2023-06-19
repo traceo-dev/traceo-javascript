@@ -1,8 +1,5 @@
 import { stacktrace } from "stacktrace-parser-node";
-import { HttpModule } from "../core/http";
-import { isClientConnected } from "../core/is";
-import { TraceoError, NodeIncidentType, CAPTURE_ENDPOINT } from "../types";
-import { getOsDetails } from "../helpers";
+import { transport, TraceoError, NodeIncidentType, CAPTURE_ENDPOINT, utils } from "@traceo-sdk/node-core";
 
 /**
  * For using in middleware and as an function in try/catch
@@ -19,7 +16,7 @@ import { getOsDetails } from "../helpers";
  *
  */
 export const catchException = async (error: Error) => {
-  if (isClientConnected()) {
+  if (utils.isClientConnected()) {
     await handleException(error);
   }
 
@@ -28,8 +25,8 @@ export const catchException = async (error: Error) => {
 
 const handleException = async (error: TraceoError) => {
   const event: NodeIncidentType = await prepareException(error);
-  const httpModule = HttpModule.getInstance();
-  httpModule.request({
+
+  transport.request({
     url: CAPTURE_ENDPOINT.INCIDENT,
     body: event,
     onError: (error: Error) => {
@@ -43,7 +40,7 @@ const handleException = async (error: TraceoError) => {
 
 const prepareException = async (error: TraceoError): Promise<NodeIncidentType> => {
   const { stack } = error;
-  const platform = getOsDetails();
+  const platform = utils.getOsDetails();
 
   const { message, name, traces } = await stacktrace.parse(error);
   const event: NodeIncidentType = {
