@@ -3,7 +3,7 @@ import {
   TraceoIncomingMessage,
   TraceoServerResponse,
   ErrorMiddlewareOptions,
-  utils,
+  utils
 } from "@traceo-sdk/node-core";
 import { catchException } from "./handler";
 /**

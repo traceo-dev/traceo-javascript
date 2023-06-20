@@ -1,5 +1,11 @@
 import { stacktrace } from "stacktrace-parser-node";
-import { transport, TraceoError, NodeIncidentType, CAPTURE_ENDPOINT, utils } from "@traceo-sdk/node-core";
+import {
+  transport,
+  TraceoError,
+  NodeIncidentType,
+  CAPTURE_ENDPOINT,
+  utils
+} from "@traceo-sdk/node-core";
 
 /**
  * For using in middleware and as an function in try/catch

@@ -1,4 +1,12 @@
-import { utils, IMetrics, EventLoopMetricType, MetricType, InstrumentType, ValueType, DataPointType } from "@traceo-sdk/node-core";
+import {
+  utils,
+  IMetrics,
+  EventLoopMetricType,
+  MetricType,
+  InstrumentType,
+  ValueType,
+  DataPointType
+} from "@traceo-sdk/node-core";
 
 let perf_hooks;
 try {

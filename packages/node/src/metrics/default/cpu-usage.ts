@@ -1,5 +1,13 @@
 import * as os from "os";
-import { IMetrics, AverageCpuMetricType, InstrumentType, ValueType, MetricType, utils, DataPointType } from "@traceo-sdk/node-core";
+import {
+  IMetrics,
+  AverageCpuMetricType,
+  InstrumentType,
+  ValueType,
+  MetricType,
+  utils,
+  DataPointType
+} from "@traceo-sdk/node-core";
 
 export class CpuUsageMetrics implements IMetrics {
   private measureStart: AverageCpuMetricType;
@@ -16,15 +24,17 @@ export class CpuUsageMetrics implements IMetrics {
 
     const cpuUsage = Math.round((100 - (100 * idleDifference) / totalDifference) * 100) / 100;
 
-    return [{
-      descriptor: {
-        name: "cpu_usage",
-        type: InstrumentType.TIME_SERIES,
-        valueType: ValueType.DOUBLE
-      },
-      dataPointType: DataPointType.TIME_SERIES,
-      dataPoints: [{ value: cpuUsage, startTime: [utils.currentUnix()] }]
-    }];
+    return [
+      {
+        descriptor: {
+          name: "cpu_usage",
+          type: InstrumentType.TIME_SERIES,
+          valueType: ValueType.DOUBLE
+        },
+        dataPointType: DataPointType.TIME_SERIES,
+        dataPoints: [{ value: cpuUsage, startTime: [utils.currentUnix()] }]
+      }
+    ];
   }
 
   private calculateAverageCpuUsage(): AverageCpuMetricType {

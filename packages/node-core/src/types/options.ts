@@ -9,15 +9,15 @@ export interface TraceoOptions {
    */
 
   offline?: boolean;
-  
+
   /**
    * Host address to your Traceo Platform.
    */
   host: string;
 
-  /* 
+  /*
    * Determining if Traceo should collect metrics from the application.
-   * Default set to true.    
+   * Default set to true.
    */
   collectMetrics?: boolean;
 
@@ -39,4 +39,4 @@ export interface ErrorMiddlewareOptions {
 export interface INodeClient {
   options: TraceoOptions;
   headers: { [key: string]: any };
-};
+}

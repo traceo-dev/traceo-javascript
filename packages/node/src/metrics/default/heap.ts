@@ -1,4 +1,10 @@
-import { utils, IMetrics, MetricType, InstrumentType, DataPointType } from "@traceo-sdk/node-core";
+import {
+  utils,
+  IMetrics,
+  MetricType,
+  InstrumentType,
+  DataPointType
+} from "@traceo-sdk/node-core";
 
 /**
  * https://www.geeksforgeeks.org/node-js-v8-getheapstatistics-method/
@@ -7,7 +13,7 @@ import { utils, IMetrics, MetricType, InstrumentType, DataPointType } from "@tra
 const TO_MB = 1024 * 1024;
 
 export class HeapMetrics implements IMetrics {
-  constructor() { }
+  constructor() {}
 
   collect(): MetricType {
     return [
@@ -25,7 +31,7 @@ export class HeapMetrics implements IMetrics {
         descriptor: { name: "heap_rss", type: InstrumentType.TIME_SERIES },
         dataPointType: DataPointType.TIME_SERIES,
         dataPoints: [{ value: this.rss, startTime: [utils.currentUnix()] }]
-      },
+      }
     ];
   }
 

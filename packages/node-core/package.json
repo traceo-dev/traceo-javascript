@@ -8,6 +8,9 @@
     "files": [
         "dist"
     ],
+    "publishConfig": {
+        "access": "public"
+    },
     "homepage": "https://github.com/traceo-dev/traceo-sdk",
     "repository": {
         "type": "git",
