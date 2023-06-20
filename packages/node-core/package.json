@@ -24,7 +24,7 @@
         "test:watch": "jest --watch --notify"
     },
     "devDependencies": {
-        "@types/node": "10.17.0"
+        "@types/node": "20.3.1"
     },
     "engines": {
         "node": ">=10"
