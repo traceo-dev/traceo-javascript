@@ -13,6 +13,15 @@
         "type": "git",
         "url": "git://github.com/traceo-dev/traceo-sdk.git"
     },
+    "keywords": [
+        "error",
+        "exception",
+        "bug",
+        "analytics",
+        "metrics",
+        "opentelemetry",
+        "logs"
+    ],
     "scripts": {
         "build": "tsc -p ./tsconfig.json --outDir dist",
         "build:tarball": "yarn build && npm pack",

@@ -12,6 +12,13 @@
         "type": "git",
         "url": "git://github.com/traceo-dev/traceo-sdk.git"
     },
+    "keywords": [
+        "analytics",
+        "vue",
+        "erorr",
+        "exception",
+        "observability"
+    ],
     "scripts": {
         "build": "tsc -p ./tsconfig.json --outDir dist",
         "build:tarball": "yarn build && npm pack",
