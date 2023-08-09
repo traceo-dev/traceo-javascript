@@ -1,6 +1,6 @@
-import { TraceoMetric, TraceoMetricType, DataPointType, Dictionary, MetricData, ReadableSpan, ResourceMetrics } from "@traceo-sdk/node-core";
+import { TraceoMetric, TraceoMetricType, DataPointType, Dictionary, MetricData, ReadableSpan, ResourceMetrics, SpanStatusCode } from "@traceo-sdk/node-core";
 import { TraceoSpan } from "./types";
-import { HrTime } from "@opentelemetry/api";
+import { HrTime, SpanKind } from "@opentelemetry/api";
 
 /**
  * Mapper to map OpenTelemetry objects to Traceo responses.
@@ -50,7 +50,7 @@ export class OtelMapper {
     public static mapSpans(otelSpans: ReadableSpan[]): TraceoSpan[] {
         return otelSpans.map((otel) => ({
             name: otel.name,
-            kind: otel.kind.toString(),
+            kind: this.getSpanKind(otel.kind),
             status: otel.status.code.toString(),
             statusMessage: otel.status.message,
             traceId: otel.spanContext().traceId,
@@ -62,6 +62,23 @@ export class OtelMapper {
             startEpochNanos: this.getEpochNanos(otel.startTime),
             endEpochNanos: this.getEpochNanos(otel.endTime),
         }));
+    }
+
+    private static getSpanKind(code: SpanKind): string {
+        switch(code) {
+            case SpanKind.INTERNAL:
+                return "INTERNAL";
+            case SpanKind.SERVER:
+                return "SERVER";
+            case SpanKind.CLIENT:
+                return "CLIENT";
+            case SpanKind.PRODUCER:
+                return "PRODUCER";
+            case SpanKind.CONSUMER:
+                return "CONSUMER";
+            default:
+                return "";
+        }
     }
 
     private static getEpochNanos(time: HrTime): number {
