@@ -1,9 +1,8 @@
 import {
   utils,
   IMetrics,
-  MetricType,
-  InstrumentType,
-  DataPointType
+  TraceoMetric,
+  TraceoMetricType
 } from "@traceo-sdk/node-core";
 
 /**
@@ -15,22 +14,25 @@ const TO_MB = 1024 * 1024;
 export class HeapMetrics implements IMetrics {
   constructor() {}
 
-  collect(): MetricType {
+  collect(): TraceoMetric[] {
     return [
       {
-        descriptor: { name: "heap_used", type: InstrumentType.TIME_SERIES },
-        dataPointType: DataPointType.TIME_SERIES,
-        dataPoints: [{ value: this.usedHeap, startTime: [utils.currentUnix()] }]
+        name: "heap_used",
+        type: TraceoMetricType.GAUGE,
+        unixTimestamp: utils.currentUnix(),
+        value: this.usedHeap
       },
       {
-        descriptor: { name: "heap_total", type: InstrumentType.TIME_SERIES },
-        dataPointType: DataPointType.TIME_SERIES,
-        dataPoints: [{ value: this.totalHeap, startTime: [utils.currentUnix()] }]
+        name: "heap_total",
+        type: TraceoMetricType.GAUGE,
+        unixTimestamp: utils.currentUnix(),
+        value: this.totalHeap
       },
       {
-        descriptor: { name: "heap_rss", type: InstrumentType.TIME_SERIES },
-        dataPointType: DataPointType.TIME_SERIES,
-        dataPoints: [{ value: this.rss, startTime: [utils.currentUnix()] }]
+        name: "heap_rss",
+        type: TraceoMetricType.GAUGE,
+        unixTimestamp: utils.currentUnix(),
+        value: this.rss
       }
     ];
   }

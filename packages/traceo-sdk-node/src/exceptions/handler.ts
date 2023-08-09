@@ -1,10 +1,10 @@
 import { stacktrace } from "stacktrace-parser-node";
 import {
-  transport,
   TraceoError,
   NodeIncidentType,
   CAPTURE_ENDPOINT,
-  utils
+  utils,
+  HttpClient
 } from "@traceo-sdk/node-core";
 
 /**
@@ -32,7 +32,7 @@ export const catchException = async (error: Error) => {
 const handleException = async (error: TraceoError) => {
   const event: NodeIncidentType = await prepareException(error);
 
-  transport.request({
+  HttpClient.request({
     url: CAPTURE_ENDPOINT.INCIDENT,
     body: event,
     onError: (error: Error) => {

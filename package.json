@@ -9,12 +9,12 @@
     "lint:prettier": "lerna run lint:prettier"
   },
   "workspaces": [
-    "packages/node-core",
-    "packages/opentelemetry-node",
-    "packages/node",
-    "packages/browser",
-    "packages/react",
-    "packages/vue"
+    "packages/traceo-sdk-node",
+    "packages/traceo-sdk-node-core",
+    "packages/traceo-sdk-opentelemetry",
+    "packages/traceo-sdk-browser",
+    "packages/traceo-sdk-react",
+    "packages/traceo-sdk-vue"
   ],
   "devDependencies": {
     "@types/jest": "^29.2.0",

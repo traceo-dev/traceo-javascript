@@ -1,6 +1,5 @@
 import { format } from "util";
-import { CAPTURE_ENDPOINT, LogLevel, transport } from "@traceo-sdk/node-core";
-import { getGlobalTraceo } from "@traceo-sdk/node-core/dist/utils";
+import { CAPTURE_ENDPOINT, HttpClient, LogLevel, utils } from "@traceo-sdk/node-core";
 
 const DEFAULT_EXPORT_INTERVAL = 15000;
 export class Logger {
@@ -10,7 +9,7 @@ export class Logger {
   constructor() {
     this.logsQueue = [];
 
-    const client = getGlobalTraceo();
+    const client = utils.getGlobalTraceo();
 
     const scrapLogsInterval = client.options.exportIntervalMillis;
     if (scrapLogsInterval && scrapLogsInterval >= DEFAULT_EXPORT_INTERVAL) {
@@ -77,7 +76,7 @@ export class Logger {
 
   private async sendLogs() {
     if (this.logsQueue.length > 0) {
-      transport.request({
+      HttpClient.request({
         url: CAPTURE_ENDPOINT.LOG,
         body: this.logsQueue,
         onError: (error: Error) => {

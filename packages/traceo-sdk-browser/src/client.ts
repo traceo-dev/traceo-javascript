@@ -2,7 +2,7 @@ import { BrowserClientConfigType, IBrowserClient, TraceoBrowserError } from "./t
 import { Transport } from "./transport";
 import { Performance } from "./performance";
 import { utils } from "./utils";
-import { stacktrace } from "./exceptions/stacktrace";
+import { StacktraceParser } from "./exceptions/stacktrace";
 import { Trace } from "./types/stacktrace";
 import { BrowserIncidentType, CAPTURE_ENDPOINT } from "./types/transport";
 import { EventOnErrorType, EventOnUnhandledRejectionType, windowEventHandlers } from "./handlers";
@@ -80,7 +80,7 @@ export abstract class BrowserClient implements IBrowserClient {
 
     const stack = error?.stack || "";
 
-    const traces: Trace[] = stacktrace.parse(stack);
+    const traces: Trace[] = StacktraceParser.parse(stack);
 
     const err: BrowserIncidentType = {
       name,
@@ -149,7 +149,7 @@ export abstract class BrowserClient implements IBrowserClient {
         stack = reason.toString();
       }
 
-      const traces: Trace[] = stacktrace.parse(stack);
+      const traces: Trace[] = StacktraceParser.parse(stack);
       const err: BrowserIncidentType = {
         name,
         message,

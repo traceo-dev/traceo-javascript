@@ -10,7 +10,9 @@ import {
   InstrumentType,
   ValueType,
   INodeClient,
-  DataPointType
+  DataPointType,
+  TraceoMetricType,
+  TraceoMetric
 } from "@traceo-sdk/node-core";
 import * as os from "os";
 
@@ -60,7 +62,7 @@ export class MetricsRunner {
     const heap = this.heap.collect();
     const memory = this.memoryUsage.collect();
 
-    const metrics: MetricType = [...cpuUsage, ...eventLoop, ...heap, ...memory, ...this.loadAvg];
+    const metrics: TraceoMetric[] = [...cpuUsage, ...eventLoop, ...heap, ...memory, ...this.loadAvg];
 
     transport.request({
       url: CAPTURE_ENDPOINT.METRICS,
@@ -74,18 +76,15 @@ export class MetricsRunner {
     });
   }
 
-  private get loadAvg(): MetricType {
+  private get loadAvg(): TraceoMetric[] {
     const load = utils.toDecimalNumber(os.loadavg()[0]);
 
     return [
       {
-        descriptor: {
-          name: "load_avg",
-          type: InstrumentType.OBSERVABLE_GAUGE,
-          valueType: ValueType.DOUBLE
-        },
-        dataPointType: DataPointType.GAUGE,
-        dataPoints: [{ value: load, startTime: [utils.currentUnix()] }]
+        name: "load_avg",
+        value: load,
+        unixTimestamp: utils.currentUnix(),
+        type: TraceoMetricType.GAUGE
       }
     ];
   }

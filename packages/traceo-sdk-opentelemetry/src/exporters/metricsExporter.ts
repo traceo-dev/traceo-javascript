@@ -1,17 +1,17 @@
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
 import {
   CAPTURE_ENDPOINT,
-  MetricData,
-  ScopeMetrics,
-  transport,
   OTLPExporterNodeConfigBase,
   AggregationTemporality,
   ExportResult,
   ExportResultCode,
   ResourceMetrics,
   INodeClient,
-  utils
+  utils,
+  HttpClient,
+  TraceoMetric
 } from "@traceo-sdk/node-core";
+import { OtelMapper } from "./otelMapper";
 
 export class TraceoMetricExporter extends OTLPMetricExporter {
   private client: INodeClient;
@@ -33,11 +33,9 @@ export class TraceoMetricExporter extends OTLPMetricExporter {
       return;
     }
 
-    const scopeMetrics: ScopeMetrics[] = metrics.scopeMetrics;
-    const flatMetrics: MetricData[] = scopeMetrics.flatMap((scope) => scope.metrics || []);
-
-    transport.request({
-      body: flatMetrics,
+    const payload: TraceoMetric[] = OtelMapper.mapMetrics(metrics);
+    HttpClient.request({
+      body: payload,
       url: CAPTURE_ENDPOINT.METRICS,
       method: "POST",
       callback: () => {

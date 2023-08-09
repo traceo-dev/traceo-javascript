@@ -1,2 +1,2 @@
-export { TraceoMetricExporter } from "./metrics-exporter";
-export { TraceoTracingExporter } from "./tracing-exporter";
+export { TraceoMetricExporter } from "./metricsExporter";
+export { TraceoTracingExporter } from "./tracingExporter";

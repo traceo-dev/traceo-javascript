@@ -2,18 +2,20 @@ import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import {
   INodeClient,
   utils,
-  transport,
   CAPTURE_ENDPOINT,
   ExportResultCode,
   ReadableSpan,
   ExportResult,
-  OTLPExporterNodeConfigBase
+  OTLPExporterNodeConfigBase,
+  HttpClient
 } from "@traceo-sdk/node-core";
+import { OtelMapper } from "./otelMapper";
+import { TraceoSpan } from "./types";
 
 export class TraceoTracingExporter extends OTLPTraceExporter {
   private client: INodeClient;
 
-  constructor(config: OTLPExporterNodeConfigBase = {}) {
+  public constructor(config: OTLPExporterNodeConfigBase = {}) {
     super(config);
 
     this.client = utils.getGlobalTraceo();
@@ -26,28 +28,9 @@ export class TraceoTracingExporter extends OTLPTraceExporter {
       return;
     }
 
-    const spans = items.map((span) => {
-      return {
-        name: span.name,
-        attributes: span.attributes,
-        status: span.status,
-        links: span.links,
-        events: span.events,
-        duration: span.duration,
-        startTime: span.startTime,
-        endTime: span.endTime,
-        parentSpanId: span?.parentSpanId,
-        kind: span.kind,
-        resource: span.resource,
-        spanContext: {
-          traceId: span.spanContext().traceId,
-          spanId: span.spanContext().spanId
-        }
-      };
-    });
-
-    transport.request({
-      body: spans,
+    const payload: TraceoSpan[] = OtelMapper.mapSpans(items);
+    HttpClient.request({
+      body: payload,
       url: CAPTURE_ENDPOINT.TRACING,
       method: "POST",
       callback: () => {

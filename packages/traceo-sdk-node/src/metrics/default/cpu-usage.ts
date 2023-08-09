@@ -2,11 +2,9 @@ import * as os from "os";
 import {
   IMetrics,
   AverageCpuMetricType,
-  InstrumentType,
-  ValueType,
-  MetricType,
   utils,
-  DataPointType
+  TraceoMetric,
+  TraceoMetricType
 } from "@traceo-sdk/node-core";
 
 export class CpuUsageMetrics implements IMetrics {
@@ -16,7 +14,7 @@ export class CpuUsageMetrics implements IMetrics {
     this.measureStart = this.calculateAverageCpuUsage();
   }
 
-  public collect(): MetricType {
+  public collect(): TraceoMetric[] {
     const endMeasure = this.calculateAverageCpuUsage();
 
     const idleDifference = endMeasure.idle - this.measureStart.idle;
@@ -26,13 +24,10 @@ export class CpuUsageMetrics implements IMetrics {
 
     return [
       {
-        descriptor: {
-          name: "cpu_usage",
-          type: InstrumentType.TIME_SERIES,
-          valueType: ValueType.DOUBLE
-        },
-        dataPointType: DataPointType.TIME_SERIES,
-        dataPoints: [{ value: cpuUsage, startTime: [utils.currentUnix()] }]
+        name: "cpu_usage",
+        type: TraceoMetricType.GAUGE,
+        unixTimestamp: utils.currentUnix(),
+        value: cpuUsage
       }
     ];
   }

@@ -3,7 +3,7 @@ import { MetricData } from "./opentelemetry";
 
 export type MetricType = DeepPartial<MetricData>[];
 export interface IMetrics {
-  collect(): MetricType;
+  collect(): TraceoMetric[];
 }
 
 export type EventLoopMetricType = {
@@ -48,3 +48,16 @@ export type AverageCpuMetricType = {
   idle: number;
   total: number;
 };
+
+export type TraceoMetric = {
+  name: string;
+  type: TraceoMetricType;
+  value: number;
+  unixTimestamp: number;
+}
+
+export enum TraceoMetricType {
+  HISTOGRAM,
+  COUNTER,
+  GAUGE
+}

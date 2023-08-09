@@ -2,10 +2,8 @@ import {
   utils,
   IMetrics,
   EventLoopMetricType,
-  MetricType,
-  InstrumentType,
-  ValueType,
-  DataPointType
+  TraceoMetric,
+  TraceoMetricType
 } from "@traceo-sdk/node-core";
 
 let perf_hooks;
@@ -29,7 +27,7 @@ export class EventLoopMetrics implements IMetrics {
     }
   }
 
-  public collect(): MetricType {
+  public collect(): TraceoMetric[] {
     const metrics = ["loop_min", "loop_max", "loop_mean", "loop_stddev"];
 
     const data: EventLoopMetricType = {
@@ -40,14 +38,11 @@ export class EventLoopMetrics implements IMetrics {
     };
     this.histogram.reset();
 
-    const response: MetricType = metrics.map((metric) => ({
-      descriptor: {
-        name: metric,
-        type: InstrumentType.TIME_SERIES,
-        valueType: ValueType.DOUBLE
-      },
-      dataPointType: DataPointType.TIME_SERIES,
-      dataPoints: [{ value: data[metric], startTime: [utils.currentUnix()] }]
+    const response: TraceoMetric[] = metrics.map((metric) => ({
+      name: metric,
+      type: TraceoMetricType.GAUGE,
+      unixTimestamp: utils.currentUnix(),
+      value: data[metric]
     }));
 
     return response;
