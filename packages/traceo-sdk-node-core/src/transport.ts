@@ -105,41 +105,41 @@ const requestOptions = (url: string, method: RequestType): http.RequestOptions =
   };
 };
 
-const requestHeaders = (method: RequestType) => {
-  const headers = getGlobalTraceo().headers;
+// const requestHeaders = (method: RequestType) => {
+//   const headers = getGlobalTraceo().headers;
 
-  if (method !== "POST") return headers;
-  return {
-    headers: {
-      "Content-Type": "application/json",
-      ...headers
-    }
-  };
-};
+//   if (method !== "POST") return headers;
+//   return {
+//     headers: {
+//       "Content-Type": "application/json",
+//       ...headers
+//     }
+//   };
+// };
 
-/**
- * Make http/s request to Traceo platoform.
- *
- * Default request method is POST, in this case in hedaers is passed "Content-Type": "application/json".
- * URL is concatenation of passed host to client and pathanme to this method.
- * Use callback/onError callbacks to handle action after operation.
- */
-const request = ({ url, method = "POST", body, onError, callback }: RequestOptionsType) => {
-  const options = {
-    ...requestHeaders(method),
-    ...requestOptions(url, method)
-  };
+// /**
+//  * Make http/s request to Traceo platoform.
+//  *
+//  * Default request method is POST, in this case in hedaers is passed "Content-Type": "application/json".
+//  * URL is concatenation of passed host to client and pathanme to this method.
+//  * Use callback/onError callbacks to handle action after operation.
+//  */
+// const request = ({ url, method = "POST", body, onError, callback }: RequestOptionsType) => {
+//   const options = {
+//     ...requestHeaders(method),
+//     ...requestOptions(url, method)
+//   };
 
-  const httpModule = requestModule();
+//   const httpModule = requestModule();
 
-  const request = httpModule.request(options, callback);
-  request.on("error", () => onError);
+//   const request = httpModule.request(options, callback);
+//   request.on("error", () => onError);
 
-  requestWriteBody(method, request, body);
+//   requestWriteBody(method, request, body);
 
-  request.end();
-};
+//   request.end();
+// };
 
-export const transport = {
-  request
-};
+// export const transport = {
+//   request
+// };

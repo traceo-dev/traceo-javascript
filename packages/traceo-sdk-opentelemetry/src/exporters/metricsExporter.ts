@@ -34,6 +34,10 @@ export class TraceoMetricExporter extends OTLPMetricExporter {
     }
 
     const payload: TraceoMetric[] = OtelMapper.mapMetrics(metrics);
+    if (payload.length === 0) {
+      return;
+    }
+
     HttpClient.request({
       body: payload,
       url: CAPTURE_ENDPOINT.METRICS,

@@ -3,14 +3,10 @@ import { EventLoopMetrics } from "./default/event-loop";
 import { HeapMetrics } from "./default/heap";
 import { MemoryUsageMetrics } from "./default/memory-usage";
 import {
-  transport,
+  HttpClient,
   CAPTURE_ENDPOINT,
   utils,
-  MetricType,
-  InstrumentType,
-  ValueType,
   INodeClient,
-  DataPointType,
   TraceoMetricType,
   TraceoMetric
 } from "@traceo-sdk/node-core";
@@ -64,7 +60,11 @@ export class MetricsRunner {
 
     const metrics: TraceoMetric[] = [...cpuUsage, ...eventLoop, ...heap, ...memory, ...this.loadAvg];
 
-    transport.request({
+    if (metrics.length === 0) {
+      return;
+    }
+
+    HttpClient.request({
       url: CAPTURE_ENDPOINT.METRICS,
       body: metrics,
       onError: (error: Error) => {

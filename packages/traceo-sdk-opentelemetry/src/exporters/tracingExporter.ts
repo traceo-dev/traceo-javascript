@@ -29,6 +29,10 @@ export class TraceoTracingExporter extends OTLPTraceExporter {
     }
 
     const payload: TraceoSpan[] = OtelMapper.mapSpans(items);
+    if (payload.length === 0) {
+      return;
+    }
+    
     HttpClient.request({
       body: payload,
       url: CAPTURE_ENDPOINT.TRACING,

@@ -51,7 +51,7 @@ export class OtelMapper {
         return otelSpans.map((otel) => ({
             name: otel.name,
             kind: this.getSpanKind(otel.kind),
-            status: otel.status.code.toString(),
+            status: this.getSpanStatus(otel.status.code),
             statusMessage: otel.status.message,
             traceId: otel.spanContext().traceId,
             spanId: otel.spanContext().spanId,
@@ -77,8 +77,22 @@ export class OtelMapper {
             case SpanKind.CONSUMER:
                 return "CONSUMER";
             default:
-                return "";
+                return "N/A";
         }
+    }
+
+    private static getSpanStatus(status: SpanStatusCode): string {
+        if (!status) {
+            return "Unset";
+        }
+        
+        if (status === SpanStatusCode.ERROR) {
+            return "Error";
+        } else if (status === SpanStatusCode.OK) {
+            return "OK";
+        }
+
+        return "Unset";
     }
 
     private static getEpochNanos(time: HrTime): number {
