@@ -1,6 +1,8 @@
-import { INodeClient } from "./types";
 import * as os from "os";
-import { TraceoIncomingMessage, Platform } from "./types";
+import * as v8 from "v8";
+
+import { Dictionary, INodeClient } from "./types";
+import { TraceoIncomingMessage } from "./types";
 
 export const getIp = (req: TraceoIncomingMessage): string | string[] | undefined => {
   return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -10,12 +12,14 @@ export const getProtocol = (req: TraceoIncomingMessage): string => {
   return req.protocol === "https" || req.secure ? "https" : "http";
 };
 
-export const getOsDetails = (): Platform => {
+export const getOsDetails = (): Dictionary<string | number> => {
   return {
     arch: os.arch(),
     platform: os.platform(),
-    release: os.release()
-    // version: os.version(),
+    name: os.release(),
+    machine: os.machine(),
+    node: process.versions["node"],
+    v8: process.versions["v8"]
   };
 };
 
