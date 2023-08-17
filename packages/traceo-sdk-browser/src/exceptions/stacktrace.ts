@@ -7,7 +7,7 @@ const CLASS_METHOD_REGEXP = /(.+)\.([^.]+)$/;
 const EXCLUDED = ["<anonymous>"];
 
 export class StacktraceParser {
-  constructor() { }
+  constructor() {}
 
   public static parse(stackTrace: string): Trace[] {
     const lines = stackTrace.split("\n");
@@ -65,5 +65,4 @@ export class StacktraceParser {
     const match = method.match(CLASS_METHOD_REGEXP);
     return match ? `${match[1]}.${match[2]}` : method;
   };
-
 }

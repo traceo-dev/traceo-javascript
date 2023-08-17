@@ -1,4 +1,13 @@
-import { TraceoMetric, TraceoMetricType, DataPointType, Dictionary, MetricData, ReadableSpan, ResourceMetrics, SpanStatusCode } from "@traceo-sdk/node-core";
+import {
+  TraceoMetric,
+  TraceoMetricType,
+  DataPointType,
+  Dictionary,
+  MetricData,
+  ReadableSpan,
+  ResourceMetrics,
+  SpanStatusCode
+} from "@traceo-sdk/node-core";
 import { TraceoSpan } from "./types";
 import { HrTime, SpanKind } from "@opentelemetry/api";
 
@@ -6,107 +15,109 @@ import { HrTime, SpanKind } from "@opentelemetry/api";
  * Mapper to map OpenTelemetry objects to Traceo responses.
  */
 export class OtelMapper {
-    protected constructor() { }
+  protected constructor() {}
 
-    public static mapMetrics(otelMetrics: ResourceMetrics): TraceoMetric[] {
-        const result: TraceoMetric[] = [];
+  public static mapMetrics(otelMetrics: ResourceMetrics): TraceoMetric[] {
+    const result: TraceoMetric[] = [];
 
-        const SUPPORTED_TYPES = [DataPointType.GAUGE, DataPointType.TIME_SERIES, DataPointType.SUM];
+    const SUPPORTED_TYPES = [DataPointType.GAUGE, DataPointType.TIME_SERIES, DataPointType.SUM];
 
-        const availableMetrics: MetricData[] = otelMetrics.scopeMetrics
-            .flatMap((scope) => scope.metrics || [])
-            .filter((metric) => SUPPORTED_TYPES.includes(metric.dataPointType));
+    const availableMetrics: MetricData[] = otelMetrics.scopeMetrics
+      .flatMap((scope) => scope.metrics || [])
+      .filter((metric) => SUPPORTED_TYPES.includes(metric.dataPointType));
 
-        for (const metric of availableMetrics) {
-            const traceoMetric: TraceoMetric[] = metric.dataPoints.map((dataPoint) => ({
-                name: metric.descriptor.name,
-                type: this.mapMetricType(metric.dataPointType),
-                value: dataPoint.value,
-                // We need here only to get unix with count of seconds
-                unixTimestamp: dataPoint.startTime[0]
-            }));
+    for (const metric of availableMetrics) {
+      const traceoMetric: TraceoMetric[] = metric.dataPoints.map((dataPoint) => ({
+        name: metric.descriptor.name,
+        type: this.mapMetricType(metric.dataPointType),
+        value: dataPoint.value,
+        // We need here only to get unix with count of seconds
+        unixTimestamp: dataPoint.startTime[0]
+      }));
 
-            result.push(...traceoMetric);
-        }
-
-        return result;
+      result.push(...traceoMetric);
     }
 
-    private static mapMetricType(type: DataPointType): TraceoMetricType {
-        switch (type) {
-            case DataPointType.GAUGE:
-                return TraceoMetricType.GAUGE;
-            case DataPointType.SUM:
-            case DataPointType.TIME_SERIES:
-                return TraceoMetricType.COUNTER;
-            case DataPointType.HISTOGRAM:
-            case DataPointType.EXPONENTIAL_HISTOGRAM:
-                return TraceoMetricType.HISTOGRAM;
-            default:
-                return TraceoMetricType.COUNTER;
-        }
+    return result;
+  }
+
+  private static mapMetricType(type: DataPointType): TraceoMetricType {
+    switch (type) {
+      case DataPointType.GAUGE:
+        return TraceoMetricType.GAUGE;
+      case DataPointType.SUM:
+      case DataPointType.TIME_SERIES:
+        return TraceoMetricType.COUNTER;
+      case DataPointType.HISTOGRAM:
+      case DataPointType.EXPONENTIAL_HISTOGRAM:
+        return TraceoMetricType.HISTOGRAM;
+      default:
+        return TraceoMetricType.COUNTER;
+    }
+  }
+
+  public static mapSpans(otelSpans: ReadableSpan[]): TraceoSpan[] {
+    return otelSpans.map((otel) => ({
+      name: otel.name,
+      kind: this.getSpanKind(otel.kind),
+      status: this.getSpanStatus(otel.status.code),
+      statusMessage: otel.status.message,
+      traceId: otel.spanContext().traceId,
+      spanId: otel.spanContext().spanId,
+      parentSpanId: otel?.parentSpanId,
+      serviceName: this.getServiceName(otel),
+      attributes: otel.resource.attributes as Dictionary<any>,
+      events: JSON.stringify(otel.events),
+      startEpochNanos: this.getEpochNanos(otel.startTime),
+      endEpochNanos: this.getEpochNanos(otel.endTime)
+    }));
+  }
+
+  private static getSpanKind(code: SpanKind): string {
+    switch (code) {
+      case SpanKind.INTERNAL:
+        return "INTERNAL";
+      case SpanKind.SERVER:
+        return "SERVER";
+      case SpanKind.CLIENT:
+        return "CLIENT";
+      case SpanKind.PRODUCER:
+        return "PRODUCER";
+      case SpanKind.CONSUMER:
+        return "CONSUMER";
+      default:
+        return "N/A";
+    }
+  }
+
+  private static getSpanStatus(status: SpanStatusCode): string {
+    if (!status) {
+      return "Unset";
     }
 
-    public static mapSpans(otelSpans: ReadableSpan[]): TraceoSpan[] {
-        return otelSpans.map((otel) => ({
-            name: otel.name,
-            kind: this.getSpanKind(otel.kind),
-            status: this.getSpanStatus(otel.status.code),
-            statusMessage: otel.status.message,
-            traceId: otel.spanContext().traceId,
-            spanId: otel.spanContext().spanId,
-            parentSpanId: otel?.parentSpanId,
-            serviceName: this.getServiceName(otel),
-            attributes: otel.resource.attributes as Dictionary<any>,
-            events: JSON.stringify(otel.events),
-            startEpochNanos: this.getEpochNanos(otel.startTime),
-            endEpochNanos: this.getEpochNanos(otel.endTime),
-        }));
+    if (status === SpanStatusCode.ERROR) {
+      return "Error";
+    } else if (status === SpanStatusCode.OK) {
+      return "OK";
     }
 
-    private static getSpanKind(code: SpanKind): string {
-        switch(code) {
-            case SpanKind.INTERNAL:
-                return "INTERNAL";
-            case SpanKind.SERVER:
-                return "SERVER";
-            case SpanKind.CLIENT:
-                return "CLIENT";
-            case SpanKind.PRODUCER:
-                return "PRODUCER";
-            case SpanKind.CONSUMER:
-                return "CONSUMER";
-            default:
-                return "N/A";
-        }
+    return "Unset";
+  }
+
+  private static getEpochNanos(time: HrTime): number {
+    return time[0] + time[1] / 1e9;
+  }
+
+  private static getServiceName(span: ReadableSpan) {
+    const DEFAULT_SERVICE_NAME = "unknown";
+
+    if (!span.resource.attributes) {
+      return DEFAULT_SERVICE_NAME;
     }
-
-    private static getSpanStatus(status: SpanStatusCode): string {
-        if (!status) {
-            return "Unset";
-        }
-        
-        if (status === SpanStatusCode.ERROR) {
-            return "Error";
-        } else if (status === SpanStatusCode.OK) {
-            return "OK";
-        }
-
-        return "Unset";
-    }
-
-    private static getEpochNanos(time: HrTime): number {
-        return time[0] + time[1] / 1e9;
-    }
-
-    private static getServiceName(span: ReadableSpan) {
-        const DEFAULT_SERVICE_NAME = "unknown";
-
-        if (!span.resource.attributes) {
-            return DEFAULT_SERVICE_NAME;
-        }
-        const service_name = span.resource.attributes["service.name"] as string;
-        const span_service_name = service_name.startsWith("unknown_service") ? DEFAULT_SERVICE_NAME : service_name;
-        return span_service_name;
-    }
+    const service_name = span.resource.attributes["service.name"] as string;
+    const span_service_name = service_name.startsWith("unknown_service")
+      ? DEFAULT_SERVICE_NAME
+      : service_name;
+    return span_service_name;
+  }
 }

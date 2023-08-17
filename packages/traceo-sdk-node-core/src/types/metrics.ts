@@ -54,7 +54,7 @@ export type TraceoMetric = {
   type: TraceoMetricType;
   value: number;
   unixTimestamp: number;
-}
+};
 
 export enum TraceoMetricType {
   HISTOGRAM,

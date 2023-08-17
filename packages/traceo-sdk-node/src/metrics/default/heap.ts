@@ -1,9 +1,4 @@
-import {
-  utils,
-  IMetrics,
-  TraceoMetric,
-  TraceoMetricType
-} from "@traceo-sdk/node-core";
+import { utils, IMetrics, TraceoMetric, TraceoMetricType } from "@traceo-sdk/node-core";
 
 /**
  * https://www.geeksforgeeks.org/node-js-v8-getheapstatistics-method/

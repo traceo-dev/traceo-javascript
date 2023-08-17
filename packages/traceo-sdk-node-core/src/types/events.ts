@@ -1,3 +1,4 @@
+import { Dictionary } from ".";
 import { Trace } from "./trace";
 
 export type NodeIncidentType = {
@@ -5,7 +6,7 @@ export type NodeIncidentType = {
   message: string;
   stack: string;
   traces: Trace[];
-  platform: Platform;
+  platform: Dictionary<string | number>;
 };
 
 export interface Platform {

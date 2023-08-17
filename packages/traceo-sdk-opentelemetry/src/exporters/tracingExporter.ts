@@ -32,7 +32,7 @@ export class TraceoTracingExporter extends OTLPTraceExporter {
     if (payload.length === 0) {
       return;
     }
-    
+
     HttpClient.request({
       body: payload,
       url: CAPTURE_ENDPOINT.TRACING,

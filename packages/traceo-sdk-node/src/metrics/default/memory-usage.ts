@@ -1,10 +1,5 @@
 import * as os from "os";
-import {
-  IMetrics,
-  utils,
-  TraceoMetric,
-  TraceoMetricType
-} from "@traceo-sdk/node-core";
+import { IMetrics, utils, TraceoMetric, TraceoMetricType } from "@traceo-sdk/node-core";
 
 export class MemoryUsageMetrics implements IMetrics {
   constructor() {}

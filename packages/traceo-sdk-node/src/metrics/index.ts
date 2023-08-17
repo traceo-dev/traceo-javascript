@@ -58,7 +58,13 @@ export class MetricsRunner {
     const heap = this.heap.collect();
     const memory = this.memoryUsage.collect();
 
-    const metrics: TraceoMetric[] = [...cpuUsage, ...eventLoop, ...heap, ...memory, ...this.loadAvg];
+    const metrics: TraceoMetric[] = [
+      ...cpuUsage,
+      ...eventLoop,
+      ...heap,
+      ...memory,
+      ...this.loadAvg
+    ];
 
     if (metrics.length === 0) {
       return;
