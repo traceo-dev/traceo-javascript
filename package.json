@@ -6,7 +6,8 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "build:tarball": "lerna run build:tarball",
-    "lint:prettier": "lerna run lint:prettier"
+    "lint:prettier": "lerna run lint:prettier",
+    "lerna:version": "lerna version"
   },
   "workspaces": [
     "packages/traceo-sdk-node",
