@@ -30,7 +30,7 @@ new TraceoClient(<project_id>, {
 ```
 
 ### Metrics
-To use the exporter for spans you need to import `TraceoMetricExporter` from `@traceo-sdk/opentelemetry-node` like below.
+To use the exporter for metrics you need to import `TraceoMetricExporter` from `@traceo-sdk/opentelemetry-node` like below.
 
 ```ts
 import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
