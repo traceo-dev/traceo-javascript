@@ -1,35 +1,35 @@
 {
-    "name": "@traceo-sdk/browser",
-    "version": "0.33.1",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "license": "MIT",
-    "files": [
-        "dist"
-    ],
-    "homepage": "https://github.com/traceo-dev/traceo-sdk",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/traceo-dev/traceo-sdk.git"
-    },
-    "scripts": {
-        "build": "tsc -p ./tsconfig.json --outDir dist",
-        "build:tarball": "yarn build && npm pack",
-        "prebuild": "rimraf ./dist",
-        "lint": "run-s lint:prettier",
-        "lint:prettier": "prettier ./src/**/*.{js,ts,tsx} --write",
-        "prepack": "yarn lint",
-        "test": "jest",
-        "test:watch": "jest --watch --notify"
-    },
-    "dependencies": {
-        "bowser": "2.11.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "browser": {
-        "http": false,
-        "https": false
-    }
+  "name": "@traceo-sdk/browser",
+  "version": "0.34.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/traceo-dev/traceo-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/traceo-dev/traceo-sdk.git"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json --outDir dist",
+    "build:tarball": "yarn build && npm pack",
+    "prebuild": "rimraf ./dist",
+    "lint": "run-s lint:prettier",
+    "lint:prettier": "prettier ./src/**/*.{js,ts,tsx} --write",
+    "prepack": "yarn lint",
+    "test": "jest",
+    "test:watch": "jest --watch --notify"
+  },
+  "dependencies": {
+    "bowser": "2.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "browser": {
+    "http": false,
+    "https": false
+  }
 }

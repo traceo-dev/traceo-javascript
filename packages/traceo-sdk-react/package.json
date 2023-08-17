@@ -1,41 +1,41 @@
 {
-    "name": "@traceo-sdk/react",
-    "version": "0.33.1",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "license": "MIT",
-    "files": [
-        "dist"
-    ],
-    "homepage": "https://github.com/traceo-dev/traceo-sdk",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/traceo-dev/traceo-sdk.git"
-    },
-    "keywords": [
-        "analytics",
-        "react",
-        "erorr",
-        "exception",
-        "observability"
-    ],
-    "scripts": {
-        "build": "tsc -p ./tsconfig.json --outDir dist",
-        "build:tarball": "yarn build && npm pack",
-        "prebuild": "rimraf ./dist",
-        "lint": "run-s lint:prettier",
-        "lint:prettier": "prettier ./src/**/*.{js,ts,tsx} --write",
-        "prepack": "yarn lint",
-        "test": "jest",
-        "test:watch": "jest --watch --notify"
-    },
-    "dependencies": {
-        "@traceo-sdk/browser": "0.33.1"
-    },
-    "peerDependencies": {
-        "react": ">= 16.8.6 < 19"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+  "name": "@traceo-sdk/react",
+  "version": "0.34.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/traceo-dev/traceo-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/traceo-dev/traceo-sdk.git"
+  },
+  "keywords": [
+    "analytics",
+    "react",
+    "erorr",
+    "exception",
+    "observability"
+  ],
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json --outDir dist",
+    "build:tarball": "yarn build && npm pack",
+    "prebuild": "rimraf ./dist",
+    "lint": "run-s lint:prettier",
+    "lint:prettier": "prettier ./src/**/*.{js,ts,tsx} --write",
+    "prepack": "yarn lint",
+    "test": "jest",
+    "test:watch": "jest --watch --notify"
+  },
+  "dependencies": {
+    "@traceo-sdk/browser": "^0.34.0"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.6 < 19"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,46 +1,46 @@
 {
-    "name": "@traceo-sdk/node",
-    "version": "0.33.1",
-    "author": "Traceo",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "license": "MIT",
-    "files": [
-        "dist"
-    ],
-    "homepage": "https://github.com/traceo-dev/traceo-sdk",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/traceo-dev/traceo-sdk.git"
-    },
-    "keywords": [
-        "error",
-        "exception",
-        "bug",
-        "analytics",
-        "metrics",
-        "opentelemetry",
-        "logs"
-    ],
-    "scripts": {
-        "build": "tsc -p ./tsconfig.json --outDir dist",
-        "build:tarball": "yarn build && npm pack",
-        "prebuild": "rimraf ./dist",
-        "lint": "run-s lint:prettier",
-        "lint:prettier": "prettier ./src/**/*.{js,ts,tsx} --write",
-        "prepack": "yarn lint",
-        "test": "jest",
-        "test:watch": "jest --watch --notify"
-    },
-    "dependencies": {
-        "stacktrace-parser-node": "^1.1.5",
-        "@traceo-sdk/node-core": "0.33.1",
-        "os": "^0.1.2"
-    },
-    "devDependencies": {
-        "@types/node": "20.3.1"
-    },
-    "engines": {
-        "node": ">=10"
-    }
+  "name": "@traceo-sdk/node",
+  "version": "0.34.0",
+  "author": "Traceo",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/traceo-dev/traceo-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/traceo-dev/traceo-sdk.git"
+  },
+  "keywords": [
+    "error",
+    "exception",
+    "bug",
+    "analytics",
+    "metrics",
+    "opentelemetry",
+    "logs"
+  ],
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json --outDir dist",
+    "build:tarball": "yarn build && npm pack",
+    "prebuild": "rimraf ./dist",
+    "lint": "run-s lint:prettier",
+    "lint:prettier": "prettier ./src/**/*.{js,ts,tsx} --write",
+    "prepack": "yarn lint",
+    "test": "jest",
+    "test:watch": "jest --watch --notify"
+  },
+  "dependencies": {
+    "@traceo-sdk/node-core": "^0.34.0",
+    "os": "^0.1.2",
+    "stacktrace-parser-node": "^1.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "20.3.1"
+  },
+  "engines": {
+    "node": ">=10"
+  }
 }
