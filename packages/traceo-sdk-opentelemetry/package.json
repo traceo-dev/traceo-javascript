@@ -1,6 +1,6 @@
 {
   "name": "@traceo-sdk/opentelemetry-node",
-  "version": "0.34.0",
+  "version": "0.34.1",
   "author": "Traceo",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,7 +39,7 @@
     "@opentelemetry/api-logs": "^0.39.1",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.38.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.39.1",
-    "@traceo-sdk/node-core": "^0.34.0",
+    "@traceo-sdk/node-core": "^0.34.1",
     "os": "^0.1.2",
     "stacktrace-parser-node": "^1.1.3"
   },
